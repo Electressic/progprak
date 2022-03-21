@@ -3,6 +3,7 @@ package spiel;
 public class Spielfigur {
     private int id;
     public String rang;
+    public String test;
 
     public Spielfigur(int id, String rang) {
         this.id = id;
@@ -18,7 +19,7 @@ public class Spielfigur {
     }
 
     public String getRang() {
-        return rang;
+        return this.rang;
     }
 
     public void setRang(String rang) {
