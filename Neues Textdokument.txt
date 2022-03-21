@@ -1,2 +1,3 @@
 hi
 hi zurück
+Dieser Text wird bei der Eingabe automatish mit übersetzt
