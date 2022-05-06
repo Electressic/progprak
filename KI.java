@@ -2,25 +2,26 @@ import java.util.Random;
 
 public class KI extends AbstractNutzer
 {
-	static int SchwereGrad;
+	protected int SchwereGrad;
 	Random rn;
-	static int[] SchussPossAlt;
-	
-	public KI(int Schweregrad)
+	protected int[] SchussPossAlt = new int[2];
+	protected int SpielfeldSize;
+	public KI(int Schweregrad, int Spielfeldgroesse)
 	{
 		SchwereGrad = Schweregrad;
 		rn = new Random();
 		SchussPossAlt = new int[2];
+		this.SpielfeldSize = Spielfeldgroesse;
 	}
 	
 	public int[] Schiesse()
 	{
-		int[] SchussPos = new int[2];
+
 
 		if(SchwereGrad == 0)
 		{
-			SchussPos[0] = rn.nextInt() % SpielfeldImpl.SpielfedSize;
-			SchussPos[1] = rn.nextInt() % SpielfeldImpl.SpielfedSize;
+			SchussPossAlt[0] = rn.nextInt() % SpielfeldSize;
+			SchussPossAlt[1] = rn.nextInt() % SpielfeldSize;
 		}
 		else if(SchwereGrad == 1)
 		{
@@ -30,8 +31,7 @@ public class KI extends AbstractNutzer
 		{
 			
 		}
-		SchussPossAlt[0] = SchussPos[0];
-		SchussPossAlt[1] = SchussPos[1];
-		return SchussPos; 
+
+		return SchussPossAlt; 
 	}
 }

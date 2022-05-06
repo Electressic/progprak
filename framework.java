@@ -6,7 +6,7 @@ public class framework
 {
 
     int size;
-    /*würde ne Klasse erschaffen die Battleship heißt die als hauptklasse agiert und alle daten, runden, schiffe als methoden drin hat oder so */
+    /*w�rde eine Klasse erschaffen die Battleship heißt die als hauptklasse agiert und alle daten, runden, schiffe als methoden drin hat oder so */
     /*je nachdem sind in meinem kopf folgende klassen: Grid für einen selber, Grid für Gegner
     PlayerScreen, Battleship als Hauptklasse, weiß nicht eventuell Status für das Game? also Anfang zum auswählen, mitte während spielen und ende für endscreen
     Coordinates und Schiffdaten dann noch..
@@ -57,7 +57,9 @@ public class framework
 
                 if (name.equals("Player1")) {
                     size = battleShip.getPlayer1Data().getFleet().size();
-                    if (anfangPlayer1) {
+                    if (anfangPlayer1) 
+                    {
+                    	//KLasse BattleShip.setStartposition
                         shipBeginning.setText(Integer.toString(size));
                         anfangPlayer1 = false;
                     }
@@ -69,7 +71,9 @@ public class framework
                 }
                 if (name.equals("Player2")) {
                     size = battleShip.getPlayer2Data().getFleet().size();
-                    if (anfangPlayer2) {
+                    if (anfangPlayer2) 
+                    {
+                    	//KLasse BattleShip.setStartposition
                         shipBeginning.setText(Integer.toString(size));
                         anfangPlayer2 = false;
                     }
