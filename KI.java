@@ -19,8 +19,8 @@ public class KI extends AbstractNutzer
 
 		if(SchwereGrad == 0)
 		{
-			SchussPos[0] = rn.nextInt() % SpielfeldImpl.Size;
-			SchussPos[1] = rn.nextInt() % SpielfeldImpl.Size;
+			SchussPos[0] = rn.nextInt() % SpielfeldImpl.SpielfedSize;
+			SchussPos[1] = rn.nextInt() % SpielfeldImpl.SpielfedSize;
 		}
 		else if(SchwereGrad == 1)
 		{

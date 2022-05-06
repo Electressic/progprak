@@ -2,7 +2,8 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class framework {
+public class framework 
+{
 
     int size;
     /*würde ne Klasse erschaffen die Battleship heißt die als hauptklasse agiert und alle daten, runden, schiffe als methoden drin hat oder so */
@@ -19,8 +20,9 @@ public class framework {
     JLabel gegnerSchiffversunken;
     JFrame frame = new JFrame("Battleship");
 
-    public framework(String name, int size, BattleShip battleShip) {
-        super(name);
+    public framework(String name, int size, BattleShip battleShip) 
+    {
+        //super(name);
         this.size = size;
         this.battleShip = battleShip;
 
@@ -117,7 +119,8 @@ public class framework {
     }
 
     public JButton getNextButton() {
-        for (Component child : this.getContentPane().getComponents()) {
+        for (Component child : this.getContentPane().getComponents()) 
+        {
             if (child instanceof JButton) {
                 return (JButton) child;
             }
@@ -126,7 +129,8 @@ public class framework {
         return null;
     }
 
-    public boolean getIsbeginningOfTheGameOfPlayer2() {
+    public boolean getIsbeginningOfTheGameOfPlayer2() 
+    {
         return isbeginningOfTheGameOfPlayer2;
     }
 }

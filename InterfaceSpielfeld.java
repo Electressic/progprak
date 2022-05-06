@@ -1,4 +1,3 @@
-interface InterfaceSpielfeld 
-{
+interface InterfaceSpielfeld {
 
 }
