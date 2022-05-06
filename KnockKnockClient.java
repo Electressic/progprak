@@ -12,7 +12,7 @@ public class KnockKnockClient {
         }
 
         String hostName = args[0];
-        int portNumber = 4444;
+        int portNumber = Integer.intParse(args[1]);
 
         try (
                 Socket KkSocket = new Socket(hostName, portNumber);
