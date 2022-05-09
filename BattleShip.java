@@ -78,17 +78,10 @@ public class BattleShip implements InterfaceSpielfeld
 	{
 		return "getPlayer2Data";
 	}
-	
-	public String getFleet()
-	{
-		System.out.println("Bekomme Flotte");
-		return "bekomme Flotte";
-	}
-	
-	
-	
+		
 	enum Richtung {Rechts, Unten, Links, Oben };	
-	class RichtungAbfrage
+	
+	static class RichtungAbfrage
 	{
 		public int getIntRechts()
 		{

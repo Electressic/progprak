@@ -56,6 +56,7 @@ public class framework
             public void actionPerformed(ActionEvent e) {
 
                 if (name.equals("Player1")) {
+                	//Welche Gruesse? Wie soll das angezeigt werden? Welche Daten sollen gesammelt werden?
                     size = battleShip.getPlayer1Data().getFleet().size();
                     if (anfangPlayer1) 
                     {
@@ -67,9 +68,11 @@ public class framework
                         battleShip.player1Turn();
                     }
                     hideScreen();
+                  //Welche Gruesse? Wie soll das angezeigt werden? Welche Daten sollen gesammelt werden?
                     battleShip.getPlayer2().showScreen();
                 }
                 if (name.equals("Player2")) {
+                	//getFleet ist in Spielfeldimpl
                     size = battleShip.getPlayer2Data().getFleet().size();
                     if (anfangPlayer2) 
                     {

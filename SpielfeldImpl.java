@@ -35,6 +35,16 @@ public class SpielfeldImpl extends AbstractSpielfeld
 		this(size);		
 	}
 	*/
+	
+	public String getFleet()
+	{
+		if(getSpielfeldSize() >= 20)
+		{
+			return "3 4 5 6";
+		}
+		return "2 3 4 5";
+	}
+	
 	public int getSpielfeldSize()
 	{
 		return this.SpielfedSize;
