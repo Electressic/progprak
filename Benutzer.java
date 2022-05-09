@@ -1,5 +1,5 @@
 
-public class Benutzer extends AbstractNutzer
+public class Benutzer implements InterfaceNutzer
 {
 	//Unterscheidung zwischen Server und Client
 	static int intServer;
@@ -21,5 +21,11 @@ public class Benutzer extends AbstractNutzer
 	public int getStatus()
 	{
 		return intServer;
+	}
+
+	@Override
+	public Zustand ZustandFeld(int x, int y) 
+	{
+		return null;
 	}
 }

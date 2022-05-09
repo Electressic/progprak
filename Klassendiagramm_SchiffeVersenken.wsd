@@ -28,17 +28,7 @@ header Page Header
 footer Page %page% of %lastpage%
 title ProgrammierPraktikum Schiffe versenken \nCopyright by Maximilian Stricker, Nandor Csizmadia, Fabian Saur
 
-abstract class AbstractSpielfeld
-{
-
-}
-
-interface InterfaceSpielfeld
-{
-
-}
-
-class SpielfeldImpl
+class Spielfeld
 {
 
 }
@@ -53,7 +43,7 @@ class Benutzer
 
 }
 
-interface InterfaceNutzer
+abstract abstractNutzer
 {
 
 }
@@ -63,15 +53,18 @@ class KI
 
 }
 
+abstractNutzer <-down- Benutzer
+abstractNutzer <-down- KI
 
-InterfaceSpielfeld <-down- AbstractSpielfeld
-AbstractSpielfeld <-down- SpielfeldImpl
+'InterfaceSpielfeld -right- BattleShip
+'BattleShip -right- InterfaceNutzer
+Spielfeld -right- abstractNutzer
 
-InterfaceNutzer <-down- Benutzer
-InterfaceNutzer <-down- KI
 
-InterfaceSpielfeld -right- BattleShip
-BattleShip -right- InterfaceNutzer
+BattleShip -up-> Spielfeld
+
+
+
 ' package PackageName {
     'Was gehört dazu?
 '}

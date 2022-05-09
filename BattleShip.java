@@ -1,20 +1,25 @@
 
-public class BattleShip implements InterfaceSpielfeld
+public class BattleShip extends Spielfeld
 {
 	protected int size;
-	protected int startpoosition;
+	protected int startpoositionX;
+	protected int startpoositionY;	
 	protected int Richtung;
 	protected int anzahlTreffer;
 	
-	public BattleShip(int groesse)
+	public BattleShip(int groesse, int intSize)
 	{
+		//Ist das So? Dies muss ueberprüft werden!!!!
+		super(intSize);
 		this.size = groesse;
 		this.anzahlTreffer = 0;
 	}
 	
-	public void setStartposition(int intStart)
+
+	public void setStartposition(int intStartX, int intStartY)
 	{
-		this.startpoosition = intStart;
+		this.startpoositionX = intStartX;
+		this.startpoositionY = intStartY;	
 	}
 	public int getroffen()
 	{
@@ -48,27 +53,33 @@ public class BattleShip implements InterfaceSpielfeld
 	{
 		return "getPLayer1Data";
 	}
-	
+	public int[] getStartPos()
+	{
+		int[] Pos = new int[2];
+		Pos[0] = this.startpoositionX;
+		Pos[1] = this.startpoositionY;
+		return Pos;
+	}
+	/*
 	public String getPlayer1()
 	{
 		return "Hier sollen Daten vom Zweiten Spieler geladen werden";
 	}
-	
+	*/
+	/*
 	public void player2turn()
 	{
 		System.out.println("Spieler 2 ist am Zug");
 	}
-	
+	*/
+	/*
 	public void showScreen()
 	{
 		System.out.println("Hallo, hier werden die Daten angezeigt");
 	}
-	
-	public void showScreen(String strText)
-	{
-		System.out.println(strText);
-	}
-	
+	*/
+
+	/*
 	public void player1Turn()
 	{
 		System.out.println("player1Turn");
@@ -78,7 +89,7 @@ public class BattleShip implements InterfaceSpielfeld
 	{
 		return "getPlayer2Data";
 	}
-		
+		*/
 	enum Richtung {Rechts, Unten, Links, Oben };	
 	
 	static class RichtungAbfrage
