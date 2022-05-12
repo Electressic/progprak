@@ -1,4 +1,4 @@
-
+package test;
 public class Benutzer implements InterfaceNutzer
 {
 	//Unterscheidung zwischen Server und Client
