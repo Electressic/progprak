@@ -1,14 +1,14 @@
-package test;
+
 import java.util.Random;
 
-public class KI extends Spielfeld
+public class KI extends AbstractNutzer
 {
 	protected int SchwereGrad;
 	Random rn;
 	protected int[] SchussPossAlt = new int[2];
+	
 	public KI(int Schweregrad, int Spielfeldgroesse)
 	{
-		super(Spielfeldgroesse);
 		SchwereGrad = Schweregrad;
 		rn = new Random();
 		SchussPossAlt = new int[2];

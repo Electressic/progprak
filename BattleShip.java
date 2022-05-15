@@ -1,6 +1,6 @@
-package test;
 
-public class BattleShip extends Spielfeld
+
+public class BattleShip extends AbstractSpielfeld
 {
 	protected int size;
 	protected int startpoositionX;
@@ -11,7 +11,6 @@ public class BattleShip extends Spielfeld
 	public BattleShip(int groesse, int intSize)
 	{
 		//Ist das So? Dies muss ueberprüft werden!!!!
-		super(intSize);
 		this.size = groesse;
 		this.anzahlTreffer = 0;
 	}
@@ -24,13 +23,22 @@ public class BattleShip extends Spielfeld
 	}
 	public int getroffen()
 	{
-		//Bei 1 ist das Schiff versenkt,
-		//Bei 0 noch nicht
-		if(++anzahlTreffer == size)
+		if(!istVersenkt())
 		{
-			return 1;
+			if(++anzahlTreffer == size)
+			{
+				return 1;
+			}		
 		}
 		return 0;
+	}
+	public boolean istVersenkt()
+	{
+		if(anzahlTreffer == size)
+		{
+			return true;
+		}
+		return false;
 	}
 	public int getGroesse()
 	{
@@ -115,17 +123,26 @@ public class BattleShip extends Spielfeld
 		{
 			return "Rechts";
 		}
+		
 		public String getRichtung1()
 		{
 			return "Unten";
 		}
+		
 		public String getRichtung2()
 		{
 			return "Links";
 		}
+		
 		public String getRichtung3()
 		{
 			return "Oben";
 		}
+	}
+
+	@Override
+	int getSpielfeldSize() 
+	{
+		return super.getSpielfeldSize(); 
 	}
 }

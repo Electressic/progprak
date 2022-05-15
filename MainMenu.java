@@ -1,4 +1,5 @@
-package test;
+
+
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -23,7 +24,8 @@ public class MainMenu extends Component{
     private JButton startButton;
     private JButton mpButton; //Buttons im Hauptmenü so far
 
-    public MainMenu() {
+    public MainMenu() 
+    {
         log = new JTextArea(5,20); // log für File explorer shit?
 
         // Creating the Window:

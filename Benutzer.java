@@ -1,11 +1,11 @@
-package test;
-public class Benutzer implements InterfaceNutzer
+
+public class Benutzer extends AbstractNutzer
 {
 	//Unterscheidung zwischen Server und Client
 	static int intServer;
 	static int intClient;
 	
-	Benutzer(int Server)
+	protected Benutzer(int Server)
 	{
 		intServer = Server;
 		if(intServer == 1)
@@ -21,11 +21,5 @@ public class Benutzer implements InterfaceNutzer
 	public int getStatus()
 	{
 		return intServer;
-	}
-
-	@Override
-	public Zustand ZustandFeld(int x, int y) 
-	{
-		return null;
 	}
 }

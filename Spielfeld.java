@@ -4,28 +4,26 @@ import java.io.PrintWriter;
 
 
 enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen};
-public class Spielfeld implements InterfaceSpielfeld
+public class Spielfeld extends AbstractNutzer
 {
-
-	Zustand[][] intSpielfeld;
-	int SpielfedSize;
-	BattleShip[] Ships = new BattleShip[0];
+	protected Zustand[][] zustandSpielfeld;
+	protected BattleShip[][] Ships = new BattleShip[0][0];
+	protected BattleShip[] vorhandeneSchiffe = new BattleShip[0];
+	protected int SpielfeldSize;
+	
 	protected Spielfeld(int size)
 	{
-		intSpielfeld = new Zustand[size][size];		
-		for(int i = 0; i < intSpielfeld[0].length; i++)
+		this.SpielfeldSize = size;
+		this.zustandSpielfeld = new Zustand[size][size];		
+		for(int i = 0; i < zustandSpielfeld[0].length; i++)
 		{
-			for(int y = 0; i < intSpielfeld[1].length; y++)
+			for(int y = 0; i < zustandSpielfeld[1].length; y++)
 			{
-				intSpielfeld[i][y] = Zustand.Wasser;
+				zustandSpielfeld[i][y] = Zustand.Wasser;
 			}
 		}
-		this.SpielfedSize = size;
 	}
-	int getSpielfeldSize()
-	{
-		return this.SpielfedSize;
-	}
+
 	public String getFleet()
 	{
 		if(getSpielfeldSize() >= 20)
@@ -34,65 +32,97 @@ public class Spielfeld implements InterfaceSpielfeld
 		}
 		return "2 3 4 5";
 	}
-	boolean setzeSchiff(int intStartPosX, int intStartPosY, int intRichtung, int intGroesse)
+	public boolean setzeSchiff(int intStartPosX, int intStartPosY, int intRichtung, int intGroesse)
 	{
-		if((intGroesse + intStartPosX) > this.SpielfedSize)
+		int Pruefwert = -1;
+		if(intRichtung == 0)
+		{
+			Pruefwert = intStartPosX + intGroesse;
+		}
+		else if (intRichtung == 1)
+		{
+			Pruefwert = intStartPosY - intGroesse;
+		}
+		else if (intRichtung == 2)
+		{
+			Pruefwert = intStartPosX - intGroesse;
+		}
+		else if (intRichtung == 3)
+		{
+			Pruefwert = intStartPosY + intGroesse;
+		}
+		if(Pruefwert > getSpielfeldSize()  || Pruefwert < 0)
 		{
 			return false;
 		}
 		
 		BattleShip ship = new BattleShip(intGroesse, getSpielfeldSize());
-		
-		BattleShip[] temp = new BattleShip[Ships.length + 1];
-		ship.setRichtung(intRichtung);
-		ship.setStartposition(intStartPosX, intStartPosY);
-		for (int i = 0; i < Ships.length; i++)
+		int PosX = intStartPosX;
+		int PosY = intStartPosY;
+		//(0, 0) liegt unten Links
+		for(int i = 0; i < intGroesse; i++)
 		{
-			temp[i] = Ships[i];
+			Ships[PosX][PosY] = ship;
+			if(intRichtung == 0)
+			{
+				PosX++;
+			}
+			else if(intRichtung == 1)
+			{
+				PosY--;
+			}
+			else if(intRichtung == 2)
+			{
+				PosX--;
+			}
+			else if(intRichtung == 3)
+			{
+				PosY++;
+			}
 		}
-		temp[temp.length-1] = ship;
-		Ships = temp;
+		BattleShip[] temp = new BattleShip[vorhandeneSchiffe.length + 1];
+		for (int i = 0; i < vorhandeneSchiffe.length; i++)
+		{
+			temp[i] = vorhandeneSchiffe[i];
+		}
+		temp[temp.length - 1] = ship;
+		vorhandeneSchiffe = temp;
 		return true;
 	}
-	Zustand getZustandPos(int x, int y)
+	public Zustand getZustandPos(int x, int y)
 	{
-		return intSpielfeld[x][y];
+		return zustandSpielfeld[x][y];
 	}
 	public String PruefeSchuss(int x, int y)
 	{
-		if(intSpielfeld[x][y] == Zustand.Wasser)
+		if(zustandSpielfeld[x][y] == Zustand.Wasser)
 		{
 			return "answer 0";
 		}
-		else if(intSpielfeld[x][y] == Zustand.Schiff_Normal)
+		else if(zustandSpielfeld[x][y] == Zustand.Schiff_Normal)
 		{
 			if(WelchesSchiff(x, y).getroffen() == 1) 
 			{
 				return "answer 2";
 			}
-			this.intSpielfeld[x][y] = Zustand.Schiff_Getroffen;
+			this.zustandSpielfeld[x][y] = Zustand.Schiff_Getroffen;
 			return "answer 1";			
 		}
-		else if(intSpielfeld[x][y] == Zustand.Schiff_Getroffen)
+		else if(zustandSpielfeld[x][y] == Zustand.Schiff_Getroffen)
 		{
 			return "answer 0";
 		}
 		return null;
 	}
-	BattleShip WelchesSchiff(int x, int y)
+	public BattleShip WelchesSchiff(int x, int y)
 	{
-		int[] Pos;
-		for(int i = 0; i <Ships.length; i++)
+		if(getZustandPos(x, y) == Zustand.Wasser)
 		{
-			Pos = Ships[i].getStartPos();
-			if(Pos[0] == x && Pos[1] == y)
-			{
-				return Ships[i];
-			}
-		}
-		return null;
+			return null;
+		}	
+		return Ships[x][y];
 	}
-	void speichern()
+	public void speichern()
 	{
 		System.out.println("speichern....");
 		
@@ -102,6 +132,8 @@ public class Spielfeld implements InterfaceSpielfeld
         {
             pWriter = new PrintWriter(new FileWriter(s));
             pWriter.println("Hallo Welt!");
+            pWriter.flush();
+            pWriter.close();
         } 
         catch (IOException ioe) 
         {
@@ -109,11 +141,7 @@ public class Spielfeld implements InterfaceSpielfeld
         } 
         finally 
         {
-            if (pWriter != null) 
-            {
-                pWriter.flush();
-                pWriter.close();
-            }
+        	
         }
 		System.out.println("Spiel gespeichert!");
 	}
@@ -140,4 +168,26 @@ public class Spielfeld implements InterfaceSpielfeld
         }    
         return false;
     }
+    public boolean habeVerloren()
+    {
+    	int counter = 0;
+    	for(int i = 0; i < vorhandeneSchiffe.length; i++)
+    	{
+    		if(vorhandeneSchiffe[i].istVersenkt())
+    		{
+    			counter++;
+    		}
+    	}
+    	if(counter == vorhandeneSchiffe.length - 1)
+    	{
+    		return true;
+    	}
+    	return false;
+    }
+
+	@Override
+	protected int getSpielfeldSize() 
+	{
+		return this.SpielfeldSize;
+	}
 }
