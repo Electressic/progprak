@@ -1,12 +1,12 @@
+package progprak;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 
 enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen};
-public class Spielfeld extends AbstractNutzer
+public class Spielfeld
 {
-	protected Zustand[][] zustandSpielfeldGegner;
 	protected Zustand[][] zustandSpielfeld;
 	protected BattleShip[][] Ships = new BattleShip[0][0];
 	protected BattleShip[] vorhandeneSchiffe = new BattleShip[0];
@@ -16,13 +16,11 @@ public class Spielfeld extends AbstractNutzer
 	{
 		this.SpielfeldSize = size;
 		this.zustandSpielfeld = new Zustand[size][size];
-		this.zustandSpielfeldGegner = new Zustand[size][size];
 		for(int i = 0; i < zustandSpielfeld[0].length; i++)
 		{
 			for(int y = 0; i < zustandSpielfeld[1].length; y++)
 			{
 				zustandSpielfeld[i][y] = Zustand.Wasser;
-				zustandSpielfeldGegner[i][y] = Zustand.Wasser;
 			}
 		}
 	}
@@ -125,29 +123,7 @@ public class Spielfeld extends AbstractNutzer
 		}	
 		return Ships[x][y];
 	}
-	public void speichern()
-	{
-		System.out.println("speichern....");
-		
-        PrintWriter pWriter = null;
-        String s = "/Users/Admin/Downloads/Neues Textdokument.txt";
-        try 
-        {
-            pWriter = new PrintWriter(new FileWriter(s));
-            pWriter.println("Hallo Welt!");
-            pWriter.flush();
-            pWriter.close();
-        } 
-        catch (IOException ioe) 
-        {
-            ioe.printStackTrace();
-        } 
-        finally 
-        {
-        	
-        }
-		System.out.println("Spiel gespeichert!");
-	}
+
     public boolean SchiffNormal(Zustand zustand) 
     {        
         if(zustand == Zustand.Schiff_Normal) {
@@ -187,10 +163,51 @@ public class Spielfeld extends AbstractNutzer
     	}
     	return false;
     }
-
-	@Override
-	protected int getSpielfeldSize() 
+	public int getSpielfeldSize() 
 	{
 		return this.SpielfeldSize;
+	}
+	public void speichern()
+	{
+		System.out.println("speichern....");
+		
+        PrintWriter pWriter = null;
+        String s = "/Users/Admin/Downloads/Neues Textdokument.txt";
+        try 
+        {
+            pWriter = new PrintWriter(new FileWriter(s));
+            for(int i = 0; i < this.SpielfeldSize; i++)
+            {
+            	for(int y = 0; y < this.SpielfeldSize; y++)
+            	{
+            		if(zustandSpielfeld[i][y] == Zustand.Wasser)
+            		{
+            			pWriter.println("W");
+            		}
+            		else if(zustandSpielfeld[i][y] == Zustand.Schiff_Normal)
+            		{
+            			pWriter.println("SN");
+            		}
+            		else if (zustandSpielfeld[i][y] == Zustand.Schiff_Getroffen)
+            		{
+            			pWriter.println("SG");
+            		}
+            		pWriter.println(" ");
+            	}
+            	pWriter.println("\n");
+            }
+            
+            pWriter.flush();
+            pWriter.close();
+        } 
+        catch (IOException ioe) 
+        {
+            ioe.printStackTrace();
+        } 
+        finally 
+        {
+        	
+        }
+		System.out.println("Spiel gespeichert!");
 	}
 }

@@ -1,16 +1,16 @@
-
+package progprak;
 import java.util.Random;
 
-import AbstractNutzer.Zustand;
 
-public class KI extends AbstractNutzer
+public class KI
 {
 	protected int SchwereGrad;
 	Random rn;
 	protected int[] SchussPossAlt = new int[2];
 	protected Zustand[][] zustandSpielfeldGegner;
 	enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen, Nichts};
-	private static int intSpielfeldSize;
+	private int intSpielfeldSize;
+	
 	public KI(int Schweregrad, int Spielfeldgroesse)
 	{
 		SchwereGrad = Schweregrad;
@@ -26,7 +26,7 @@ public class KI extends AbstractNutzer
 		this.intSpielfeldSize = Spielfeldgroesse;
 	}
 	
-	public String Schiesse()
+	public String shotPosition()
 	{
 		if(SchwereGrad == 0)
 		{
@@ -36,10 +36,6 @@ public class KI extends AbstractNutzer
 		else if(SchwereGrad == 1)
 		{
 			//Abfrage im Grid, welches Nachbarfeld schon beschossen wurde 
-		}
-		else if(SchwereGrad == 2)
-		{
-			//Abfrage, wo ein Schiff liegt und wenn eins versenkt wurde bewusst daneben schiessen
 			int x = rn.nextInt() % intSpielfeldSize;
 			int y = rn.nextInt() % intSpielfeldSize;
 			
@@ -50,7 +46,12 @@ public class KI extends AbstractNutzer
 				y = rn.nextInt() % intSpielfeldSize;
 			}
 			SchussPossAlt[0] = x;
-			SchussPossAlt[1] = y;		
+			SchussPossAlt[1] = y;	
+		}
+		else if(SchwereGrad == 2)
+		{
+			//Abfrage, wo ein Schiff liegt und wenn eins versenkt wurde bewusst daneben schiessen
+			
 		}
 		return "shot " + SchussPossAlt[0] + " " + SchussPossAlt[1]; 
 	}

@@ -1,13 +1,15 @@
-
-
-public class BattleShip extends AbstractSpielfeld
+package progprak;
+public class BattleShip
 {
 	protected int size;
 	protected int startpoositionX;
 	protected int startpoositionY;	
 	protected int Richtung;
 	protected int anzahlTreffer;
-	
+	protected int SpielfeldSize;
+	BattleShip[] vorhandeSchiffe = new BattleShip[0];
+	enum Richtung {Rechts, Unten, Links, Oben };
+	Richtung r_richtung;
 	public BattleShip(int groesse, int intSize)
 	{
 		//Ist das So? Dies muss ueberprüft werden!!!!
@@ -15,7 +17,6 @@ public class BattleShip extends AbstractSpielfeld
 		this.anzahlTreffer = 0;
 	}
 	
-
 	public void setStartposition(int intStartX, int intStartY)
 	{
 		this.startpoositionX = intStartX;
@@ -48,6 +49,10 @@ public class BattleShip extends AbstractSpielfeld
 	{
 		this.Richtung = intRichtung;
 	}
+	public void setRichtung(Richtung r_richtung)
+	{
+		this.r_richtung = r_richtung;
+	}
 	public int getRichtung()
 	{
 		return this.Richtung;
@@ -70,50 +75,17 @@ public class BattleShip extends AbstractSpielfeld
 		return Pos;
 	}
 
-	
-	enum Richtung {Rechts, Unten, Links, Oben };		
-	static class RichtungAbfrage
+	public String[] getShipData()
 	{
-		public int getIntRechts()
+		String[] ReturnString = 
 		{
-			return 0;
-		}
-		public int getIntUnten()
-		{
-			return 1;
-		}
-		public int getIntLinks()
-		{
-			return 2;
-		}
-		public int getIntOben()
-		{
-			return 3;
-		}
-		public String getRichtung0()
-		{
-			return "Rechts";
-		}
-		
-		public String getRichtung1()
-		{
-			return "Unten";
-		}
-		
-		public String getRichtung2()
-		{
-			return "Links";
-		}
-		
-		public String getRichtung3()
-		{
-			return "Oben";
-		}
-	}
-
-	@Override
-	int getSpielfeldSize() 
-	{
-		return super.getSpielfeldSize(); 
+				"" + getGroesse(),
+				"" + this.startpoositionX, 
+				"" + this.startpoositionY,
+				"" + this.anzahlTreffer, 
+				"" + this.istVersenkt(),
+				"" + this.getRichtung()
+		};
+		return ReturnString;
 	}
 }

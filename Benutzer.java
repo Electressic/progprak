@@ -1,5 +1,6 @@
+package progprak;
 
-public class Benutzer extends AbstractNutzer
+public class Benutzer
 {
 	//Unterscheidung zwischen Server und Client
 	static int intServer;
