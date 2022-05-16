@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen};
 public class Spielfeld extends AbstractNutzer
 {
+	protected Zustand[][] zustandSpielfeldGegner;
 	protected Zustand[][] zustandSpielfeld;
 	protected BattleShip[][] Ships = new BattleShip[0][0];
 	protected BattleShip[] vorhandeneSchiffe = new BattleShip[0];
@@ -14,12 +15,14 @@ public class Spielfeld extends AbstractNutzer
 	protected Spielfeld(int size)
 	{
 		this.SpielfeldSize = size;
-		this.zustandSpielfeld = new Zustand[size][size];		
+		this.zustandSpielfeld = new Zustand[size][size];
+		this.zustandSpielfeldGegner = new Zustand[size][size];
 		for(int i = 0; i < zustandSpielfeld[0].length; i++)
 		{
 			for(int y = 0; i < zustandSpielfeld[1].length; y++)
 			{
 				zustandSpielfeld[i][y] = Zustand.Wasser;
+				zustandSpielfeldGegner[i][y] = Zustand.Wasser;
 			}
 		}
 	}
@@ -28,9 +31,9 @@ public class Spielfeld extends AbstractNutzer
 	{
 		if(getSpielfeldSize() >= 20)
 		{
-			return "3 4 5 6";
+			return "ships 3 4 5 6";
 		}
-		return "2 3 4 5";
+		return "ships 2 3 4 5";
 	}
 	public boolean setzeSchiff(int intStartPosX, int intStartPosY, int intRichtung, int intGroesse)
 	{

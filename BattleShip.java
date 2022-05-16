@@ -69,38 +69,9 @@ public class BattleShip extends AbstractSpielfeld
 		Pos[1] = this.startpoositionY;
 		return Pos;
 	}
-	/*
-	public String getPlayer1()
-	{
-		return "Hier sollen Daten vom Zweiten Spieler geladen werden";
-	}
-	*/
-	/*
-	public void player2turn()
-	{
-		System.out.println("Spieler 2 ist am Zug");
-	}
-	*/
-	/*
-	public void showScreen()
-	{
-		System.out.println("Hallo, hier werden die Daten angezeigt");
-	}
-	*/
 
-	/*
-	public void player1Turn()
-	{
-		System.out.println("player1Turn");
-	}
 	
-	public String getPlayer2Data()
-	{
-		return "getPlayer2Data";
-	}
-		*/
-	enum Richtung {Rechts, Unten, Links, Oben };	
-	
+	enum Richtung {Rechts, Unten, Links, Oben };		
 	static class RichtungAbfrage
 	{
 		public int getIntRechts()
