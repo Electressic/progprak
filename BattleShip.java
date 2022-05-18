@@ -1,7 +1,17 @@
 package progprak;
 public class BattleShip
 {
-	protected int size;
+	protected static int battleshipSize;
+	protected static int battleshipSize2 = 2;
+	protected static int battleshipSize3 = 3;
+	protected static int battleshipSize4 = 4;
+	protected static int battleshipSize5 = 5;
+	protected static int battleshipSize6 = 6;
+	protected static int battleshipCount2;
+	protected static int battleshipCount3;
+	protected static int battleshipCount4;
+	protected static int battleshipCount5;
+	protected static int battleshipCount6;
 	protected int startpoositionX;
 	protected int startpoositionY;	
 	protected int Richtung;
@@ -14,7 +24,7 @@ public class BattleShip
 	public BattleShip(int groesse, int intSize)
 	{
 		//Ist das So? Dies muss ueberprüft werden!!!!
-		this.size = groesse;
+		this.battleshipSize = groesse;
 		this.anzahlTreffer = 0;
 	}
 	
@@ -27,7 +37,7 @@ public class BattleShip
 	{
 		if(!istVersenkt())
 		{
-			if(++anzahlTreffer == size)
+			if(++anzahlTreffer == battleshipSize)
 			{
 				return 1;
 			}		
@@ -36,7 +46,7 @@ public class BattleShip
 	}
 	public boolean istVersenkt()
 	{
-		if(anzahlTreffer == size)
+		if(anzahlTreffer == battleshipSize)
 		{
 			return true;
 		}
@@ -44,7 +54,7 @@ public class BattleShip
 	}
 	public int getGroesse()
 	{
-		return this.size;
+		return this.battleshipSize;
 	}
 	public void setRichtung(int intRichtung)
 	{

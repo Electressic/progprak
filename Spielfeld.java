@@ -9,23 +9,11 @@ import java.util.Scanner;
 enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen};
 public class Spielfeld
 {
+
 	protected Zustand[][] zustandSpielfeld;
 	protected BattleShip[][] Ships = new BattleShip[0][0];
 	protected BattleShip[] vorhandeneSchiffe = new BattleShip[0];
-	protected int SpielfeldSize;
-	
-	protected Spielfeld(int size)
-	{
-		this.SpielfeldSize = size;
-		this.zustandSpielfeld = new Zustand[size][size];
-		for(int i = 0; i < zustandSpielfeld[0].length; i++)
-		{
-			for(int y = 0; i < zustandSpielfeld[1].length; y++)
-			{
-				zustandSpielfeld[i][y] = Zustand.Wasser;
-			}
-		}
-	}
+	protected static int SpielfeldSize = 15;
 
 	public String getFleet()
 	{
