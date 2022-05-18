@@ -7,9 +7,10 @@ public class BattleShip
 	protected int Richtung;
 	protected int anzahlTreffer;
 	protected int SpielfeldSize;
+	Richtung r_richtung;
 	BattleShip[] vorhandeSchiffe = new BattleShip[0];
 	enum Richtung {Rechts, Unten, Links, Oben };
-	Richtung r_richtung;
+
 	public BattleShip(int groesse, int intSize)
 	{
 		//Ist das So? Dies muss ueberprüft werden!!!!
@@ -53,16 +54,19 @@ public class BattleShip
 	{
 		this.r_richtung = r_richtung;
 	}
-	public int getRichtung()
+	public void setAnzahlTreffer(int Anzahl)
 	{
-		return this.Richtung;
+		this.anzahlTreffer = Anzahl;
 	}
 	
 	public String getPlayer2()
 	{
 		return "Hier sollen Daten vom Zweiten Spieler geladen werden";
 	}
-	
+	public int getRichtung()
+	{
+		return this.Richtung;
+	}
 	public String getPlayer1Data()
 	{
 		return "getPLayer1Data";
@@ -75,7 +79,7 @@ public class BattleShip
 		return Pos;
 	}
 
-	public String[] getShipData()
+	public String[] getShipDataAsArray()
 	{
 		String[] ReturnString = 
 		{
@@ -83,9 +87,20 @@ public class BattleShip
 				"" + this.startpoositionX, 
 				"" + this.startpoositionY,
 				"" + this.anzahlTreffer, 
-				"" + this.istVersenkt(),
 				"" + this.getRichtung()
 		};
+		return ReturnString;
+	}
+	public String getShipDataAsString()
+	{
+		String ReturnString = 
+					getGroesse() + " "  + 
+					this.startpoositionX + " " + 
+					this.startpoositionY  + " " + 
+					this.anzahlTreffer + " " + 
+					this.istVersenkt() +	" " + 
+					this.getRichtung() + " ";
+		
 		return ReturnString;
 	}
 }

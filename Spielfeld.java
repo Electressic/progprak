@@ -1,7 +1,9 @@
 package progprak;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 
 enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen};
@@ -167,36 +169,53 @@ public class Spielfeld
 	{
 		return this.SpielfeldSize;
 	}
-	public void speichern()
+	public void speichern() throws Exception
 	{
 		System.out.println("speichern....");
 		
         PrintWriter pWriter = null;
         String s = "/Users/Admin/Downloads/Neues Textdokument.txt";
+        File file1 = new File(s);
+        if(!file1.isFile() && !file1.isDirectory())
+        {
+            try 
+            {
+            	file1.createNewFile();
+            }
+        	catch(Exception e)
+            {
+            	throw new Exception(e.getMessage());
+            }
+        }
         try 
         {
             pWriter = new PrintWriter(new FileWriter(s));
+            pWriter.println();
             for(int i = 0; i < this.SpielfeldSize; i++)
             {
             	for(int y = 0; y < this.SpielfeldSize; y++)
             	{
             		if(zustandSpielfeld[i][y] == Zustand.Wasser)
             		{
-            			pWriter.println("W");
+            			pWriter.print("W");
             		}
             		else if(zustandSpielfeld[i][y] == Zustand.Schiff_Normal)
             		{
-            			pWriter.println("SN");
+            			pWriter.print("SN");
             		}
             		else if (zustandSpielfeld[i][y] == Zustand.Schiff_Getroffen)
             		{
-            			pWriter.println("SG");
+            			pWriter.print("SG");
             		}
-            		pWriter.println(" ");
+            		pWriter.print(" ");
             	}
-            	pWriter.println("\n");
+            	pWriter.print("\n");
             }
-            
+            for(int i = 0; i < vorhandeneSchiffe.length; i++)
+            {
+            	pWriter.print(vorhandeneSchiffe[i].getShipDataAsString());
+            	pWriter.print("\n");
+            }
             pWriter.flush();
             pWriter.close();
         } 
@@ -209,5 +228,69 @@ public class Spielfeld
         	
         }
 		System.out.println("Spiel gespeichert!");
+	}
+	void SpielLaden(String strFile)
+	{
+        File doc = new File("C:\\Users\\Admin\\Downloads\\TestDokument.txt");
+        
+        try 
+        {
+        	Scanner obj = new Scanner(doc);	
+    		int intGroesse;
+    		int StartPosX;
+    		int StartPosY;
+    		int AnzahlTreffer;
+    		int rRichtung;
+        	int SizeSpielfeld = Integer.parseInt(obj.nextLine());
+        	String inhalt;
+        	String[] ArrInhalt;
+        	
+        	for(int i = 0; i < SizeSpielfeld; i++)
+        	{
+        		inhalt = obj.nextLine();
+        		ArrInhalt = inhalt.split(" ");
+        		for(int y = 0; y < SizeSpielfeld; y++)
+        		{
+        			if(ArrInhalt[y].compareTo("W") == 0)
+        			{
+        				zustandSpielfeld[i][y] = Zustand.Wasser;
+        			}
+        			else if (ArrInhalt[y].compareTo("SN") == 0)
+        			{
+        				zustandSpielfeld[i][y] = Zustand.Schiff_Normal;
+        			}
+        			else if (ArrInhalt[y].compareTo("SG") == 0)
+        			{
+        				zustandSpielfeld[i][y] = Zustand.Schiff_Getroffen;
+        			}
+        		}
+
+        		
+        		//Hier die Schiffe noch initialisieren
+        		while(obj.hasNextLine())
+        		{
+        			inhalt = obj.nextLine();
+        			ArrInhalt = inhalt.split(" ");
+            		intGroesse = Integer.parseInt(ArrInhalt[0]);
+            		StartPosX = Integer.parseInt(ArrInhalt[1]);
+            		StartPosY = Integer.parseInt(ArrInhalt[2]);
+            		AnzahlTreffer = Integer.parseInt(ArrInhalt[3]);
+            		rRichtung = Integer.parseInt(ArrInhalt[4]);	
+        			
+        			
+        			BattleShip newShip = new BattleShip(intGroesse, SizeSpielfeld);
+        			
+        			setzeSchiff(StartPosX, StartPosY, rRichtung, intGroesse);
+        			
+        			newShip.setAnzahlTreffer(AnzahlTreffer);
+        			newShip.
+        		}
+        	}                
+        	obj.close();
+        }
+        catch (Exception e)
+        {
+        	System.out.println(e.getMessage());
+        } 
 	}
 }
