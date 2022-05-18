@@ -13,9 +13,6 @@ import java.io.File;
 
 public class MainMenu extends Component{
     private JFrame frame = new JFrame("Game");
-    static final int gridmin = 5;
-    static final int gridmax = 30;
-    static final int gridinit = 15; // variablen für slider
     final JFileChooser fc = new JFileChooser();
     int returnVal = fc.showOpenDialog(fc);
     JTextArea log;
