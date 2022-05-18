@@ -283,7 +283,7 @@ public class Spielfeld
         			setzeSchiff(StartPosX, StartPosY, rRichtung, intGroesse);
         			
         			newShip.setAnzahlTreffer(AnzahlTreffer);
-        			newShip.
+        			newShip.setRichtung(rRichtung);
         		}
         	}                
         	obj.close();
