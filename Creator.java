@@ -15,6 +15,14 @@ public class Creator {
         create.setVisible(true);
     }
     public boolean canShipsFitOnBoard() {
-        int totalShipSize = (BattleShip.)
+        int totalShipSize = (BattleShip.battleshipCount * BattleShip.battleshipSize);
+        if (totalShipSize > Spielfeld.SpielfeldSize *Spielfeld.SpielfeldSize) {
+            return false;
+        }
+        //brauch ich das?
+        if (BattleShip.battleshipSize > Spielfeld.SpielfeldSize){
+            return false;
+        }
+        return true;
     }
 }
