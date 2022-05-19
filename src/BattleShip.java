@@ -1,4 +1,4 @@
-package progprak;
+package progprak.src;
 public class BattleShip
 {
 	protected static int battleshipSize;
