@@ -13,6 +13,51 @@ public class Spielfeld
 	protected BattleShip[][] Ships = new BattleShip[0][0];
 	protected BattleShip[] vorhandeneSchiffe = new BattleShip[0];
 	public static int SpielfeldSize = 15;
+	//--------------- some Values für Field---------------------------------------------------
+	int row;
+	int column;
+	String gameState;
+	private boolean mark = false;
+	private boolean isShot = false;
+	//--------------- Initialisierung vom Spielfeld---------------------------------------------------
+	public Spielfeld(int row, int column, String gameState){
+		this.row = row;
+		this.column = column;
+		this. gameState = gameState;
+	}
+	//--------------- getter und setter---------------------------------------------------
+	public int getRow() {
+		return row;
+	}
+	public int getColumn() {
+		return column;
+	}
+	public boolean isMark(){
+		return mark;
+	}
+	public void setMark(boolean mark) {
+		this.mark = mark;
+	}
+	public boolean isShot(){
+		return isShot;
+	}
+	public void setShot(boolean shot) {
+		isShot = shot;
+	}
+	//--------------- toString Methode---------------------------------------------------
+	@Override
+	public String toString() {
+		return "Field{" +
+				"row=" + row +
+				", column=" + column +
+				", gameState='" + gameState + '\'' +
+				", mark=" + mark +
+				", isShot=" + isShot +
+				'}';
+	}
+
+
+	//--------------- code von Fabian---------------------------------------------------
 
 	public String getFleet()
 	{

@@ -1,6 +1,7 @@
 package progprak.src.Logik;
 public class BattleShip
 {
+	//--------------- alle Schiffgrößen und Schiffzähler---------------------------------------------------
 	public static int battleshipSize;
 	public static int battleshipSize2 = 2;
 	public static int battleshipSize3 = 3;
@@ -12,6 +13,8 @@ public class BattleShip
 	public static int battleshipCount4;
 	public static int battleshipCount5;
 	public static int battleshipCount6;
+	//--------------- code von Fabian---------------------------------------------------
+
 	protected int startpoositionX;
 	protected int startpoositionY;	
 	protected int Richtung;

@@ -70,7 +70,7 @@ public class Creator {
             @Override
             public void actionPerformed(ActionEvent e) {
                 create.dispose();
-                BattleGrid Battlegrid = new BattleGrid();
+                ShipPlacement Battlegrid = new ShipPlacement();
             }
         });
 
