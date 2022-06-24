@@ -6,6 +6,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class Creator {
     JFrame create = new JFrame();
@@ -28,6 +30,7 @@ public class Creator {
     public Creator(){
         create.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         create.setMinimumSize(new Dimension(600 ,400));
+        create.setLocationRelativeTo(null);
         create.setVisible(true);
 
         JPanel creator = new JPanel(new GridBagLayout());
@@ -48,7 +51,7 @@ public class Creator {
                 (BattleShip.battleshipCount5 * BattleShip.battleshipSize5) +
                 (BattleShip.battleshipCount6 * BattleShip.battleshipSize6);
         int groesse = Spielfeld.SpielfeldSize * Spielfeld.SpielfeldSize;
-        if (totalShipSize > ((30.0/100.0) * groesse)) {
+        if (totalShipSize > (0.3 * groesse)) {
             return false;
         }
         return true;
@@ -68,7 +71,7 @@ public class Creator {
             }
         });
 
-        errorMessage = new JLabel("Error: Grid is too small");
+        errorMessage = new JLabel("Error: Grid zu klein");
         clayout.gridx = 2;
         clayout.gridwidth = 3;
         clayout.gridy = 5;
@@ -94,6 +97,23 @@ public class Creator {
                 boolean shipsFit = shipsunder30();
                 startGame.setEnabled(shipsFit);
                 errorMessage.setVisible(!shipsFit);
+                // Logik für Schiffgröße 2 und 6. Disabled und Enabled sie.
+                if (gridSizeSlider.getValue() >= 20) {
+                    size2.setEnabled(false);
+                    size2.setSelected(false);
+                    s2.setEnabled(false);
+                    s2.setValue(0);
+                    size6.setEnabled(true);
+                    s6.setEnabled(true);
+                }
+                else {
+                    size2.setEnabled(true);
+                    s2.setEnabled(true);
+                    size6.setEnabled(false);
+                    size6.setSelected(false);
+                    s6.setEnabled(false);
+                    s6.setValue(0);
+                }
             }
         });
         create.add(gridSizeSlider, clayout);
@@ -220,4 +240,5 @@ public class Creator {
 
         create.setVisible(true);
     }
+
 }

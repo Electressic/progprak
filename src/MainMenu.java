@@ -23,7 +23,9 @@ public class MainMenu extends Component{
         log = new JTextArea(5,20); // log für File explorer shit?
         // Creating the Window:
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
         frame.setMinimumSize(new Dimension(300 ,200));
+        frame.setVisible(true);
 
         // Creating Layout mit den Weights und Insets für abstand
         JPanel menu = new JPanel(new GridBagLayout());

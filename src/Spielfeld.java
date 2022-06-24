@@ -9,7 +9,6 @@ import java.util.Scanner;
 enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen};
 public class Spielfeld
 {
-
 	protected Zustand[][] zustandSpielfeld;
 	protected BattleShip[][] Ships = new BattleShip[0][0];
 	protected BattleShip[] vorhandeneSchiffe = new BattleShip[0];

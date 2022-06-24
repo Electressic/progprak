@@ -9,14 +9,17 @@ import java.awt.image.BufferedImage;
 public class BattleGrid extends Container {
     JFrame grid = new JFrame();
     int maxgroesse = Spielfeld.SpielfeldSize;
-    JPanel[][] cells = new JPanel[maxgroesse][maxgroesse];
+    public JPanel cells[][];
     Container g = grid.getContentPane();
     JPanel ships = new JPanel();
+    JPanel buttonLayout;
 
     public BattleGrid() {
         grid.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        grid.setMinimumSize(new Dimension(600 ,400));
+        grid.setMinimumSize(new Dimension(600 ,600));
         grid.setVisible(true);
+        buttonLayout = new JPanel();
+        buttonLayout.setLayout(new GridLayout(maxgroesse, maxgroesse));
 
         g.setLayout(new GridLayout(maxgroesse,maxgroesse));
 
@@ -25,13 +28,13 @@ public class BattleGrid extends Container {
     }
 
     private void fillBoard() {
-        for(int i = 0; i < maxgroesse; i++) {
-            for(int j = 0; j < maxgroesse; j++) {
-                cells[i][j] = new JPanel();
-                cells[i][j].setOpaque(true);
-                cells[i][j].setBackground(Color.black);
-                cells[i][j].setBorder(BorderFactory.createLineBorder(Color.blue,2));
-                g.add(cells[i][j], BorderLayout.WEST);
+        for(int row = 0; row < maxgroesse; row++) {
+            for(int column = 0; column < maxgroesse; column++) {
+                cells[row][column] = new JPanel();
+                cells[row][column].setOpaque(true);
+                cells[row][column].setBackground(Color.black);
+                cells[row][column].setBorder(BorderFactory.createLineBorder(Color.GRAY,2));
+                g.add(cells[row][column], BorderLayout.WEST);
             }
         }
     }
