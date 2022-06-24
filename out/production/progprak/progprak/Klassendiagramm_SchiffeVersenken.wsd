@@ -1,0 +1,135 @@
+@startuml name "Wichtige Funktionen"
+'alt + D um das UML-Diagramm anzuzeigen
+'STRG + S ==> Speichern
+
+' abstract
+' abstract class
+' circle
+' interface
+' diamond für Raute
+' entity
+
+' class ClassName <Dies soll eine Notiz adrstellen>
+' class time <<(D,#FF7700)datatype>>
+' enum Buchungszustand 
+' class time <<(D,#FF7700)>>
+
+' /AnzahlWartender ist ein abgeleitetes Attribut
+' --Durchgestrichener Text--
+
+' +
+' -
+' # protected
+' ~ package privat
+' {static} für statische Attribute oder Operationen
+' Methode {abstract} : string
+
+header Page Header
+footer Page %page% of %lastpage%
+title ProgrammierPraktikum Schiffe versenken \nCopyright by Maximilian Stricker, Nandor Csizmadia, Fabian Saur
+
+class Spielfeld
+{
+    # Zustand[][] intSpielfeld;
+	# int SpielfedSize;
+	# BattleShip[] Ships = new BattleShip[0];
+    - enum Zustand
+
+	+ getSpielfeldSize() : int
+	+ getFleet() : String
+	+ setzeSchiff(int intStartPosX, int intStartPosY, int intRichtung, int intGroesse) : boolean
+	+ getZustandPos(int x, int y) : Zustand
+	+ PruefeSchuss(int x, int y) : String
+	+ WelchesSchiff(int x, int y) : BattleShip
+	+ speichern() : void
+    + SchiffNormal(Zustand zustand) : boolean
+    + SchiffGetroffen(Zustand zustand) : boolean
+    + Wasser(Zustand zustand) : boolean
+}
+
+class BattleShip
+{
+    # size : int
+	# startpoositionX : int
+	# startpoositionY : int
+	# Richtung : int
+	# anzahlTreffer : int
+	
+	+ BattleShip(int, int)
+	+ setStartposition(int, int)
+	+ getroffen() : int
+	+ getGroesse() : int
+	+ setRichtung(int) : void
+	+ getRichtung() : int
+	+ getPlayer2() : String
+	+ getPlayer1Data() : String
+	+ getStartPos() : int[]
+}
+
+
+Interface InterfaceNutzer
+{
+	enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen};
+	Zustand ZustandFeld(int x, int y)
+}
+
+class Benutzer
+{
+	{static} intServer : int
+	{static} intClient : int
+	
+	+ getStatus() : int
+}
+
+class KI 
+{
+
+}
+
+enum Zustand <<enumeration>>
+{
+    Wasser, 
+    Schiff_Normal, 
+    Schiff_Getroffen
+}
+
+InterfaceNutzer <-down- Benutzer
+InterfaceNutzer <-down- KI
+
+'InterfaceSpielfeld -right- BattleShip
+'BattleShip -right- InterfaceNutzer
+Spielfeld -right- InterfaceNutzer : implements >
+
+
+BattleShip -up-> Spielfeld
+
+
+
+' package PackageName {
+    'Was gehört dazu?
+'}
+
+
+' ggf.  left right up down einfügen
+' --|> Extension
+' --* Composition
+' --o Aggregation
+
+' -->
+' ..>
+' ..|>
+' *-->
+' #--
+' x--
+' }--
+' +--
+' ^--
+
+
+' Beziehung1 "Mulitiplizität"    --  "Mulitiplizität" Beziehung1 : BeschreibungPfeil < | >
+' WarteListe "0..*" o-- "0..*\n{ordered}\n+Wartender" Kunde 
+
+' <> diamond
+' Klasse1 -- diamond
+
+@enduml
