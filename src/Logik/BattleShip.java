@@ -1,17 +1,20 @@
-package progprak;
+package progprak.src.Logik;
 public class BattleShip
 {
-	protected static int battleshipSize;
-	protected static int battleshipSize2 = 2;
-	protected static int battleshipSize3 = 3;
-	protected static int battleshipSize4 = 4;
-	protected static int battleshipSize5 = 5;
-	protected static int battleshipSize6 = 6;
-	protected static int battleshipCount2;
-	protected static int battleshipCount3;
-	protected static int battleshipCount4;
-	protected static int battleshipCount5;
-	protected static int battleshipCount6;
+	//--------------- alle Schiffgrößen und Schiffzähler---------------------------------------------------
+	public static int battleshipSize;
+	public static int battleshipSize2 = 2;
+	public static int battleshipSize3 = 3;
+	public static int battleshipSize4 = 4;
+	public static int battleshipSize5 = 5;
+	public static int battleshipSize6 = 6;
+	public static int battleshipCount2;
+	public static int battleshipCount3;
+	public static int battleshipCount4;
+	public static int battleshipCount5;
+	public static int battleshipCount6;
+	//--------------- code von Fabian---------------------------------------------------
+
 	protected int startpoositionX;
 	protected int startpoositionY;	
 	protected int Richtung;
@@ -23,7 +26,7 @@ public class BattleShip
 
 	public BattleShip(int groesse, int intSize)
 	{
-		//Ist das So? Dies muss ueberpr�ft werden!!!!
+		//Ist das So? Dies muss ueberpr�ft werden!!!!
 		this.battleshipSize = groesse;
 		this.anzahlTreffer = 0;
 	}
