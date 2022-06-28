@@ -12,7 +12,7 @@ public class LaunchGame {
     }
 
     public static void displayFeld() {
-        Spielfeld feld = new Spielfeld(15);
+        Spielfeld feld = new Spielfeld(Spielfeld.SpielfeldSize);
         System.out.print("     ");
         for (int row = 0; row < feld.getSpielfeldSize(); row++) {
             if(row < 10)

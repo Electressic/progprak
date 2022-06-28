@@ -6,56 +6,20 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 
-enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen};
 public class Spielfeld
 {
+	enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen};
 	protected Zustand[][] zustandSpielfeld;
 	protected BattleShip[][] Ships = new BattleShip[0][0];
 	protected BattleShip[] vorhandeneSchiffe = new BattleShip[0];
 	public static int SpielfeldSize = 15;
-	//--------------- some Values für Field---------------------------------------------------
-	int row;
-	int column;
-	String gameState;
-	private boolean mark = false;
-	private boolean isShot = false;
-	//--------------- Initialisierung vom Spielfeld---------------------------------------------------
-	public Spielfeld(int row, int column, String gameState){
-		this.row = row;
-		this.column = column;
-		this. gameState = gameState;
-	}
-	//--------------- getter und setter---------------------------------------------------
-	public int getRow() {
-		return row;
-	}
-	public int getColumn() {
-		return column;
-	}
-	public boolean isMark(){
-		return mark;
-	}
-	public void setMark(boolean mark) {
-		this.mark = mark;
-	}
-	public boolean isShot(){
-		return isShot;
-	}
-	public void setShot(boolean shot) {
-		isShot = shot;
-	}
-	//--------------- toString Methode---------------------------------------------------
-	@Override
-	public String toString() {
-		return "Field{" +
-				"row=" + row +
-				", column=" + column +
-				", gameState='" + gameState + '\'' +
-				", mark=" + mark +
-				", isShot=" + isShot +
-				'}';
-	}
 
+	//--------------- Initialisierung vom Spielfeld---------------------------------------------------
+	public Spielfeld(int Size)
+	{
+		zustandSpielfeld = new Zustand[Size][Size];
+		Ships = new BattleShip[Size][Size];
+	}
 
 	//--------------- code von Fabian---------------------------------------------------
 
@@ -165,12 +129,41 @@ public class Spielfeld
 		return true;
 	}
 	//Bis hier her sind die neuen Funktionen
-	
-	
-	public Zustand getZustandPos(int x, int y)
+
+	// ------------------------------------------------------------------------
+
+	public void setzeZustand(int x, int y, String strZustand)
 	{
-		return zustandSpielfeld[x][y];
+		if(strZustand.compareTo("Wasser") == 0)
+		{
+			zustandSpielfeld[x][y] = Zustand.Wasser;
+		}
+		else if(strZustand.compareTo("Schiff Normal") == 0)
+		{
+			zustandSpielfeld[x][y] = Zustand.Schiff_Normal;
+		}
+		else if(strZustand.compareTo("Schiff getroffen") == 0)
+		{
+			zustandSpielfeld[x][y] = Zustand.Schiff_Getroffen;
+		}
 	}
+	public String getZustandPos(int x, int y)
+	{
+		if(zustandSpielfeld[x][y] == Zustand.Wasser)
+		{
+			return " W ";
+		}
+		else if(zustandSpielfeld[x][y] == Zustand.Schiff_Normal) {
+			return "N";
+		}
+		else if (zustandSpielfeld[x][y] == Zustand.Schiff_Getroffen)
+		{
+			return "Hit";
+		}
+		return null;
+	}
+
+	// ------------------------------------------------------------------------
 	public String PruefeSchuss(int x, int y)
 	{
 		if(zustandSpielfeld[x][y] == Zustand.Wasser)
@@ -194,7 +187,7 @@ public class Spielfeld
 	}
 	public BattleShip WelchesSchiff(int x, int y)
 	{
-		if(getZustandPos(x, y) == Zustand.Wasser)
+		if(getZustandPos(x, y).equals("Wasser"))
 		{
 			return null;
 		}	
@@ -240,7 +233,8 @@ public class Spielfeld
     	}
     	return false;
     }
-	public int getSpielfeldSize() 
+
+	public int getSpielfeldSize()
 	{
 		return this.SpielfeldSize;
 	}
