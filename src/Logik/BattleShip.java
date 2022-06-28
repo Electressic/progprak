@@ -1,18 +1,20 @@
 package progprak.src.Logik;
+
+import java.awt.*;
+
 public class BattleShip
 {
 	//--------------- alle Schiffgrößen und Schiffzähler---------------------------------------------------
-	public static int battleshipSize;
-	public static int battleshipSize2 = 2;
-	public static int battleshipSize3 = 3;
-	public static int battleshipSize4 = 4;
-	public static int battleshipSize5 = 5;
-	public static int battleshipSize6 = 6;
-	public static int battleshipCount2;
-	public static int battleshipCount3;
-	public static int battleshipCount4;
-	public static int battleshipCount5;
-	public static int battleshipCount6;
+	public static int shipSize;
+	public static int shipCount;
+	public static int shipCount2;
+	public static int shipCount3;
+	public static int shipCount4;
+	public static int shipCount5;
+	public static int shipCount6;
+	public String shipModel;
+	private int shipOwner;
+	private Color shipColor;
 	//--------------- code von Fabian---------------------------------------------------
 
 	protected int startpoositionX;
@@ -22,12 +24,34 @@ public class BattleShip
 	protected int SpielfeldSize;
 	Richtung r_richtung;
 	BattleShip[] vorhandeSchiffe = new BattleShip[0];
+
+
 	enum Richtung {Rechts, Unten, Links, Oben };
 
 	public BattleShip(int groesse, int intSize)
 	{
-		//Ist das So? Dies muss ueberpr�ft werden!!!!
-		this.battleshipSize = groesse;
+		switch (groesse) {
+			case 2:
+				shipSize = 2;
+				this.shipColor = Color.red;
+				break;
+			case 3:
+				shipSize = 3;
+				this.shipColor = Color.red;
+				break;
+			case 4:
+				shipSize = 4;
+				this.shipColor = Color.red;
+				break;
+			case 5:
+				shipSize = 5;
+				this.shipColor = Color.red;
+				break;
+			case 6:
+				shipSize = 6;
+				this.shipColor = Color.red;
+				break;
+		}
 		this.anzahlTreffer = 0;
 	}
 	
@@ -40,7 +64,7 @@ public class BattleShip
 	{
 		if(!istVersenkt())
 		{
-			if(++anzahlTreffer == battleshipSize)
+			if(++anzahlTreffer == shipSize)
 			{
 				return 1;
 			}		
@@ -49,7 +73,7 @@ public class BattleShip
 	}
 	public boolean istVersenkt()
 	{
-		if(anzahlTreffer == battleshipSize)
+		if(anzahlTreffer == shipSize)
 		{
 			return true;
 		}
@@ -57,7 +81,7 @@ public class BattleShip
 	}
 	public int getGroesse()
 	{
-		return this.battleshipSize;
+		return this.shipSize;
 	}
 	public void setRichtung(int intRichtung)
 	{

@@ -9,10 +9,9 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.io.File;
 
-public class Creator {
+public class Creator extends Component {
     JFrame create = new JFrame();
     private JLabel errorMessage;
     private JLabel shipSize;
@@ -29,6 +28,11 @@ public class Creator {
     static final int gridmin = 5;
     static final int gridmax = 30;
     static final int gridinit = 15;
+    // shit für fileexplorer
+    static private final String newline = "\n";
+    JTextArea log;
+    final JFileChooser fc = new JFileChooser();
+
 
     public Creator(){
         create.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,11 +52,11 @@ public class Creator {
         createWindow(clayout);
     }
     public boolean shipsunder30 () {
-        int totalShipSize = (BattleShip.battleshipCount2 * BattleShip.battleshipSize2) +
-                (BattleShip.battleshipCount3 * BattleShip.battleshipSize3) +
-                (BattleShip.battleshipCount4 * BattleShip.battleshipSize4) +
-                (BattleShip.battleshipCount5 * BattleShip.battleshipSize5) +
-                (BattleShip.battleshipCount6 * BattleShip.battleshipSize6);
+        int totalShipSize = (BattleShip.shipCount2 * 2) +
+                (BattleShip.shipCount3 * 3) +
+                (BattleShip.shipCount4 * 4) +
+                (BattleShip.shipCount5 * 5) +
+                (BattleShip.shipCount6 * 6);
         int groesse = Spielfeld.SpielfeldSize * Spielfeld.SpielfeldSize;
         if (totalShipSize > (0.3 * groesse)) {
             return false;
@@ -60,11 +64,11 @@ public class Creator {
         return true;
     }
     public void createWindow(GridBagConstraints clayout) {
-
+        log = new JTextArea(5,20); // log für File explorer shit?
         JButton startGame = new JButton("START");
         clayout.gridx = 0;
         clayout.gridwidth = 1;
-        clayout.gridy = 3;
+        clayout.gridy = 2;
         create.add(startGame, clayout);
         startGame.addActionListener(new ActionListener() {
             @Override
@@ -73,10 +77,44 @@ public class Creator {
                 ShipPlacement Battlegrid = new ShipPlacement();
             }
         });
+        // load button. opens file explorer für die datei zum laden
+        JButton loadButton = new JButton("LOAD");
+        clayout.gridx = 0;
+        clayout.gridwidth = 1;
+        clayout.gridy = 3;
+        create.add(loadButton, clayout);
+        loadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (e.getSource() == loadButton) {
+                    int returnVal = fc.showOpenDialog(Creator.this);
+                    if (returnVal == JFileChooser.APPROVE_OPTION) {
+                        File file = fc.getSelectedFile();
+                        log.append("Opening: " + file.getName() + "." + newline);
+                    } else {
+                        log.append("Open command cancelled by user." + newline);
+                    }
+                }
+            }
+        });
+        JButton backbutton = new JButton("BACK");
+        clayout.gridx = 0;
+        clayout.gridwidth = 1;
+        clayout.gridy = 4;
+        create.add(backbutton, clayout);
+        backbutton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(e.getSource()==backbutton) {
+                    create.dispose();
+                    MainMenu createWindow = new MainMenu();
+                }
+            }
+        });
 
         errorMessage = new JLabel("Error: Grid zu klein");
-        clayout.gridx = 2;
-        clayout.gridwidth = 3;
+        clayout.gridx = 0;
+        clayout.gridwidth = 2;
         clayout.gridy = 5;
         errorMessage.setForeground(Color.RED);
         errorMessage.setVisible(false);
@@ -125,7 +163,7 @@ public class Creator {
         gridSizeSlider.setPaintLabels(true);
         gridSizeSlider.setPaintTicks(true);
 
-        size2 = new JCheckBox("Groesse 2 Anzahl: " + BattleShip.battleshipCount2);
+        size2 = new JCheckBox("Groesse 2 Anzahl: " + BattleShip.shipCount2);
         clayout.gridx = 2;
         clayout.gridwidth = 1;
         clayout.gridy = 0;
@@ -141,14 +179,14 @@ public class Creator {
             public void stateChanged(ChangeEvent e) {
                size2.setText("Groesse 2 Anzahl: " + s2.getValue());
                 int value2 = (Integer) s2.getValue();
-                BattleShip.battleshipCount2 = value2;
+                BattleShip.shipCount2 = value2;
                 boolean shipsFit = shipsunder30();
                 startGame.setEnabled(shipsFit);
                 errorMessage.setVisible(!shipsFit);
             }
         });
 
-        size3 = new JCheckBox("Groesse 3 Anzahl: " + BattleShip.battleshipCount3);
+        size3 = new JCheckBox("Groesse 3 Anzahl: " + BattleShip.shipCount3);
         clayout.gridx = 2;
         clayout.gridwidth = 1;
         clayout.gridy = 1;
@@ -164,14 +202,14 @@ public class Creator {
             public void stateChanged(ChangeEvent e) {
                 size3.setText("Groesse 3 Anzahl: " + s3.getValue());
                 int value3 = (Integer) s3.getValue();
-                BattleShip.battleshipCount3 = value3;
+                BattleShip.shipCount3 = value3;
                 boolean shipsFit = shipsunder30();
                 startGame.setEnabled(shipsFit);
                 errorMessage.setVisible(!shipsFit);
             }
         });
 
-        size4 = new JCheckBox("Groesse 4 Anzahl: " + BattleShip.battleshipCount4);
+        size4 = new JCheckBox("Groesse 4 Anzahl: " + BattleShip.shipCount4);
         clayout.gridx = 2;
         clayout.gridwidth = 1;
         clayout.gridy = 2;
@@ -187,14 +225,14 @@ public class Creator {
             public void stateChanged(ChangeEvent e) {
                 size4.setText("Groesse 4 Anzahl: " + s4.getValue());
                 int value4 = (Integer) s4.getValue();
-                BattleShip.battleshipCount4 = value4;
+                BattleShip.shipCount4 = value4;
                 boolean shipsFit = shipsunder30();
                 startGame.setEnabled(shipsFit);
                 errorMessage.setVisible(!shipsFit);
             }
         });
 
-        size5 = new JCheckBox("Groesse 5 Anzahl: " + BattleShip.battleshipCount5);
+        size5 = new JCheckBox("Groesse 5 Anzahl: " + BattleShip.shipCount5);
         clayout.gridx = 2;
         clayout.gridwidth = 1;
         clayout.gridy = 3;
@@ -210,14 +248,14 @@ public class Creator {
             public void stateChanged(ChangeEvent e) {
                 size5.setText("Groesse 5 Anzahl: " + s5.getValue());
                 int value5 = (Integer) s5.getValue();
-                BattleShip.battleshipCount5 = value5;
+                BattleShip.shipCount5 = value5;
                 boolean shipsFit = shipsunder30();
                 startGame.setEnabled(shipsFit);
                 errorMessage.setVisible(!shipsFit);
             }
         });
 
-        size6 = new JCheckBox("Groesse 6 Anzahl: " + BattleShip.battleshipCount6);
+        size6 = new JCheckBox("Groesse 6 Anzahl: " + BattleShip.shipCount6);
         clayout.gridx = 2;
         clayout.gridwidth = 1;
         clayout.gridy = 4;
@@ -233,7 +271,7 @@ public class Creator {
             public void stateChanged(ChangeEvent e) {
                 size6.setText("Groesse 6 Anzahl: " + s6.getValue());
                 int value6 = (Integer) s6.getValue();
-                BattleShip.battleshipCount6 = value6;
+                BattleShip.shipCount6 = value6;
                 boolean shipsFit = shipsunder30();
                 startGame.setEnabled(shipsFit);
                 errorMessage.setVisible(!shipsFit);

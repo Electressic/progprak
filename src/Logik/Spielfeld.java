@@ -5,10 +5,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-
-enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen};
 public class Spielfeld
 {
+	enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen};
 	protected Zustand[][] zustandSpielfeld;
 	protected BattleShip[][] Ships = new BattleShip[0][0];
 	protected BattleShip[] vorhandeneSchiffe = new BattleShip[0];
@@ -16,14 +15,12 @@ public class Spielfeld
 
 	//--------------- code von Fabian---------------------------------------------------
 
-	public String getFleet()
+	public Spielfeld(int Size)
 	{
-		if(getSpielfeldSize() >= 20)
-		{
-			return "ships 3 4 5 6";
-		}
-		return "ships 2 3 4 5";
+		zustandSpielfeld = new Zustand[Size][Size];
+		Ships = new BattleShip[Size][Size];
 	}
+
 	public boolean setzeSchiff(int intStartPosX, int intStartPosY, int intRichtung, int intGroesse)
 	{
 		int Pruefwert = -1;
@@ -55,6 +52,7 @@ public class Spielfeld
 		for(int i = 0; i < intGroesse; i++)
 		{
 			Ships[PosX][PosY] = ship;
+			zustandSpielfeld[PosX][PosY] = Zustand.Schiff_Normal;
 			if(intRichtung == 0)
 			{
 				PosX++;
@@ -81,9 +79,35 @@ public class Spielfeld
 		vorhandeneSchiffe = temp;
 		return true;
 	}
-	public Zustand getZustandPos(int x, int y)
+	public void setzeZustand(int x, int y, String strZustand)
 	{
-		return zustandSpielfeld[x][y];
+		if(strZustand.compareTo("Wasser") == 0)
+		{
+			zustandSpielfeld[x][y] = Zustand.Wasser;
+		}
+		else if(strZustand.compareTo("Schiff Normal") == 0)
+		{
+			zustandSpielfeld[x][y] = Zustand.Schiff_Normal;
+		}
+		else if(strZustand.compareTo("Schiff getroffen") == 0)
+		{
+			zustandSpielfeld[x][y] = Zustand.Schiff_Getroffen;
+		}
+	}
+	public String getZustandPos(int x, int y)
+	{
+		if(zustandSpielfeld[x][y] == Zustand.Wasser)
+		{
+			return " W ";
+		}
+		else if(zustandSpielfeld[x][y] == Zustand.Schiff_Normal) {
+			return "N";
+		}
+		else if (zustandSpielfeld[x][y] == Zustand.Schiff_Getroffen)
+		{
+			return "Hit";
+		}
+		return null;
 	}
 	public String PruefeSchuss(int x, int y)
 	{
@@ -108,7 +132,7 @@ public class Spielfeld
 	}
 	public BattleShip WelchesSchiff(int x, int y)
 	{
-		if(getZustandPos(x, y) == Zustand.Wasser)
+		if(getZustandPos(x, y).equals("Wasser"))
 		{
 			return null;
 		}	
@@ -158,6 +182,10 @@ public class Spielfeld
 	{
 		return this.SpielfeldSize;
 	}
+	/*public void setSpielfeldSize(int intWert)
+	{
+		this.SpielfeldSize = intWert;
+	}*/
 	public void speichern() throws Exception
 	{
 		System.out.println("speichern....");
