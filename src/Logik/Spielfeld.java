@@ -5,71 +5,73 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+
+enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen};
 public class Spielfeld
 {
-	enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen};
 	protected Zustand[][] zustandSpielfeld;
 	protected BattleShip[][] Ships = new BattleShip[0][0];
 	protected BattleShip[] vorhandeneSchiffe = new BattleShip[0];
 	public static int SpielfeldSize = 15;
+	//--------------- some Values fÃ¼r Field---------------------------------------------------
+	int row;
+	int column;
+	String gameState;
+	private boolean mark = false;
+	private boolean isShot = false;
+	//--------------- Initialisierung vom Spielfeld---------------------------------------------------
+	public Spielfeld(int row, int column, String gameState){
+		this.row = row;
+		this.column = column;
+		this. gameState = gameState;
+	}
+	//--------------- getter und setter---------------------------------------------------
+	public int getRow() {
+		return row;
+	}
+	public int getColumn() {
+		return column;
+	}
+	public boolean isMark(){
+		return mark;
+	}
+	public void setMark(boolean mark) {
+		this.mark = mark;
+	}
+	public boolean isShot(){
+		return isShot;
+	}
+	public void setShot(boolean shot) {
+		isShot = shot;
+	}
+	//--------------- toString Methode---------------------------------------------------
+	@Override
+	public String toString() {
+		return "Field{" +
+				"row=" + row +
+				", column=" + column +
+				", gameState='" + gameState + '\'' +
+				", mark=" + mark +
+				", isShot=" + isShot +
+				'}';
+	}
+
 
 	//--------------- code von Fabian---------------------------------------------------
 
-	public Spielfeld(int Size)
+	public String getFleet()
 	{
-		zustandSpielfeld = new Zustand[Size][Size];
-		Ships = new BattleShip[Size][Size];
+		if(getSpielfeldSize() >= 20)
+		{
+			return "ships 3 4 5 6";
+		}
+		return "ships 2 3 4 5";
 	}
-
-	public boolean setzeSchiff(int intStartPosX, int intStartPosY, int intRichtung, int intGroesse)
+	
+	//ab hier ist die Neue Funktion wie am 27.06.2022 besprochen (hoffentlich! :D)
+	public void InitializeShip(int intSize)
 	{
-		int Pruefwert = -1;
-		if(intRichtung == 0)
-		{
-			Pruefwert = intStartPosX + intGroesse;
-		}
-		else if (intRichtung == 1)
-		{
-			Pruefwert = intStartPosY - intGroesse;
-		}
-		else if (intRichtung == 2)
-		{
-			Pruefwert = intStartPosX - intGroesse;
-		}
-		else if (intRichtung == 3)
-		{
-			Pruefwert = intStartPosY + intGroesse;
-		}
-		if(Pruefwert > getSpielfeldSize()  || Pruefwert < 0)
-		{
-			return false;
-		}
-		
-		BattleShip ship = new BattleShip(intGroesse, getSpielfeldSize());
-		int PosX = intStartPosX;
-		int PosY = intStartPosY;
-		//(0, 0) liegt unten Links
-		for(int i = 0; i < intGroesse; i++)
-		{
-			Ships[PosX][PosY] = ship;
-			zustandSpielfeld[PosX][PosY] = Zustand.Schiff_Normal;
-			if(intRichtung == 0)
-			{
-				PosX++;
-			}
-			else if(intRichtung == 1)
-			{
-				PosY--;
-			}
-			else if(intRichtung == 2)
-			{
-				PosX--;
-			}
-			else if(intRichtung == 3)
-			{
-				PosY++;
-			}
-		}
+		BattleShip ship = new BattleShip(intSize, getSpielfeldSize());
 		BattleShip[] temp = new BattleShip[vorhandeneSchiffe.length + 1];
 		for (int i = 0; i < vorhandeneSchiffe.length; i++)
 		{
@@ -77,37 +79,97 @@ public class Spielfeld
 		}
 		temp[temp.length - 1] = ship;
 		vorhandeneSchiffe = temp;
+	}
+	boolean CanShipPlace(int x, int y, BattleShip Ship, boolean isHorizontal)
+	{
+		int Pruefwert = -1;
+		if(isHorizontal)
+		{
+			Pruefwert = x + Ship.getGroesse();
+		}
+		else
+		{
+			Pruefwert = y - Ship.getGroesse();
+		}
+		if(Pruefwert > SpielfeldSize)
+		{
+			return false;
+		}
 		return true;
 	}
-	public void setzeZustand(int x, int y, String strZustand)
-	{
-		if(strZustand.compareTo("Wasser") == 0)
+	public boolean setzeSchiff(int intStartPosX, int intStartPosY, boolean isHorizontal, BattleShip Ship)
+	{	
+		if(!CanShipPlace(intStartPosX, intStartPosY, Ship, isHorizontal))
 		{
-			zustandSpielfeld[x][y] = Zustand.Wasser;
+			return false;
 		}
-		else if(strZustand.compareTo("Schiff Normal") == 0)
+		Ship.setRichtung(isHorizontal);
+		Ship.setStartposition(intStartPosX, intStartPosY);
+		int PosX = intStartPosX;
+		int PosY = intStartPosY;
+		//(0, 0) liegt unten Links
+		for(int i = 0; i < Ship.getGroesse(); i++)
 		{
-			zustandSpielfeld[x][y] = Zustand.Schiff_Normal;
+			Ships[PosX][PosY] = Ship;
+			zustandSpielfeld[PosX][PosY] = Zustand.Schiff_Normal;
+			if(isHorizontal)
+			{
+				PosX++;
+			}
+			else
+			{
+				PosY--;
+			}
 		}
-		else if(strZustand.compareTo("Schiff getroffen") == 0)
-		{
-			zustandSpielfeld[x][y] = Zustand.Schiff_Getroffen;
-		}
+
+		return true;
 	}
-	public String getZustandPos(int x, int y)
+	public boolean replaceShip(int x, int y, boolean isHorizontal, BattleShip Ship)
 	{
-		if(zustandSpielfeld[x][y] == Zustand.Wasser)
+		//Hier wird das alte Schiff gelöscht
+		int[] PosAlt = new int[2];
+		PosAlt = Ship.getStartPos();
+		for(int i = 0; i < Ship.getGroesse(); i++)
 		{
-			return " W ";
+			Ships[PosAlt[0]] [PosAlt[1]] = null;
+			zustandSpielfeld[PosAlt[0]][PosAlt[1]] = Zustand.Wasser;
+			if(Ship.getRichtung())
+			{
+				PosAlt[0] = PosAlt[0] + 1;
+			}
+			else
+			{
+				PosAlt[1] = PosAlt[1] - 1;
+			}
 		}
-		else if(zustandSpielfeld[x][y] == Zustand.Schiff_Normal) {
-			return "N";
-		}
-		else if (zustandSpielfeld[x][y] == Zustand.Schiff_Getroffen)
+		//Hier wird geprüft, ob das neue Schiff gesetzt werden kann
+		if(!CanShipPlace(x, y, Ship, isHorizontal))
 		{
-			return "Hit";
+			return false;
 		}
-		return null;
+		
+		//Platzieren des neuen Schiffes
+		for(int i = 0; i < Ship.getGroesse(); i++)
+		{
+			Ships[x] [y] = Ship;
+			zustandSpielfeld[x][y] = Zustand.Schiff_Normal;
+			if(Ship.getRichtung())
+			{
+				x++;
+			}
+			else
+			{
+				y--;
+			}
+		}
+		return true;
+	}
+	//Bis hier her sind die neuen Funktionen
+	
+	
+	public Zustand getZustandPos(int x, int y)
+	{
+		return zustandSpielfeld[x][y];
 	}
 	public String PruefeSchuss(int x, int y)
 	{
@@ -132,7 +194,7 @@ public class Spielfeld
 	}
 	public BattleShip WelchesSchiff(int x, int y)
 	{
-		if(getZustandPos(x, y).equals("Wasser"))
+		if(getZustandPos(x, y) == Zustand.Wasser)
 		{
 			return null;
 		}	
@@ -182,10 +244,6 @@ public class Spielfeld
 	{
 		return this.SpielfeldSize;
 	}
-	/*public void setSpielfeldSize(int intWert)
-	{
-		this.SpielfeldSize = intWert;
-	}*/
 	public void speichern() throws Exception
 	{
 		System.out.println("speichern....");
@@ -257,7 +315,7 @@ public class Spielfeld
     		int StartPosX;
     		int StartPosY;
     		int AnzahlTreffer;
-    		int rRichtung;
+    		boolean rRichtung;
         	int SizeSpielfeld = Integer.parseInt(obj.nextLine());
         	String inhalt;
         	String[] ArrInhalt;
@@ -292,15 +350,14 @@ public class Spielfeld
             		StartPosX = Integer.parseInt(ArrInhalt[1]);
             		StartPosY = Integer.parseInt(ArrInhalt[2]);
             		AnzahlTreffer = Integer.parseInt(ArrInhalt[3]);
-            		rRichtung = Integer.parseInt(ArrInhalt[4]);	
+            		rRichtung = Boolean.parseBoolean(ArrInhalt[4]);	
         			
         			
-        			BattleShip newShip = new BattleShip(intGroesse, SizeSpielfeld);
+        			InitializeShip(intGroesse);
+        			setzeSchiff(StartPosX, StartPosY, rRichtung, vorhandeneSchiffe[vorhandeneSchiffe.length - 1]);
         			
-        			setzeSchiff(StartPosX, StartPosY, rRichtung, intGroesse);
-        			
-        			newShip.setAnzahlTreffer(AnzahlTreffer);
-        			newShip.setRichtung(rRichtung);
+        			vorhandeneSchiffe[vorhandeneSchiffe.length - 1].setAnzahlTreffer(AnzahlTreffer);
+        			vorhandeneSchiffe[vorhandeneSchiffe.length - 1].setRichtung(rRichtung);
         		}
         	}                
         	obj.close();
