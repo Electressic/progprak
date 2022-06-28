@@ -17,10 +17,10 @@ public class BattleShip
 
 	protected int startpoositionX;
 	protected int startpoositionY;	
-	protected int Richtung;
+	protected boolean isHorizontal;
 	protected int anzahlTreffer;
 	protected int SpielfeldSize;
-	Richtung r_richtung;
+
 	BattleShip[] vorhandeSchiffe = new BattleShip[0];
 	enum Richtung {Rechts, Unten, Links, Oben };
 
@@ -59,14 +59,11 @@ public class BattleShip
 	{
 		return this.battleshipSize;
 	}
-	public void setRichtung(int intRichtung)
+	public void setRichtung(boolean intRichtung)
 	{
-		this.Richtung = intRichtung;
+		this.isHorizontal = intRichtung;
 	}
-	public void setRichtung(Richtung r_richtung)
-	{
-		this.r_richtung = r_richtung;
-	}
+
 	public void setAnzahlTreffer(int Anzahl)
 	{
 		this.anzahlTreffer = Anzahl;
@@ -76,9 +73,9 @@ public class BattleShip
 	{
 		return "Hier sollen Daten vom Zweiten Spieler geladen werden";
 	}
-	public int getRichtung()
+	public boolean getRichtung()
 	{
-		return this.Richtung;
+		return this.isHorizontal;
 	}
 	public String getPlayer1Data()
 	{
@@ -99,6 +96,7 @@ public class BattleShip
 				"" + getGroesse(),
 				"" + this.startpoositionX, 
 				"" + this.startpoositionY,
+				"" + this.getRichtung(),
 				"" + this.anzahlTreffer, 
 				"" + this.getRichtung()
 		};
@@ -106,14 +104,12 @@ public class BattleShip
 	}
 	public String getShipDataAsString()
 	{
-		String ReturnString = 
-					getGroesse() + " "  + 
-					this.startpoositionX + " " + 
-					this.startpoositionY  + " " + 
-					this.anzahlTreffer + " " + 
-					this.istVersenkt() +	" " + 
-					this.getRichtung() + " ";
-		
-		return ReturnString;
+		String returnString = "";
+		String[] ArrString = getShipDataAsArray();
+		for(int i = 0; i < ArrString.length; i++)
+		{
+			returnString += ArrString[i] + " ";
+		}
+		return returnString;
 	}
 }
