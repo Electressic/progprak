@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 
-public class ShipPlacement extends Container {
+public class ShipPlacement2 extends Container {
     JFrame gridframe = new JFrame();
     int maxgroesse = Spielfeld.SpielfeldSize;
     int battleshipcount = BattleShip.shipCount6;
@@ -24,7 +24,7 @@ public class ShipPlacement extends Container {
     private String gameState;
     public ArrayList<String> gridbuttons = new ArrayList<String>();
 
-    public ShipPlacement() {
+    public ShipPlacement2() {
         gridframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gridframe.setMinimumSize(new Dimension(600 ,600));
         gridframe.setLocationRelativeTo(null);

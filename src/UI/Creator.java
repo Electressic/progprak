@@ -74,7 +74,7 @@ public class Creator extends Component {
             @Override
             public void actionPerformed(ActionEvent e) {
                 create.dispose();
-                ShipPlacement Battlegrid = new ShipPlacement();
+                ShipPlacement2 Battlegrid = new ShipPlacement2();
             }
         });
         // load button. opens file explorer für die datei zum laden

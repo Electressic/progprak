@@ -5,7 +5,7 @@ import java.awt.*;
 public class BattleShip
 {
 	//--------------- alle Schiffgrößen und Schiffzähler---------------------------------------------------
-	public static int shipSize;
+	public int shipSize;
 	public static int shipCount;
 	public static int shipCount2;
 	public static int shipCount3;
@@ -14,7 +14,6 @@ public class BattleShip
 	public static int shipCount6;
 	public String shipModel;
 	private int shipOwner;
-	private Color shipColor;
 	//--------------- code von Fabian---------------------------------------------------
 
 	protected int startpoositionX;
@@ -23,35 +22,11 @@ public class BattleShip
 	protected int anzahlTreffer;
 	protected int SpielfeldSize;
 
-	BattleShip[] vorhandeSchiffe = new BattleShip[0];
-
-
 	enum Richtung {Rechts, Unten, Links, Oben };
 
-	public BattleShip(int groesse, int intSize)
+	public BattleShip(int groesse)
 	{
-		switch (groesse) {
-			case 2:
-				shipSize = 2;
-				this.shipColor = Color.red;
-				break;
-			case 3:
-				shipSize = 3;
-				this.shipColor = Color.red;
-				break;
-			case 4:
-				shipSize = 4;
-				this.shipColor = Color.red;
-				break;
-			case 5:
-				shipSize = 5;
-				this.shipColor = Color.red;
-				break;
-			case 6:
-				shipSize = 6;
-				this.shipColor = Color.red;
-				break;
-		}
+		this.shipSize = groesse;
 		this.anzahlTreffer = 0;
 	}
 	

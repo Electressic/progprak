@@ -11,8 +11,8 @@ public class Spielfeld
 	enum Zustand {Wasser, Schiff_Normal, Schiff_Getroffen};
 	protected Zustand[][] zustandSpielfeld;
 	protected BattleShip[][] Ships = new BattleShip[0][0];
-	protected BattleShip[] vorhandeneSchiffe = new BattleShip[0];
-	public static int SpielfeldSize = 15;
+	protected BattleShip[] vorhandeneSchiffe;// = new BattleShip[0];
+	public static int SpielfeldSize = 31;
 
 	//--------------- Initialisierung vom Spielfeld---------------------------------------------------
 	public Spielfeld(int Size)
@@ -20,8 +20,7 @@ public class Spielfeld
 		zustandSpielfeld = new Zustand[Size][Size];
 		Ships = new BattleShip[Size][Size];
 	}
-
-	//--------------- code von Fabian---------------------------------------------------
+//--------------- code von Fabian---------------------------------------------------
 
 	public String getFleet()
 	{
@@ -33,9 +32,15 @@ public class Spielfeld
 	}
 	
 	//ab hier ist die Neue Funktion wie am 27.06.2022 besprochen (hoffentlich! :D)
-	public void InitializeShip(int intSize)
+	public BattleShip InitializeShip(int intSize)
 	{
-		BattleShip ship = new BattleShip(intSize, getSpielfeldSize());
+		BattleShip ship = new BattleShip(intSize);
+		/*if(!vorhandeneSchiffe)
+		{
+			System.out.println("Hier sollte ich initialisieren");
+			vorhandeneSchiffe = new BattleShip[0];
+		}
+		BattleShip ship = new BattleShip(intSize);
 		BattleShip[] temp = new BattleShip[vorhandeneSchiffe.length + 1];
 		for (int i = 0; i < vorhandeneSchiffe.length; i++)
 		{
@@ -43,6 +48,8 @@ public class Spielfeld
 		}
 		temp[temp.length - 1] = ship;
 		vorhandeneSchiffe = temp;
+		return ship;*/
+		return ship;
 	}
 	boolean CanShipPlace(int x, int y, BattleShip Ship, boolean isHorizontal)
 	{
@@ -131,6 +138,24 @@ public class Spielfeld
 	//Bis hier her sind die neuen Funktionen
 
 	// ------------------------------------------------------------------------
+
+	public BattleShip[] getVorhandeneSchiffe() {
+		System.out.println("vorhandene Schiffe Laenge: " + vorhandeneSchiffe.length);
+		return vorhandeneSchiffe;
+	}
+	public BattleShip getShip(int x)
+	{
+		return vorhandeneSchiffe[x];
+	}
+	public int getAnzahlSchiffe()
+	{
+		System.out.println("Anahl der SChiffe: "+ vorhandeneSchiffe.length);
+		return vorhandeneSchiffe.length;
+	}
+	public void setVorhandeneSchiffe(BattleShip[] vorhandeneSchiffe) {
+
+		this.vorhandeneSchiffe = vorhandeneSchiffe;
+	}
 
 	public void setzeZustand(int x, int y, String strZustand)
 	{
@@ -234,10 +259,14 @@ public class Spielfeld
     	return false;
     }
 
-	public int getSpielfeldSize()
-	{
-		return this.SpielfeldSize;
+	public static int getSpielfeldSize() {
+		return SpielfeldSize;
 	}
+
+	public static int setSpielfeldSize(int spielfeldSize) {
+		return SpielfeldSize = spielfeldSize;
+	}
+
 	public void speichern() throws Exception
 	{
 		System.out.println("speichern....");

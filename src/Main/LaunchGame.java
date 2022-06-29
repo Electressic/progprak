@@ -1,14 +1,17 @@
 package progprak.src.Main;
 
+import progprak.src.Logik.BattleShip;
 import progprak.src.Logik.Spielfeld;
+import progprak.src.UI.UI;
 
 import javax.swing.plaf.nimbus.State;
+import java.util.Scanner;
 
 
 public class LaunchGame {
 
     public static void main(String[] args) {
-        displayFeld();
+        new UI();
     }
 
     public static void displayFeld() {
@@ -37,7 +40,21 @@ public class LaunchGame {
             System.out.println();
         }
     }
-    public void placeShips() {
+
+    public static void placeShips() {
+        System.out.println("Test");
+        Spielfeld feld = new Spielfeld(Spielfeld.SpielfeldSize);
+        Scanner myObj = new Scanner(System.in);
+        //2D Objekt in Spielfeld muss zurückgegeben werden
+        BattleShip[] vorhandeneSchiffe = feld.getVorhandeneSchiffe();//getMethode = Spielfeld.g
+        for(int i = 0; i <feld.getAnzahlSchiffe(); i++)
+        {
+            System.out.println("Setze Schiff mit Groesse: "+ feld.getShip(i).getGroesse());
+            //Hier muss was pasieren, dmit die Position abgefragt wird
+            String userName = myObj.nextLine();  // Read user input
+            String[] Koordinate = userName.split(" ");
+            //feld.setzeSchiff((int)Koordinate[0], (int)Koordinate[1], true, vorhandeneSchiffe[i]);
+        }
 
     }
 }
