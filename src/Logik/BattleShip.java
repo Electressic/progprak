@@ -57,6 +57,7 @@ public class BattleShip
 	public int getGroesse()
 	{
 		return this.shipSize;
+
 	}
 	public void setRichtung(boolean intRichtung)
 	{

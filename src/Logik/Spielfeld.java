@@ -27,12 +27,14 @@ public class Spielfeld
 		zustandEnemySpielfeld = new Zustand[Size][Size];
 		Ships = new BattleShip[Size][Size];
 	}
+
 	//Setter und Getter for BoardSize
 	public static int getSpielfeldSize() {
 		return SpielfeldSize;
 	}
 	public static int setSpielfeldSize(int spielfeldSize) {
 		return SpielfeldSize = spielfeldSize;
+
 	}
 	//Setter und Getter for Player1 Zustand
 	public void setZustandSpielfeld(int x, int y, int z) {
@@ -173,6 +175,7 @@ public class Spielfeld
         			
         			//InitializeShip(intGroesse);
         			//setzeSchiff(StartPosX, StartPosY, rRichtung, vorhandeneSchiffe[vorhandeneSchiffe.length - 1]);
+
         			
         			vorhandeneSchiffe[vorhandeneSchiffe.length - 1].setAnzahlTreffer(AnzahlTreffer);
         			vorhandeneSchiffe[vorhandeneSchiffe.length - 1].setRichtung(rRichtung);
@@ -185,7 +188,7 @@ public class Spielfeld
         	System.out.println(e.getMessage());
         } 
 	}
-	//----------Funktionen final f¸r Feld initialisieren + Feld darstellen + Schiffe setzen + Schiffe schieﬂen----------------------------
+	//----------Funktionen final f√ºr Feld initialisieren + Feld darstellen + Schiffe setzen + Schiffe schie√üen----------------------------
 	public void initFeld () {
 		for (int col = 0; col < getSpielfeldSize(); col++) {
 			for (int row = 0; row < getSpielfeldSize(); row++) {
