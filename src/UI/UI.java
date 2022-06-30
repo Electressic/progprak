@@ -1,19 +1,15 @@
 package progprak.src.UI;
 
-import progprak.src.Logik.BattleShip;
+import progprak.src.Logik.PlaceShips;
+import progprak.src.Logik.Ship;
 import progprak.src.Logik.Spielfeld;
-import progprak.src.Main.LaunchGame;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.awt.event.*;
+import java.util.Arrays;
 
 public class UI {
     // Define new Colors
@@ -24,27 +20,31 @@ public class UI {
     // Panel for adding Content
     JPanel content;
 
-    // int to save boardSize
-    int maxgroesse;
-
+    // int to save shipSum, percentage relative to Board and StartButton for Actionevent
+    int shipSum;
+    int percentage;
+    JButton createStart;
     //create new MainFrame
     JFrame main = new JFrame("TEST");
 
-    //create Spielfeld for ui
-    Spielfeld spielfeld;
-    BattleShip battleShip;
+    //create Spielfeld and Ship Class for ui
+    PlaceShips ps;
+    Spielfeld spielfeld = new Spielfeld(Spielfeld.SpielfeldSize);
+    int[] SpinnerArr;
+
+    int shipValue2,shipValue3,shipValue4,shipValue5,shipValue6;
 
     // make 2D-Array for the Board
     Cell[][] cells = new Cell[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
-
+    // Gamestate Schiffe setzen oder Battle
+    //which turn it is
+    boolean isPlayerTurn;
     //Actionlistener for what happens
     ActionListener cellClick = actionEvent ->{
         Object source = actionEvent.getSource();
-
     };
     //Constructor that creates the UI
     public UI() {
-        spielfeld = new Spielfeld(maxgroesse);
         createGUI();
     }
     //creating UI
@@ -72,7 +72,6 @@ public class UI {
             setContentAreaFilled(false);
             setForeground(Color.white);
             setOpaque(false);
-            setContentAreaFilled(false);
             setFocusable(false);
             setBorderPainted(true);
             setBorder(null);
@@ -84,6 +83,7 @@ public class UI {
         public UiLabel(String text) {
             super(text);
             setForeground(Color.white);
+            setFont(new Font("Serif", Font.PLAIN,20).deriveFont(20.0f));
         }
     }
     //creates the MainMenu
@@ -114,6 +114,8 @@ public class UI {
                     content.removeAll();
                     content.add(new BoardCreator());
                     content.revalidate();
+                    spielfeld = new Spielfeld(Spielfeld.SpielfeldSize);
+                    spielfeld.ship = new Ship();
                 }
             });
 
@@ -123,11 +125,60 @@ public class UI {
             add(startbtn);
             add(mpbtn);
             add(aibtn);
-
         }
     }
     //creates the BoardCreator for setting BoardSize and ShipCount
     class BoardCreator extends JPanel {
+        // counts all the Ships + gets them
+        public int setShipSum() {
+            shipSum = 0;
+            SpinnerArr = new int[]{ shipValue2,shipValue3,shipValue4,shipValue5,shipValue6};
+            spielfeld.ship.createShips(SpinnerArr);
+            //ship.createShips(SpinnerArr);
+            for (int i = 0; i <spielfeld.ship.getShipList().size(); i++) {
+                shipSum += spielfeld.ship.getShipList().get(i);
+            }
+            return shipSum;
+        }
+
+        public int getShipSum() {
+            return shipSum;
+        }
+        // sets the Percentage relative to the Board
+        public int setPercentage() {
+            percentage = getShipSum() * 100 /(Spielfeld.getSpielfeldSize() * Spielfeld.getSpielfeldSize());
+            return percentage;
+        }
+        public int getPercentage() {
+            return percentage;
+        }
+        public int[] getShipCounting() {
+            int[] temp;
+            temp = spielfeld.ship.getAnzahlderSchiffe();
+            return temp;
+        }
+        // if ShipSum is exactly 30%
+        public void isFitting() {
+            if (getPercentage() == 30) {
+                createStart.setEnabled(true);
+                createStart.setContentAreaFilled(false);
+                createStart.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        content.removeAll();
+                        content.add(new ShipPlacementPlayer1());
+                        content.revalidate();
+                        spielfeld.initFeld();
+                        spielfeld.initEnemyFeld();
+                        spielfeld.displayFeld();
+                        spielfeld.displayEnemyFeld();
+                    }
+                });
+            } else {
+                createStart.setEnabled(false);
+                createStart.setBackground(Color.red);
+            }
+        }
         public void paintComponent (Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
@@ -140,15 +191,16 @@ public class UI {
             g2d.fillRect(0,0,w,h);
         }
         // Values für JSlider
+        JSlider boardSize;
         static final int gridmin = 5;
         static final int gridmax = 30;
         static final int gridinit = 15;
+        JLabel boardSizeText;
         //Variable für JSpinner
-        JSpinner ship2,ship3,ship4,ship5,ship6;
-
+        // JSpinner ship2,ship3,ship4,ship5,ship6;
+        JLabel prozent;
         //Variable für JLabel/Spinner
         JLabel ship2Text,ship3Text,ship4Text,ship5Text,ship6Text;
-
         GridBagConstraints cLayout;
 
         BoardCreator() {
@@ -160,32 +212,30 @@ public class UI {
             cLayout.fill = GridBagConstraints.HORIZONTAL;
             cLayout.insets = new Insets(2,2,2,2);
 
-            JButton start = new UiButton("Start");
+            createStart = new JButton("Start");
+            createStart.setFont(new Font("Serif", Font.PLAIN, 30));
+            createStart.setEnabled(false);
+            createStart.setForeground(Color.white);
+            createStart.setBackground(Color.red);
             cLayout.gridx = 3;
             cLayout.gridy = 6;
             cLayout.gridwidth = 1;
-            start.setEnabled(true);
-            add(start, cLayout);
-            start.addActionListener(new ActionListener() {
+            add(createStart, cLayout);
+            createStart.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    content.removeAll();
-                    content.add(new ShipPlacementPlayer1());
-                    content.revalidate();
-                    int[] SpinnerArr = { (int) ship2.getValue(), (int) ship3.getValue(), (int) ship4.getValue(), (int) ship5.getValue(), (int) ship6.getValue() };
-                    for (int i = 0; i < 5; i++) {
-                        for (int j = 0; j < SpinnerArr[i]; j++) {
-                            spielfeld.InitializeShip((i +2));
-                        }
-                    }
-                    /*int totalShipSize = ((SpinnerArr[0] * 2) + (SpinnerArr[1] * 3) + (SpinnerArr[2] * 4) + (SpinnerArr[3] * 5) + (SpinnerArr[4] * 6));
-                    if (totalShipSize > (0.3 * (maxgroesse * maxgroesse))) {
-                        start.setEnabled(false);
-                    } else {
-                        start.setEnabled(true);
-                    }*/
+                    isFitting();
+                    shipSum = 0;
+                    percentage = 0;
+                    shipValue2 = 0;
+                    shipValue3 = 0;
+                    shipValue4 = 0;
+                    shipValue5 = 0;
+                    shipValue6 = 0;
+
                 }
             });
+
             JButton load = new UiButton("Load");
             cLayout.gridx = 2;
             cLayout.gridy = 0;
@@ -212,13 +262,138 @@ public class UI {
             cLayout.gridwidth = 3;
             add(inputText, cLayout);
 
-            JLabel boardSizeText = new UiLabel("Spielfeldgroesse: " + Spielfeld.getSpielfeldSize());
+            boardSizeText = new UiLabel("Spielfeldgroesse: " + Spielfeld.getSpielfeldSize());
             cLayout.gridx = 0;
             cLayout.gridy = 2;
             cLayout.gridwidth = 3;
             add(boardSizeText, cLayout);
 
-            JSlider boardSize = new JSlider(JSlider.HORIZONTAL,gridmin,gridmax,gridinit);
+            prozent = new JLabel("<html><body>" + "Total Ships" + getShipSum() + "<br>" + "Percentage erreicht: " + getPercentage() + "%" + "<html><body>");
+            prozent.setEnabled(false);
+            cLayout.gridx = 2;
+            cLayout.gridy = 6;
+            cLayout.gridwidth = 1;
+            add(prozent, cLayout);
+
+            ship2Text = new UiLabel("Anzahl der Schipsize2: " + 0);
+            cLayout.gridx = 0;
+            cLayout.gridy = 4;
+            cLayout.gridwidth = 1;
+            add(ship2Text, cLayout);
+
+            JSpinner ship2 = new JSpinner(new SpinnerNumberModel((0),0,null,1));
+            ship2.setForeground(Color.white);
+            ship2.setOpaque(false);
+            ship2.setFocusable(false);
+            cLayout.gridx = 1;
+            cLayout.gridy = 4;
+            cLayout.gridwidth = 1;
+            ship2.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    ship2Text.setText("Shipsize2: " + ship2.getValue());
+                    shipValue2= (int)(ship2.getValue());
+                    setShipSum();
+                    setPercentage();
+                    isFitting();
+                    prozent.setText("<html><body>" + "Total Ships" + getShipSum() + "<br>" + "Percentage erreicht: " + getPercentage() + "%" + "<html><body>");
+                }
+            });
+            add(ship2, cLayout);
+
+            ship3Text = new UiLabel("Anzahl der Schipsize3: " + 0);
+            cLayout.gridx = 0;
+            cLayout.gridy = 5;
+            cLayout.gridwidth = 1;
+            add(ship3Text, cLayout);
+
+            JSpinner ship3 = new JSpinner(new SpinnerNumberModel((0),0,null,1));
+            cLayout.gridx = 1;
+            cLayout.gridy = 5;
+            cLayout.gridwidth = 1;
+            add(ship3, cLayout);
+            ship3.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    ship3Text.setText("Shipsize3: " + ship3.getValue());
+                    shipValue3= (int)(ship3.getValue());
+                    setShipSum();
+                    setPercentage();
+                    isFitting();
+                    prozent.setText("<html><body>" + "Total Ships" + getShipSum() + "<br>" + "Percentage erreicht: " + getPercentage() + "%" + "<html><body>");
+                }
+            });
+
+            ship4Text = new UiLabel("Anzahl der Schipsize4: " + 0);
+            cLayout.gridx = 0;
+            cLayout.gridy = 6;
+            cLayout.gridwidth = 1;
+            add(ship4Text, cLayout);
+
+            JSpinner ship4 = new JSpinner(new SpinnerNumberModel((0),0,null,1));
+            cLayout.gridx = 1;
+            cLayout.gridy = 6;
+            cLayout.gridwidth = 1;
+            add(ship4, cLayout);
+            ship4.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    ship4Text.setText("Shipsize4: " + ship4.getValue());
+                    shipValue4= (int)(ship4.getValue());
+                    setShipSum();
+                    setPercentage();
+                    isFitting();
+                    prozent.setText("<html><body>" + "Total Ships" + getShipSum() + "<br>" + "Percentage erreicht: " + getPercentage() + "%" + "<html><body>");
+                }
+            });
+
+            ship5Text = new UiLabel("Anzahl der Schipsize5: " + 0);
+            cLayout.gridx = 2;
+            cLayout.gridy = 4;
+            cLayout.gridwidth = 1;
+            add(ship5Text, cLayout);
+
+            JSpinner ship5 = new JSpinner(new SpinnerNumberModel((0),0,null,1));
+            cLayout.gridx = 3;
+            cLayout.gridy = 4;
+            cLayout.gridwidth = 1;
+            add(ship5, cLayout);
+            ship5.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    ship5Text.setText("Shipsize5: " + ship5.getValue());
+                    shipValue5= (int)(ship5.getValue());
+                    setShipSum();
+                    setPercentage();
+                    isFitting();
+                    prozent.setText("<html><body>" + "Total Ships" + getShipSum() + "<br>" + "Percentage erreicht: " + getPercentage() + "%" + "<html><body>");
+                }
+            });
+
+            ship6Text = new UiLabel("Anzahl der Schipsize6: " + 0);
+            cLayout.gridx = 2;
+            cLayout.gridy = 5;
+            cLayout.gridwidth = 1;
+            add(ship6Text, cLayout);
+
+            JSpinner ship6 = new JSpinner(new SpinnerNumberModel((0),0,null,1));
+            cLayout.gridx = 3;
+            cLayout.gridy = 5;
+            cLayout.gridwidth = 1;
+            add(ship6, cLayout);
+            ship6.addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    ship6Text.setText("Shipsize6: " + ship6.getValue());
+                    shipValue6= (int)(ship6.getValue());
+                    setShipSum();
+                    setPercentage();
+                    isFitting();
+                    prozent.setText("<html><body>" + "Total Ships" + getShipSum() + "<br>" + "Percentage erreicht: " + getPercentage() + "%" + "<html><body>");
+                }
+            });
+
+            boardSize = new JSlider(JSlider.HORIZONTAL,gridmin,gridmax,gridinit);
             boardSize.setBackground(Color.black);
             boardSize.setForeground(Color.white);
             boardSize.setOpaque(false);
@@ -231,18 +406,23 @@ public class UI {
             boardSize.addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent e) {
-                    maxgroesse = Spielfeld.setSpielfeldSize(boardSize.getValue() + 1);
+                    Spielfeld.setSpielfeldSize(boardSize.getValue());
+                    setPercentage();
+                    isFitting();
+                    prozent.setText("<html><body>" + "Total Ships" + getShipSum() + "<br>" + "Percentage erreicht: " + getPercentage() + "%" + "<html><body>");
                     boardSizeText.setText("Spielfeldgroesse: " + boardSize.getValue());
                     // Logik für Schiffgröße 2 und 6. Disabled und Enabled sie.
                     if (boardSize.getValue() >= 20) {
                         ship2.setEnabled(false);
                         ship2.setValue(0);
+                        shipValue2 = 0;
                         ship6.setEnabled(true);
                     }
                     else {
                         ship2.setEnabled(true);
                         ship6.setEnabled(false);
                         ship6.setValue(0);
+                        shipValue6 = 0;
                     }
                 }
             });
@@ -250,82 +430,6 @@ public class UI {
             boardSize.setMinorTickSpacing(1);
             boardSize.setPaintLabels(true);
             boardSize.setPaintTicks(true);
-
-
-            ship2Text = new UiLabel("Anzahl der Schipsize2: " + 0);
-            cLayout.gridx = 0;
-            cLayout.gridy = 4;
-            cLayout.gridwidth = 1;
-            add(ship2Text, cLayout);
-
-            ship2 = new JSpinner(new SpinnerNumberModel((0),0,null,1));
-            ship2.setForeground(Color.white);
-            ship2.setOpaque(false);
-            ship2.setFocusable(false);
-            cLayout.gridx = 1;
-            cLayout.gridy = 4;
-            cLayout.gridwidth = 1;
-            ship2.addChangeListener(new ChangeListener() {
-                @Override
-                public void stateChanged(ChangeEvent e) {
-                    ship2Text.setText("Shipsize2: " + ship2.getValue());
-                }
-            });
-            add(ship2, cLayout);
-
-            ship3Text = new UiLabel("Anzahl der Schipsize3: " + 0);
-            cLayout.gridx = 0;
-            cLayout.gridy = 5;
-            cLayout.gridwidth = 1;
-            add(ship3Text, cLayout);
-
-            ship3 = new JSpinner(new SpinnerNumberModel((0),0,null,1));
-            cLayout.gridx = 1;
-            cLayout.gridy = 5;
-            cLayout.gridwidth = 1;
-            add(ship3, cLayout);
-
-            ship4Text = new UiLabel("Anzahl der Schipsize4: " + 0);
-            cLayout.gridx = 0;
-            cLayout.gridy = 6;
-            cLayout.gridwidth = 1;
-            add(ship4Text, cLayout);
-
-            ship4 = new JSpinner(new SpinnerNumberModel((0),0,null,1));
-            cLayout.gridx = 1;
-            cLayout.gridy = 6;
-            cLayout.gridwidth = 1;
-            add(ship4, cLayout);
-
-            ship5Text = new UiLabel("Anzahl der Schipsize5: " + 0);
-            cLayout.gridx = 2;
-            cLayout.gridy = 4;
-            cLayout.gridwidth = 1;
-            add(ship5Text, cLayout);
-
-            ship5 = new JSpinner(new SpinnerNumberModel((0),0,null,1));
-            cLayout.gridx = 3;
-            cLayout.gridy = 4;
-            cLayout.gridwidth = 1;
-            add(ship5, cLayout);
-
-            ship6Text = new UiLabel("Anzahl der Schipsize6: " + 0);
-            cLayout.gridx = 2;
-            cLayout.gridy = 5;
-            cLayout.gridwidth = 1;
-            add(ship6Text, cLayout);
-
-            ship6 = new JSpinner(new SpinnerNumberModel((0),0,null,1));
-            cLayout.gridx = 3;
-            cLayout.gridy = 5;
-            cLayout.gridwidth = 1;
-            add(ship6, cLayout);
-
-            JLabel prozent = new UiLabel("Schiffe sollen 30% betragen: " + "%");
-            cLayout.gridx = 2;
-            cLayout.gridy = 6;
-            cLayout.gridwidth = 1;
-            add(prozent, cLayout);
         }
     }
     class ShipPlacementPlayer1 extends JPanel {
@@ -346,22 +450,22 @@ public class UI {
             public void actionPerformed(ActionEvent e) {
                 ((JButton)e.getSource()).setAction(actTwo);
                 richtung.setText("Horizontal");
+                spielfeld.ship.setRichtung(true);
             }
         };
         Action actTwo = new AbstractAction("Horizontal") {
             @Override
             public void actionPerformed(ActionEvent e) {
                 ((JButton)e.getSource()).setAction(actOne);
-                richtung.setText("Vertikal");
+                richtung.setText(" Vertikal ");
+                spielfeld.ship.setRichtung(false);
             }
         };
         ShipPlacementPlayer1() {
-            ShipCell[][] shipcells = new ShipCell[5][5];
+            ShipCell[][] shipcells = new ShipCell[20][20];
             setLayout(new BorderLayout());
             Container cellField = new Container();
-            LaunchGame.displayFeld();
-            LaunchGame.placeShips();
-            cellField.setLayout(new GridLayout(Spielfeld.SpielfeldSize,Spielfeld.SpielfeldSize));
+            cellField.setLayout(new GridLayout(Spielfeld.getSpielfeldSize(),Spielfeld.getSpielfeldSize()));
             for (int row = 0; row < Spielfeld.getSpielfeldSize() ; row++) {
                 for (int col = 0; col < Spielfeld.getSpielfeldSize(); col++) {
                     cells[row][col] = new Cell(row, col);
@@ -372,13 +476,148 @@ public class UI {
                     cells[row][col].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            //spielfeld.setzeSchiff([finalRow], [finalCol], true, )
+                            spielfeld.ship.getRichtung();
+                            spielfeld.placeShips(e);
                         }
                     });
                 }
             }
-            add(cellField, BorderLayout.WEST);
+            add(cellField, BorderLayout.CENTER);
+            Container ships = new Container();
+            ships.setLayout(new GridLayout(10,10,1,1));
+            richtung = new JButton(actTwo);
+            richtung.setContentAreaFilled(false);
+            ships.add(richtung);
+            JButton startGame = new UiButton("Test");
+            startGame.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    content.removeAll();
+                    content.add(new ShipPlacementPlayer2());
+                    content.revalidate();
+                }
+            });
+            ships.add(startGame);
+            for (int i = 0; i < spielfeld.ship.getAnzahlderSchiffe().length; i++) {
+                System.out.println("Test: ");
+                JPanel shipBox = new JPanel();
+                shipBox.setPreferredSize(new Dimension(300,500));
+                shipBox.setBorder(BorderFactory.createLineBorder(Color.black,2));
+                ships.add(shipBox);
+                for (int j = 0; j < spielfeld.ship.getAnzahlderSchiffe()[i]; j++) {
+                    if (spielfeld.ship.getAnzahlderSchiffe()[i] > 0) {
+                        for (int k = 0; k < i +2; k++) {
+                            shipcells[i][j] = new ShipCell(i,j);
+                            shipBox.add(shipcells[i][j]);
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+            JButton backbtn = new UiButton("BACK");
+            backbtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    content.removeAll();
+                    content.add(new BoardCreator());
+                    content.revalidate();
+                }
+            });
+            ships.add(backbtn);
+            JTextField coordinates = new JTextField("Beispieltext");
+            ships.add(coordinates);
+            add(ships, BorderLayout.EAST);
+        }
+    }
+    class ShipPlacementPlayer2 extends JPanel {
+        public void paintComponent (Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            int w = getWidth(), h = getHeight();
+            Color color2 = new Color(52,58,60);
+            Color color1 = new Color(24,40,72);
+            GradientPaint gp = new GradientPaint(-1000,0,color1,w,h, color2);
+            g2d.setPaint(gp);
+            g2d.fillRect(0,0,w,h);
+        }
+        JButton richtung;
+        Action actOne = new AbstractAction("Horizontal") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JButton)e.getSource()).setAction(actTwo);
+                richtung.setText("Horizontal");
+                spielfeld.ship.setRichtung(true);
+            }
+        };
+        Action actTwo = new AbstractAction("Horizontal") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((JButton)e.getSource()).setAction(actOne);
+                richtung.setText(" Vertikal ");
+                spielfeld.ship.setRichtung(false);
+            }
+        };
+        ShipPlacementPlayer2() {
+            ShipCell[][] shipcells = new ShipCell[20][20];
+            setLayout(new BorderLayout());
+            Container cellField = new Container();
+            cellField.setLayout(new GridLayout(Spielfeld.getSpielfeldSize(),Spielfeld.getSpielfeldSize()));
+            for (int row = 1; row < Spielfeld.getSpielfeldSize() ; row++) {
+                for (int col = 1; col < Spielfeld.getSpielfeldSize(); col++) {
+                    cells[row][col] = new Cell(row, col);
+                    cells[row][col].setActionCommand(cells[row][col].getRow() + "," + cells[row][col].getCol());
+                    cellField.add(cells[row][col]);
+                    int finalRow = row;
+                    int finalCol = col;
+                    cells[row][col].addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                                System.out.println("HI BITTE WORK");
+                                spielfeld.placeEnemyShips();
+                        }
+                    });
+                }
+            }
+            add(cellField);
+            Container ships = new Container();
+            ships.setLayout(new BorderLayout());
+            richtung = new JButton(actTwo);
+            ships.add(richtung,BorderLayout.PAGE_START);
+            JButton startGame = new JButton("Test");
+            startGame.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    content.removeAll();
+                    content.add(new BattleScreen());
+                    content.revalidate();
+                }
+            });
+            ships.add(startGame,BorderLayout.PAGE_START);
+            JButton backbtn = new JButton("BACK");
+            backbtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    content.removeAll();
+                    content.add(new ShipPlacementPlayer1());
+                    content.revalidate();
+                }
+            });
+            ships.add(backbtn,BorderLayout.PAGE_END);
+            for (int i = 0; i < spielfeld.ship.getAnzahlderSchiffe().length; i++) {
+                JPanel shipBox = new JPanel();
+                shipBox.setBorder(BorderFactory.createLineBorder(Color.black,2));
+                ships.add(shipBox,BorderLayout.EAST);
+                for (int j = 0; j < spielfeld.ship.getAnzahlderSchiffe()[i]; j++) {
+                    for (int k = 0; k < i +2; k++) {
+                        shipcells[i][j] = new ShipCell(i,j);
+                        shipBox.add(shipcells[i][j]);
+                    }
+                }
+            }
 
+            /*
             Container ships = new Container();
             ships.setLayout(new GridLayout(10,10));
             richtung = new JButton(actOne);
@@ -392,8 +631,24 @@ public class UI {
                     shipcells[i][j] = new ShipCell(i,j);
                     shipBox.add(shipcells[i][j]);
                 }
-            }
-            add(ships, BorderLayout.CENTER);
+            }*/
+            add(ships, BorderLayout.LINE_END);
+        }
+    }
+    class BattleScreen extends JPanel {
+        public void paintComponent (Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            int w = getWidth(), h = getHeight();
+            Color color2 = new Color(52,58,60);
+            Color color1 = new Color(24,40,72);
+            GradientPaint gp = new GradientPaint(-1000,0,color1,w,h, color2);
+            g2d.setPaint(gp);
+            g2d.fillRect(0,0,w,h);
+        }
+        public BattleScreen() {
+
         }
     }
     class Cell extends JButton {

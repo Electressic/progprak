@@ -108,7 +108,7 @@ public class ShipPlacement2 extends Container {
             public void actionPerformed(ActionEvent e) {
                 if(e.getSource()==battleStart) {
                     gridframe.dispose();
-                    BattleScreen createWindow = new BattleScreen();
+                    BatteloScreeno createWindow = new BatteloScreeno();
                 }
             }
         });
