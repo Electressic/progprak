@@ -1,18 +1,19 @@
 package progprak.src.Logik;
+
+import java.awt.*;
+
 public class BattleShip
 {
 	//--------------- alle Schiffgrößen und Schiffzähler---------------------------------------------------
-	public static int battleshipSize;
-	public static int battleshipSize2 = 2;
-	public static int battleshipSize3 = 3;
-	public static int battleshipSize4 = 4;
-	public static int battleshipSize5 = 5;
-	public static int battleshipSize6 = 6;
-	public static int battleshipCount2;
-	public static int battleshipCount3;
-	public static int battleshipCount4;
-	public static int battleshipCount5;
-	public static int battleshipCount6;
+	public int shipSize;
+	public static int shipCount;
+	public static int shipCount2;
+	public static int shipCount3;
+	public static int shipCount4;
+	public static int shipCount5;
+	public static int shipCount6;
+	public String shipModel;
+	private int shipOwner;
 	//--------------- code von Fabian---------------------------------------------------
 
 	protected int startpoositionX;
@@ -21,13 +22,11 @@ public class BattleShip
 	protected int anzahlTreffer;
 	protected int SpielfeldSize;
 
-	BattleShip[] vorhandeSchiffe = new BattleShip[0];
 	enum Richtung {Rechts, Unten, Links, Oben };
 
-	public BattleShip(int groesse, int intSize)
+	public BattleShip(int groesse)
 	{
-		//Ist das So? Dies muss ueberpr�ft werden!!!!
-		this.battleshipSize = groesse;
+		this.shipSize = groesse;
 		this.anzahlTreffer = 0;
 	}
 	
@@ -40,7 +39,7 @@ public class BattleShip
 	{
 		if(!istVersenkt())
 		{
-			if(++anzahlTreffer == battleshipSize)
+			if(++anzahlTreffer == shipSize)
 			{
 				return 1;
 			}		
@@ -49,7 +48,7 @@ public class BattleShip
 	}
 	public boolean istVersenkt()
 	{
-		if(anzahlTreffer == battleshipSize)
+		if(anzahlTreffer == shipSize)
 		{
 			return true;
 		}
@@ -57,7 +56,8 @@ public class BattleShip
 	}
 	public int getGroesse()
 	{
-		return this.battleshipSize;
+		return this.shipSize;
+
 	}
 	public void setRichtung(boolean intRichtung)
 	{
