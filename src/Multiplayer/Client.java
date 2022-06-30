@@ -1,4 +1,4 @@
-package progprak;
+package progprak.src.Multiplayer;
 
 import java.io.*;
 import java.net.Socket;
