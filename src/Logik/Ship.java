@@ -55,6 +55,10 @@ public class Ship {
         return enemyShipList;
     }
 
+    public Map<Integer, Integer> getFleet() {
+        return fleet;
+    }
+
     public int[][] getShipFleet() {
         return shipFleet;
     }
@@ -114,18 +118,16 @@ public class Ship {
         }
         int[] tempShipCount = ShipCount;
         int temp = 0;
+        int temp2 = 0;
         for (int x= 0; x <5; x++) {
             setAnzahlderSchiffe(tempShipCount);
             int[] AnzahlSchiffe = getAnzahlderSchiffe();
             for (int y = 0; y < AnzahlSchiffe[x]; y++) {
                 setShipList(x +2);
                 fleet.put(++temp, x + 2);
-                enemyFleet.put(++temp, x +2);
+                enemyFleet.put(++temp2, x +2);
             }
         }
-        System.out.println("Schiffe:" + getShipList());
-        System.out.println("Schiffe Gegner:" + getEnemeyShipList());
-        System.out.println("Spielfeldsize: " + Spielfeld.getSpielfeldSize());
     }
 
 }

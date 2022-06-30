@@ -2,19 +2,24 @@ package progprak.src.Logik;
 import progprak.src.UI.UI;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Scanner;
 
 
 public class Spielfeld
 {
+	protected int key, key2;
 	public Ship ship = new Ship();
 	enum Zustand {Wasser, Schiff, Schiffhit, Miss};
 	protected Zustand[][] zustandSpielfeld;
 	protected Zustand[][] zustandEnemySpielfeld;
 	protected BattleShip[][] Ships = new BattleShip[0][0];
 	protected BattleShip[] vorhandeneSchiffe;// = new BattleShip[0];
-	public static int SpielfeldSize = 10;
+	public static int SpielfeldSize = 31;
 
 	//--------------- Initialisierung vom Spielfeld---------------------------------------------------
 	public Spielfeld (int Size) {
@@ -44,8 +49,19 @@ public class Spielfeld
 	public int getZustandEnemySpielfeld(int x, int y) {
 		return ship.enemyShipFleet[x][y];
 	}
+
+	public int getKey() {
+		System.out.println("getkey:" + key);
+		return key;
+	}
+
+	public int setKey(int value) {
+		this.key += value;
+		System.out.println("Testkey:" + key + "/" + value);
+		return key;
+	}
+
 	// Speichern und Laden was noch geupdated werden muss
-	/*
 	public void speichern() throws Exception
 	{
 		System.out.println("speichern....");
@@ -96,7 +112,7 @@ public class Spielfeld
             pWriter.flush();
             pWriter.close();
         } 
-        catch (IOException ioe) 
+        catch (IOException ioe)
         {
             ioe.printStackTrace();
         } 
@@ -155,8 +171,8 @@ public class Spielfeld
             		rRichtung = Boolean.parseBoolean(ArrInhalt[4]);	
         			
         			
-        			InitializeShip(intGroesse);
-        			setzeSchiff(StartPosX, StartPosY, rRichtung, vorhandeneSchiffe[vorhandeneSchiffe.length - 1]);
+        			//InitializeShip(intGroesse);
+        			//setzeSchiff(StartPosX, StartPosY, rRichtung, vorhandeneSchiffe[vorhandeneSchiffe.length - 1]);
         			
         			vorhandeneSchiffe[vorhandeneSchiffe.length - 1].setAnzahlTreffer(AnzahlTreffer);
         			vorhandeneSchiffe[vorhandeneSchiffe.length - 1].setRichtung(rRichtung);
@@ -169,19 +185,18 @@ public class Spielfeld
         	System.out.println(e.getMessage());
         } 
 	}
-	*/
 	//----------Funktionen final für Feld initialisieren + Feld darstellen + Schiffe setzen + Schiffe schießen----------------------------
 	public void initFeld () {
 		for (int col = 0; col < getSpielfeldSize(); col++) {
 			for (int row = 0; row < getSpielfeldSize(); row++) {
-				setZustandSpielfeld(row, col, 20);
+				setZustandSpielfeld(row, col, -1);
 			}
 		}
 	}
 	public void initEnemyFeld () {
 		for (int col = 0; col < getSpielfeldSize(); col++) {
 			for (int row = 0; row < getSpielfeldSize(); row++) {
-				setZustandEnemySpielfeld(row, col, 20);
+				setZustandEnemySpielfeld(row, col, -1);
 			}
 		}
 	}
@@ -233,33 +248,39 @@ public class Spielfeld
 			System.out.println();
 		}
 	}
-	public void placeShips(ActionEvent e) {
-		int k= 0;
-		String[] coordinate = e.getActionCommand().split(",");
-		int x = Integer.parseInt(coordinate[0]);
-		int y = Integer.parseInt(coordinate[1]);
-		for (int i= 0; i < ship.getAnzahlderSchiffe().length; i++) {
-			for (int j= 0; j < ship.getAnzahlderSchiffe()[i]; j++) {
-				if (ship.getAnzahlderSchiffe()[i] == 0) {
-					break;
+	public void placeShips (int row, int col) {
+		int size;
+		for (int i = 0; i < 1; i++)
+		{
+			key = getKey();
+			System.out.println("test2: " + key);
+			size = ship.getFleet().get(key);
+			for (int j = 0; j < size; j++)
+			{
+				System.out.println("test3: " + key + "/" + j);
+				if(ship.getRichtung() == true) {
+					setZustandSpielfeld(col , row + j,key);
 				} else {
-					k++;
-					for (int row = 0; row < getSpielfeldSize(); row++) {
-						for (int col = 0; col < getSpielfeldSize(); col++) {
-							for (int z = 0; z < i + 2; z++) {
-								if (row == x && col == y) {
-									if (ship.getRichtung() == true) {
-										setZustandSpielfeld(row + z, col, k);
-									} else {
-										setZustandSpielfeld(row, col + z, k);
-									}
-								}
-							}
-						}
-					}displayFeld();
+					setZustandSpielfeld(row +j, col,key);
 				}
 			}
-		}
+		}displayFeld();
+	}
+	public void placeEnemyShips (int row, int col) {
+		int size;
+		for (int i = 0; i < 1; i++)
+		{
+			key2 = getKey();
+			size = ship.getFleet().get(key2);
+			for (int j = 0; j < size; j++)
+			{
+				if(ship.getRichtung() == true) {
+					setZustandSpielfeld(col , row + j,key2);
+				} else {
+					setZustandSpielfeld(row +j, col,key2);
+				}
+			}
+		}displayFeld();
 	}
 	public void placeEnemyShips() {
 		System.out.println("Test");
@@ -294,20 +315,20 @@ public class Spielfeld
 		}
 		displayFeld();
 	}
-	public void shoot () {
-		Scanner shoot = new Scanner(System.in);
+	public void shoot (int x, int y) {
 		int temp;
-		System.out.println("Shootx: ");
-		int shootx = shoot.nextInt();
-		System.out.println("Shooty: ");
-		int shooty = shoot.nextInt();
+		int shootx = x;
+		int shooty = y;
 		for (int row = 0; row < getSpielfeldSize(); row++) {
 			for (int col = 0; col < getSpielfeldSize(); col++) {
-				// Wert von Button (i/j)
 				if (row == shootx && col == shooty) {
-					temp = ship.fleet.get(ship.getShipFleet()[row][col]);
-					ship.fleet.replace(ship.getShipFleet()[row][col], --temp);
-					System.out.println(ship.fleet.get(ship.getShipFleet()[row][col]));
+					if (getZustandSpielfeld(shootx,shooty) == -1) {
+						setZustandSpielfeld(shootx,shooty, -2);
+					} else if (getZustandSpielfeld(shootx,shooty) > 0) {
+						temp = ship.fleet.get(ship.getShipFleet()[row][col]);
+						ship.fleet.replace(ship.getShipFleet()[row][col], --temp);
+						System.out.println(ship.fleet.get(ship.getShipFleet()[row][col]));
+					}break;
 				}
 			}
 		}
