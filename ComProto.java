@@ -35,15 +35,15 @@ public class ComProto
         {
             if(Integer.parseInt(inputarray[1]) == 0)
             {
-
+                //update Spielfeld
             }
             if(Integer.parseInt(inputarray[1]) == 1)
             {
-
+                //update Spielfeld
             }
             if(Integer.parseInt(inputarray[1]) == 2)
             {
-
+                //update Spielfeld
             }
         }
         if(inputarray[0].equalsIgnoreCase("pass"))
