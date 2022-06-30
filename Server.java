@@ -1,5 +1,4 @@
 package progprak;
-import progprak.src.ComProto;
 
 import java.io.*;
 import java.net.*;
