@@ -9,6 +9,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 
 public class UI {
     // Define new Colors
@@ -16,6 +17,11 @@ public class UI {
     Color shipcolor = new Color(78, 78, 76);
     Color hitcolor = new Color (139,0,0);
     Color misscolor = new Color(19, 23, 128);
+    // Kram für Filechooser
+
+    static private final String newline = "\n";
+    JTextArea log;
+    final JFileChooser fc = new JFileChooser();
 
     // Panel for adding Content
     JPanel content;
@@ -253,11 +259,25 @@ public class UI {
                 }
             });
 
-            JButton load = new UiButton("Load");
+            JButton loadButton = new UiButton("Load");
             cLayout.gridx = 2;
             cLayout.gridy = 0;
             cLayout.gridwidth = 1;
-            add(load, cLayout);
+            add(loadButton, cLayout);
+            loadButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (e.getSource() == loadButton) {
+                        int returnVal = fc.showOpenDialog(BoardCreator.this);
+                        if (returnVal == JFileChooser.APPROVE_OPTION) {
+                            File file = fc.getSelectedFile();
+                            log.append("Opening: " + file.getName() + "." + newline);
+                        } else {
+                            log.append("Open command cancelled by user." + newline);
+                        }
+                    }
+                }
+            });
 
             JButton goback = new UiButton("Back");
             cLayout.gridx = 3;
@@ -274,6 +294,7 @@ public class UI {
             });
 
             JLabel inputText = new UiLabel("Lege die Spielfeldsize und Anzahl Schiffe fest: ");
+            inputText.setBorder(BorderFactory.createLoweredBevelBorder());
             cLayout.gridx = 0;
             cLayout.gridy = 1;
             cLayout.gridwidth = 3;
@@ -287,7 +308,7 @@ public class UI {
 
             prozent = new JLabel("<html><body>" + "Total Ships" + getShipSum() + "<br>" + "Percentage erreicht: " + getPercentage() + "%" + "<html><body>");
             prozent.setEnabled(false);
-            prozent.setFont(new Font("serif", Font.PLAIN,25));
+            prozent.setFont(new Font("serif", Font.PLAIN,15));
             prozent.setForeground(Color.white);
             cLayout.gridx = 2;
             cLayout.gridy = 6;
@@ -310,7 +331,7 @@ public class UI {
             ship2.addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent e) {
-                    ship2Text.setText("Shipsize2: " + ship2.getValue());
+                    ship2Text.setText("Anzahl der Schipsize2: " + ship2.getValue());
                     shipValue2= (int)(ship2.getValue());
                     setShipSum();
                     setPercentage();
@@ -334,7 +355,7 @@ public class UI {
             ship3.addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent e) {
-                    ship3Text.setText("Shipsize3: " + ship3.getValue());
+                    ship3Text.setText("Anzahl der Schipsize3: " + ship3.getValue());
                     shipValue3= (int)(ship3.getValue());
                     setShipSum();
                     setPercentage();
@@ -357,7 +378,7 @@ public class UI {
             ship4.addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent e) {
-                    ship4Text.setText("Shipsize4: " + ship4.getValue());
+                    ship4Text.setText("Anzahl der Schipsize4: " + ship4.getValue());
                     shipValue4= (int)(ship4.getValue());
                     setShipSum();
                     setPercentage();
@@ -380,7 +401,7 @@ public class UI {
             ship5.addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent e) {
-                    ship5Text.setText("Shipsize5: " + ship5.getValue());
+                    ship5Text.setText("Anzahl der Schipsize5: " + ship5.getValue());
                     shipValue5= (int)(ship5.getValue());
                     setShipSum();
                     setPercentage();
@@ -403,7 +424,7 @@ public class UI {
             ship6.addChangeListener(new ChangeListener() {
                 @Override
                 public void stateChanged(ChangeEvent e) {
-                    ship6Text.setText("Shipsize6: " + ship6.getValue());
+                    ship6Text.setText("Anzahl der Schipsize6: " + ship6.getValue());
                     shipValue6= (int)(ship6.getValue());
                     setShipSum();
                     setPercentage();
@@ -904,9 +925,9 @@ public class UI {
             player1text.setHorizontalAlignment(SwingConstants.CENTER);
             topContainer.add(player1text);
 
-            JLabel whosTurn = new UiLabel("Whos turn is it: ");
-            whosTurn.setHorizontalAlignment(SwingConstants.CENTER);
-            topContainer.add(whosTurn);
+            JLabel whoseTurn = new UiLabel("Whose turn is it: ");
+            whoseTurn.setHorizontalAlignment(SwingConstants.CENTER);
+            topContainer.add(whoseTurn);
 
             JLabel player2text = new UiLabel("PLAYER 2");
             player2text.setHorizontalAlignment(SwingConstants.CENTER);

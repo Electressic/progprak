@@ -109,6 +109,13 @@ public class Ship {
         return false;
     }
     */
+    public boolean isShipDead(int x, int y) {
+        if ((fleet.get(getShipFleet()[x][y]) == 0)) {
+            fleet.remove(getShipFleet()[x][y]);
+            return true;
+        }
+        return false;
+    }
     public void createShips(int[] ShipCount) {
         for (int i = 0; i <= storage.length; i++) {
             for (int j = 0; j < getShipList().size(); j++) {

@@ -12,7 +12,8 @@ import java.util.Scanner;
 
 public class Spielfeld
 {
-	protected int key, key2;
+	protected int key, key2, row, col, value;
+	private Object[] neighbourStorage = new Object[18];
 	public Ship ship = new Ship();
 	enum Zustand {Wasser, Schiff, Schiffhit, Miss};
 	protected Zustand[][] zustandSpielfeld;
@@ -333,5 +334,41 @@ public class Spielfeld
 			}
 		}
 		displayFeld();
+	}
+	// Methode um die Nachbarfelder zu prüfen
+	public void checkArea (final Object neighbours) {
+		for (int i = 0; i < neighbourStorage.length; i++) {
+			neighbourStorage[i] = null;
+		}
+
+		int index = 0;
+		for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
+			for (int colOffset = -1; colOffset <= 1; colOffset++) {
+				// Make sure that we don't count ourselves
+				if (rowOffset == 0 && colOffset == 0) {
+					continue;
+				}
+				int rowValue = row + rowOffset;
+				int colValue = col + colOffset;
+
+				if (rowValue < 0 || rowValue >= Spielfeld.getSpielfeldSize()
+						|| colValue < 0 || colValue >= Spielfeld.getSpielfeldSize()) {
+					continue;
+				}
+
+				//neighbours[index++] = getZustandSpielfeld(rowValue, colValue);
+			}
+		}
+	}
+	//Nicht sicher ob bisher funktioniert so wie gedacht! soll die Area dann am ende aufdecken
+	public void updateArea () {
+		for (Object neighbour : neighbourStorage) {
+			if (neighbour == null) {
+				break;
+			}
+			if (neighbour.equals("-2")) {
+				value++;
+			}
+		}
 	}
 }
