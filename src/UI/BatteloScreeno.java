@@ -3,14 +3,14 @@ package progprak.src.UI;
 import javax.swing.*;
 import java.awt.*;
 
-public class BattleScreen {
+public class BatteloScreeno {
     JFrame battleFrame = new JFrame("BATTLE");
     JButton[][] cells = new JButton[10][10];
     Font gridFont = new Font(Font.DIALOG, Font.PLAIN, 24);
     JPanel player1 = new JPanel();
     JPanel player2 = new JPanel();
     JPanel status = new JPanel();
-    public BattleScreen () {
+    public BatteloScreeno() {
         battleFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         battleFrame.setMinimumSize(new Dimension(600 ,600));
         battleFrame.setLocationRelativeTo(null);

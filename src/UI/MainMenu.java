@@ -11,16 +11,11 @@ import java.io.File;
 
 public class MainMenu extends Component{
     private JFrame frame = new JFrame("Game");
-    JTextArea log;
-    final JFileChooser fc = new JFileChooser();
-    static private final String newline = "\n"; // shit für fileexplorer
-    private JButton loadButton;
     private JButton startButton;
     private JButton mpButton; //Buttons im Hauptmenü so far
 
     public MainMenu() 
     {
-        log = new JTextArea(5,20); // log für File explorer shit?
         // Creating the Window:
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
@@ -44,7 +39,7 @@ public class MainMenu extends Component{
         mlayout.gridy = 0;
         menu.add(title, mlayout);
 
-        JButton startButton = new JButton("START");
+        startButton = new JButton("START");
         mlayout.gridx = 0;
         mlayout.gridwidth = 1;
         mlayout.gridy = 1;
@@ -55,27 +50,6 @@ public class MainMenu extends Component{
                 if(e.getSource()==startButton) {
                     frame.dispose();
                     Creator createWindow = new Creator();
-                }
-            }
-        });
-
-        // load button. opens file explorer für die datei zum laden
-        JButton loadButton = new JButton("LOAD");
-        mlayout.gridx = 1;
-        mlayout.gridwidth = 1;
-        mlayout.gridy = 1;
-        menu.add(loadButton, mlayout);
-        loadButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (e.getSource() == loadButton) {
-                    int returnVal = fc.showOpenDialog(MainMenu.this);
-                    if (returnVal == JFileChooser.APPROVE_OPTION) {
-                        File file = fc.getSelectedFile();
-                        log.append("Opening: " + file.getName() + "." + newline);
-                    } else {
-                        log.append("Open command cancelled by user." + newline);
-                    }
                 }
             }
         });
