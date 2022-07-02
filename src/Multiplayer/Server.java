@@ -8,6 +8,7 @@ public class Server {
     public static void main(String[] args) throws IOException
     {
         try (
+
             ServerSocket Server = new ServerSocket(111);
             Socket clientsocket = Server.accept();
             BufferedReader incoming = new BufferedReader(new InputStreamReader(clientsocket.getInputStream()));
@@ -30,4 +31,3 @@ public class Server {
         }
     }
 }
-
