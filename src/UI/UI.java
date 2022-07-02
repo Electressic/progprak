@@ -963,7 +963,6 @@ public class UI {
                     content.revalidate();
                 }
             });
-
             JLabel player1text = new UiLabel("PLAYER 1");
             player1text.setHorizontalAlignment(SwingConstants.CENTER);
             topContainer.add(player1text);

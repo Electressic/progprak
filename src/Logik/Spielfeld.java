@@ -84,7 +84,6 @@ public class Spielfeld
 		this.statusColor = color;
 		return color;
 	}
-
 	// Speichern und Laden was noch geupdated werden muss
 	public void speichern() throws Exception
 	{
