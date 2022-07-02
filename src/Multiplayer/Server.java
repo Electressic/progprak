@@ -1,18 +1,18 @@
 package progprak.src.Multiplayer;
 
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 
 public class Server {
 
     public static void main(String[] args) throws IOException
     {
         try (
-                ServerSocket Server = new ServerSocket(111);
-                Socket clientsocket = Server.accept();
-                BufferedReader incoming = new BufferedReader(new InputStreamReader(clientsocket.getInputStream()));
-                BufferedWriter outgoing = new BufferedWriter(new OutputStreamWriter(clientsocket.getOutputStream()));
+
+            ServerSocket Server = new ServerSocket(111);
+            Socket clientsocket = Server.accept();
+            BufferedReader incoming = new BufferedReader(new InputStreamReader(clientsocket.getInputStream()));
+            BufferedWriter outgoing = new BufferedWriter(new OutputStreamWriter(clientsocket.getOutputStream()));
         )
         {
             String input, output;
