@@ -2,12 +2,13 @@ package progprak.src.Logik;
 
 import progprak.src.UI.UI;
 
+import java.awt.*;
 import java.util.*;
 
 public class Ship {
     private int[] ships = {2,3,4,5,6};
     private int[] anzahlderSchiffe;
-    Spielfeld spielfeld;
+    protected Image shipPieceAlive;
     protected int[][]  shipFleet;
     protected int[][]  enemyShipFleet;
 
@@ -51,12 +52,16 @@ public class Ship {
     public ArrayList<Integer> getShipList() {
         return shipList;
     }
-    public ArrayList<Integer> getEnemeyShipList() {
+    public ArrayList<Integer> getEnemyShipList() {
         return enemyShipList;
     }
 
     public Map<Integer, Integer> getFleet() {
         return fleet;
+    }
+
+    public Map<Integer, Integer> getEnemyFleet() {
+        return enemyFleet;
     }
 
     public int[][] getShipFleet() {
@@ -120,7 +125,7 @@ public class Ship {
         for (int i = 0; i <= storage.length; i++) {
             for (int j = 0; j < getShipList().size(); j++) {
                 getShipList().remove(j);
-                getEnemeyShipList().remove(j);
+                getEnemyShipList().remove(j);
             }
         }
         int[] tempShipCount = ShipCount;
