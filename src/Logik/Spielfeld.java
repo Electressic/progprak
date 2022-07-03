@@ -1,6 +1,7 @@
 package progprak.src.Logik;
 import progprak.src.UI.UI;
-
+import java.util.Random;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
@@ -12,20 +13,31 @@ import java.util.Scanner;
 
 public class Spielfeld
 {
-	protected int key, key2;
+	protected int key;
 	public Ship ship = new Ship();
 	enum Zustand {Wasser, Schiff, Schiffhit, Miss};
 	protected Zustand[][] zustandSpielfeld;
 	protected Zustand[][] zustandEnemySpielfeld;
-	protected BattleShip[][] Ships = new BattleShip[0][0];
-	protected BattleShip[] vorhandeneSchiffe;// = new BattleShip[0];
+
 	public static int SpielfeldSize = 31;
+	protected String strAbfrageString = "";
+	String [][] aiShots = new String[getSpielfeldSize()][getSpielfeldSize()];
+	String [][] playerShots = new String[getSpielfeldSize()][getSpielfeldSize()];
+	public Random rn = new Random();
+	Color statusColor;
 
 	//--------------- Initialisierung vom Spielfeld---------------------------------------------------
 	public Spielfeld (int Size) {
 		zustandSpielfeld = new Zustand[Size][Size];
 		zustandEnemySpielfeld = new Zustand[Size][Size];
-		Ships = new BattleShip[Size][Size];
+		for(int i = 0; i < aiShots[0].length; i++)
+		{
+			for(int j = 0; j < aiShots[1].length; j++)
+			{
+				aiShots[i][j] = "0";
+				playerShots[i][j] = "0";
+			}
+		}
 	}
 
 	//Setter und Getter for BoardSize
@@ -53,16 +65,25 @@ public class Spielfeld
 	}
 
 	public int getKey() {
-		System.out.println("getkey:" + key);
 		return key;
 	}
 
 	public int setKey(int value) {
 		this.key += value;
-		System.out.println("Testkey:" + key + "/" + value);
 		return key;
 	}
+	public int resetKey(int value) {
+		this.key = value;
+		return key;
+	}
+	public Color getStatusColor() {
+		return statusColor;
+	}
 
+	public Color setStatusColor(int row, int col, Color color) {
+		this.statusColor = color;
+		return color;
+	}
 	// Speichern und Laden was noch geupdated werden muss
 	public void speichern() throws Exception
 	{
@@ -106,11 +127,11 @@ public class Spielfeld
             	}
             	pWriter.print("\n");
             }
-            for(int i = 0; i < vorhandeneSchiffe.length; i++)
-            {
-            	pWriter.print(vorhandeneSchiffe[i].getShipDataAsString());
+            //for(int i = 0; i < vorhandeneSchiffe.length; i++)
+            //{
+            	//pWriter.print(vorhandeneSchiffe[i].getShipDataAsString());
             	pWriter.print("\n");
-            }
+            //}
             pWriter.flush();
             pWriter.close();
         } 
@@ -177,8 +198,8 @@ public class Spielfeld
         			//setzeSchiff(StartPosX, StartPosY, rRichtung, vorhandeneSchiffe[vorhandeneSchiffe.length - 1]);
 
         			
-        			vorhandeneSchiffe[vorhandeneSchiffe.length - 1].setAnzahlTreffer(AnzahlTreffer);
-        			vorhandeneSchiffe[vorhandeneSchiffe.length - 1].setRichtung(rRichtung);
+        			//vorhandeneSchiffe[vorhandeneSchiffe.length - 1].setAnzahlTreffer(AnzahlTreffer);
+        			//vorhandeneSchiffe[vorhandeneSchiffe.length - 1].setRichtung(rRichtung);
         		}
         	}                
         	obj.close();
@@ -256,16 +277,26 @@ public class Spielfeld
 		for (int i = 0; i < 1; i++)
 		{
 			key = getKey();
-			System.out.println("test2: " + key);
 			size = ship.getFleet().get(key);
 			for (int j = 0; j < size; j++)
 			{
-				System.out.println("test3: " + key + "/" + j);
-				if(ship.getRichtung() == true) {
-					setZustandSpielfeld(col , row + j,key);
-				} else {
-					setZustandSpielfeld(row +j, col,key);
-				}
+					if(ship.getRichtung() == true) {
+						setZustandSpielfeld(row +j , col,key);
+						/*
+						setZustandSpielfeld(row +j , col,key);
+						setZustandSpielfeld(row -1 , col,-3);
+						setZustandSpielfeld(row -1 , col +1,-3);
+						setZustandSpielfeld(row -1 , col -1,-3);
+						setZustandSpielfeld(row +j + 1 , col,-3);
+						setZustandSpielfeld(row +j + 1 , col+1,-3);
+						setZustandSpielfeld(row +j + 1 , col-1,-3);
+						setZustandSpielfeld(row +j , col + 1,-3);
+						setZustandSpielfeld(row +j , col -1,-3);
+						setStatusColor(row + j, col, Color.black);
+						 */
+					} else {
+						setZustandSpielfeld(row, col + j,key);
+					}
 			}
 		}displayFeld();
 	}
@@ -273,68 +304,130 @@ public class Spielfeld
 		int size;
 		for (int i = 0; i < 1; i++)
 		{
-			key2 = getKey();
-			size = ship.getFleet().get(key2);
+			key = getKey();
+			size = ship.getEnemyFleet().get(key);
 			for (int j = 0; j < size; j++)
 			{
 				if(ship.getRichtung() == true) {
-					setZustandSpielfeld(col , row + j,key2);
+					setZustandEnemySpielfeld(row +j , col,key);
+						/*
+						setZustandSpielfeld(row +j , col,key);
+						setZustandSpielfeld(row -1 , col,-3);
+						setZustandSpielfeld(row -1 , col +1,-3);
+						setZustandSpielfeld(row -1 , col -1,-3);
+						setZustandSpielfeld(row +j + 1 , col,-3);
+						setZustandSpielfeld(row +j + 1 , col+1,-3);
+						setZustandSpielfeld(row +j + 1 , col-1,-3);
+						setZustandSpielfeld(row +j , col + 1,-3);
+						setZustandSpielfeld(row +j , col -1,-3);
+						setStatusColor(row + j, col, Color.black);
+						 */
 				} else {
-					setZustandSpielfeld(row +j, col,key2);
+					setZustandEnemySpielfeld(row, col + j,key);
 				}
 			}
-		}displayFeld();
+		}displayEnemyFeld();
 	}
-	public void placeEnemyShips() {
-		System.out.println("Test");
-		int temp = 0;
-		int key = 0;
-		Scanner myObj = new Scanner(System.in);
-		System.out.println("Enter Ship Koordinaten: ");
-		for(int i = 0; i <ship.getAnzahlderSchiffe().length; i++)
-		{
-			for (int j = 0; j < ship.getAnzahlderSchiffe()[i]; j++) {
-				key++;
-				System.out.println("X Koordinate: ");
-				int x = myObj.nextInt();  // Read user input
-				System.out.println("Y Koordinate: ");
-				int y = myObj.nextInt();  // Read user input
-				boolean richtung = ship.setRichtung(myObj.nextBoolean());
-				System.out.println("Koordinate Ship:" + x +"/" + y);
-				for (int row = 0; row < getSpielfeldSize(); row++) {
-					for (int col = 0; col < getSpielfeldSize(); col++) {
-						for (int z = 0; z < i +2; z++) {
-							if (row == x && col == y) {
-								if (ship.getRichtung() == true) {
-									setZustandSpielfeld(row + z, col, key);
-								} else {
-									setZustandSpielfeld(row, col + z, key);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		displayFeld();
-	}
-	public void shoot (int x, int y) {
+	public void shoot (int y, int x) {
 		int temp;
-		int shootx = x;
-		int shooty = y;
-		for (int row = 0; row < getSpielfeldSize(); row++) {
-			for (int col = 0; col < getSpielfeldSize(); col++) {
-				if (row == shootx && col == shooty) {
-					if (getZustandSpielfeld(shootx,shooty) == -1) {
-						setZustandSpielfeld(shootx,shooty, -2);
-					} else if (getZustandSpielfeld(shootx,shooty) > 0) {
-						temp = ship.fleet.get(ship.getShipFleet()[row][col]);
-						ship.fleet.replace(ship.getShipFleet()[row][col], --temp);
-						System.out.println(ship.fleet.get(ship.getShipFleet()[row][col]));
-					}break;
+		if (getZustandEnemySpielfeld(x, y) > 0) {
+			temp = ship.enemyFleet.get(getZustandEnemySpielfeld(x,y));
+			ship.enemyFleet.replace(getZustandEnemySpielfeld(x,y), --temp);
+			if (temp <= 0) {
+				setString("shipsunk");
+				playerShots[x][y] = "shipsunk";
+				return;
+			}
+			setString("shiphit");
+			playerShots[x][y] = "shiphit";
+			return;
+		}
+		setString("miss");
+		playerShots[x][y] = "miss";
+	}
+	public void enemyShoot (int y, int x) {
+		int temp;
+
+		if (getZustandSpielfeld(x, y) > 0) {
+			temp = ship.fleet.get(getZustandSpielfeld(x,y));
+			System.out.println("test2: " + temp);
+			ship.fleet.replace(getZustandSpielfeld(x,y), --temp);
+			if (temp <= 0) {
+				setString("shipsunk");
+				setZustandSpielfeld(x,y,0);
+				return;
+			}
+			setString("shiphit");
+			setZustandSpielfeld(x,y,0);
+			return;
+		}
+		setString("miss");
+	}
+	public void aiShoot(int x, int y) {
+		while(aiShots[x][y].equals("0") == false)
+		{
+			x = rn.nextInt() % getSpielfeldSize();
+			y = rn.nextInt() % getSpielfeldSize();
+		}
+		int temp;
+		if (getZustandSpielfeld(x, y) > 0) {
+			temp = ship.fleet.get(getZustandSpielfeld(x,y));
+			ship.fleet.replace(getZustandSpielfeld(x,y), --temp);
+			if (temp <= 0) {
+				setString("shipsunk");
+				return;
+			}
+			setString("shiphit");
+			aiShots[x][y] = "shiphit";
+			return;
+		}
+		setString("miss");
+	}
+	private void setString(String strText)
+	{
+		this.strAbfrageString = strText;
+	}
+	public String getString()
+	{
+		return this.strAbfrageString;
+	}
+	/*
+	// Methode um die Nachbarfelder zu prüfen
+	public void checkArea (final Object neighbours) {
+		for (int i = 0; i < neighbourStorage.length; i++) {
+			neighbourStorage[i] = null;
+		}
+
+		int index = 0;
+		for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
+			for (int colOffset = -1; colOffset <= 1; colOffset++) {
+				// Make sure that we don't count ourselves
+				if (rowOffset == 0 && colOffset == 0) {
+					continue;
 				}
+				int rowValue = row + rowOffset;
+				int colValue = col + colOffset;
+
+				if (rowValue < 0 || rowValue >= Spielfeld.getSpielfeldSize()
+						|| colValue < 0 || colValue >= Spielfeld.getSpielfeldSize()) {
+					continue;
+				}
+
+				//neighbours[index++] = getZustandSpielfeld(rowValue, colValue);
 			}
 		}
-		displayFeld();
 	}
+	//Nicht sicher ob bisher funktioniert so wie gedacht! soll die Area dann am ende aufdecken
+	public void updateArea () {
+		for (Object neighbour : neighbourStorage) {
+			if (neighbour == null) {
+				break;
+			}
+			if (neighbour.equals("-2")) {
+				value++;
+			}
+		}
+	}
+
+	 */
 }

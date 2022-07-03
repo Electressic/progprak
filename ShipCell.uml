@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>progprak.src.UI.UI.ShipCell</OriginalElement>
+  <nodes>
+    <node x="2257.318085106383" y="287.0">java.awt.Container.WakingRunnable</node>
+    <node x="2525.089539007092" y="380.0">java.awt.Container.MouseEventTargetFilter</node>
+    <node x="2907.2400709219855" y="174.0">java.awt.Component.DummyRequestFocusController</node>
+    <node x="1610.568085106383" y="174.0">java.awt.Component.BaselineResizeBehavior</node>
+    <node x="481.5" y="287.0">java.awt.ItemSelectable</node>
+    <node x="688.4900709219856" y="174.0">java.beans.JavaBean</node>
+    <node x="1190.9744680851063" y="174.0">javax.swing.TransferHandler.HasGetTransferHandler</node>
+    <node x="853.0994680851063" y="491.0">javax.swing.AbstractButton.AccessibleAbstractButton</node>
+    <node x="1803.5" y="380.0">javax.swing.SwingContainer</node>
+    <node x="717.5680851063829" y="287.0">javax.swing.SwingConstants</node>
+    <node x="2646.9900709219855" y="0.0">java.awt.image.ImageObserver</node>
+    <node x="1581.5" y="380.0">javax.swing.JComponent.AccessibleJComponent</node>
+    <node x="3186.2400709219855" y="174.0">java.awt.Component.FlipBufferStrategy</node>
+    <node x="1149.693085106383" y="380.0">javax.swing.JComponent.IntVector</node>
+    <node x="3445.7400709219855" y="174.0">java.awt.Component.BltBufferStrategy</node>
+    <node x="2000.318085106383" y="174.0">java.awt.Component.AccessibleAWTComponent</node>
+    <node x="1886.089539007092" y="491.0">javax.swing.JComponent.AccessibleJComponent.AccessibleFocusHandler</node>
+    <node x="3102.7400709219855" y="287.0">java.awt.Component.FlipSubRegionBufferStrategy</node>
+    <node x="2723.2400709219855" y="174.0">java.awt.Component.ProxyCapabilities</node>
+    <node x="481.5" y="380.0">javax.swing.AbstractButton</node>
+    <node x="2517.2400709219855" y="174.0">java.awt.Component.SingleBufferStrategy</node>
+    <node x="2022.318085106383" y="287.0">java.awt.Container.AccessibleAWTContainer</node>
+    <node x="2383.2400709219855" y="174.0">java.awt.Container</node>
+    <node x="2751.089539007092" y="380.0">java.awt.Container.DropTargetEventTargetFilter</node>
+    <node x="986.6930851063829" y="380.0">javax.swing.JComponent.ActionStandin</node>
+    <node x="3363.7400709219855" y="287.0">java.awt.Component.BltSubRegionBufferStrategy</node>
+    <node x="978.7499999999999" y="287.0">javax.swing.JComponent</node>
+    <node x="123.0" y="491.0">javax.swing.AbstractButton.ButtonActionPropertyChangeListener</node>
+    <node x="779.7244680851063" y="570.0">javax.swing.AbstractButton.AccessibleAbstractButton.ButtonKeyBinding</node>
+    <node x="1534.7244680851063" y="491.0">javax.swing.JButton</node>
+    <node x="437.0" y="491.0">javax.swing.AbstractButton.ButtonChangeListener</node>
+    <node x="2817.9900709219855" y="0.0">java.awt.MenuContainer</node>
+    <node x="2261.375" y="380.0">javax.accessibility.Accessible</node>
+    <node x="2115.089539007092" y="491.0">javax.swing.JComponent.AccessibleJComponent.AccessibleContainerHandler</node>
+    <node x="2743.9900709219855" y="91.0">java.awt.Component</node>
+    <node x="1977.5" y="380.0">java.awt.Container.AccessibleAWTContainer.AccessibleContainerHandler</node>
+    <node x="2439.318085106383" y="287.0">java.awt.Container.EventTargetFilter</node>
+    <node x="1502.7400709219855" y="0.0">java.io.Serializable</node>
+    <node x="1131.75" y="287.0">java.awt.Component.AccessibleAWTComponent.AccessibleAWTComponentHandler</node>
+    <node x="3628.7400709219855" y="174.0">java.awt.Component.AWTTreeLock</node>
+    <node x="1359.568085106383" y="380.0">javax.swing.JComponent.KeyboardState</node>
+    <node x="782.6930851063829" y="380.0">javax.swing.JComponent.ReadObjectCallback</node>
+    <node x="1537.2244680851063" y="570.0">progprak.src.UI.UI.ShipCell</node>
+    <node x="0.0" y="491.0">javax.swing.AbstractButton.Handler</node>
+    <node x="968.7244680851063" y="570.0">javax.swing.JButton.AccessibleJButton</node>
+    <node x="1539.818085106383" y="287.0">java.awt.Component.AccessibleAWTComponent.AccessibleAWTFocusHandler</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="java.awt.Component.AWTTreeLock" target="java.awt.Component" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="3699.2400709219855" y="152.0" />
+      <point x="3105.9900709219855" y="152.0" />
+      <point x="3105.9900709219855" y="142.0" />
+      <point x="2839.9900709219855" y="142.0" />
+      <point x="32.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.AbstractButton" target="java.awt.ItemSelectable" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Container.EventTargetFilter" target="java.awt.Container" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="2520.318085106383" y="265.0" />
+      <point x="2557.2400709219855" y="265.0" />
+      <point x="2557.2400709219855" y="255.0" />
+      <point x="2468.7400709219855" y="255.0" />
+      <point x="28.5" y="14.5" />
+    </edge>
+    <edge source="javax.swing.AbstractButton.Handler" target="java.io.Serializable" relationship="REALIZATION">
+      <point x="-25.75" y="-14.5" />
+      <point x="25.75" y="470.0" />
+      <point x="47.25" y="470.0" />
+      <point x="47.25" y="70.0" />
+      <point x="1566.2400709219855" y="70.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Container.AccessibleAWTContainer.AccessibleContainerHandler" target="java.awt.Container.AccessibleAWTContainer" relationship="INNER_CLASS">
+      <point x="59.0" y="-14.5" />
+      <point x="2154.5" y="358.0" />
+      <point x="2183.568085106383" y="358.0" />
+      <point x="53.75" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JButton.AccessibleJButton" target="javax.swing.JButton" relationship="INNER_CLASS">
+      <point x="42.0" y="-14.5" />
+      <point x="1094.7244680851063" y="545.0" />
+      <point x="1559.4744680851063" y="545.0" />
+      <point x="-24.75" y="14.5" />
+    </edge>
+    <edge source="java.awt.Container" target="java.awt.Component" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="2440.2400709219855" y="142.0" />
+      <point x="2775.9900709219855" y="142.0" />
+      <point x="-32.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.AbstractButton" target="java.beans.JavaBean" relationship="ANNOTATION">
+      <point x="-49.66666666666666" y="-14.5" />
+      <point x="506.33333333333326" y="358.0" />
+      <point x="471.0" y="358.0" />
+      <point x="471.0" y="265.0" />
+      <point x="743.9900709219856" y="265.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Container.AccessibleAWTContainer.AccessibleContainerHandler" target="java.io.Serializable" relationship="REALIZATION">
+      <point x="-59.0" y="-14.5" />
+      <point x="2036.5" y="348.0" />
+      <point x="1874.943085106383" y="348.0" />
+      <point x="1874.943085106383" y="70.0" />
+      <point x="1566.2400709219855" y="70.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.AccessibleAWTComponent" target="java.awt.Component" relationship="INNER_CLASS">
+      <point x="57.25" y="-14.5" />
+      <point x="2172.068085106383" y="152.0" />
+      <point x="3105.9900709219855" y="152.0" />
+      <point x="3105.9900709219855" y="142.0" />
+      <point x="2839.9900709219855" y="142.0" />
+      <point x="32.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.FlipBufferStrategy" target="java.awt.Component" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="3270.7400709219855" y="152.0" />
+      <point x="3105.9900709219855" y="152.0" />
+      <point x="3105.9900709219855" y="142.0" />
+      <point x="2839.9900709219855" y="142.0" />
+      <point x="32.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JButton" target="javax.swing.AbstractButton" relationship="GENERALIZATION">
+      <point x="-33.0" y="-14.5" />
+      <point x="1551.2244680851063" y="450.0" />
+      <point x="593.25" y="450.0" />
+      <point x="37.25" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.AccessibleAWTComponent.AccessibleAWTComponentHandler" target="java.io.Serializable" relationship="REALIZATION">
+      <point x="-70.5" y="-14.5" />
+      <point x="1202.25" y="245.0" />
+      <point x="1180.4744680851063" y="245.0" />
+      <point x="1180.4744680851063" y="70.0" />
+      <point x="1566.2400709219855" y="70.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.AbstractButton" target="javax.swing.JComponent" relationship="GENERALIZATION">
+      <point x="49.66666666666666" y="-14.5" />
+      <point x="605.6666666666666" y="348.0" />
+      <point x="1011.9999999999999" y="348.0" />
+      <point x="-33.25" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JComponent.ActionStandin" target="javax.swing.JComponent" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="1058.193085106383" y="358.0" />
+      <point x="1078.5" y="358.0" />
+      <point x="33.25" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JComponent.AccessibleJComponent" target="java.awt.Container.AccessibleAWTContainer" relationship="GENERALIZATION">
+      <point x="50.5" y="-14.5" />
+      <point x="1733.0" y="358.0" />
+      <point x="2076.068085106383" y="358.0" />
+      <point x="-53.75" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.AccessibleAWTComponent.AccessibleAWTFocusHandler" target="java.io.Serializable" relationship="REALIZATION">
+      <point x="-60.25" y="-14.5" />
+      <point x="1600.068085106383" y="70.0" />
+      <point x="1566.2400709219855" y="70.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Container.WakingRunnable" target="java.awt.Container" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="2338.318085106383" y="265.0" />
+      <point x="2557.2400709219855" y="265.0" />
+      <point x="2557.2400709219855" y="255.0" />
+      <point x="2468.7400709219855" y="255.0" />
+      <point x="28.5" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JComponent.AccessibleJComponent.AccessibleFocusHandler" target="javax.swing.JComponent.AccessibleJComponent" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="1990.589539007092" y="430.0" />
+      <point x="1733.0" y="430.0" />
+      <point x="50.5" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JButton.AccessibleJButton" target="javax.swing.AbstractButton.AccessibleAbstractButton" relationship="GENERALIZATION">
+      <point x="-42.0" y="-14.5" />
+      <point x="1010.7244680851063" y="545.0" />
+      <point x="1016.5994680851063" y="545.0" />
+      <point x="54.5" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JComponent.KeyboardState" target="javax.swing.JComponent" relationship="INNER_CLASS">
+      <point x="-37.0" y="-14.5" />
+      <point x="1396.568085106383" y="358.0" />
+      <point x="1078.5" y="358.0" />
+      <point x="33.25" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.BltSubRegionBufferStrategy" target="java.awt.Component.BltBufferStrategy" relationship="GENERALIZATION">
+      <point x="58.75" y="-14.5" />
+      <point x="3539.9900709219855" y="265.0" />
+      <point x="3527.2400709219855" y="265.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.AbstractButton.ButtonChangeListener" target="javax.swing.AbstractButton" relationship="INNER_CLASS">
+      <point x="48.75" y="-14.5" />
+      <point x="583.2499999999999" y="460.0" />
+      <point x="518.75" y="460.0" />
+      <point x="-37.25" y="14.5" />
+    </edge>
+    <edge source="javax.swing.AbstractButton.ButtonActionPropertyChangeListener" target="java.io.Serializable" relationship="REALIZATION">
+      <point x="-73.5" y="-14.5" />
+      <point x="196.5" y="460.0" />
+      <point x="87.11507092198553" y="460.0" />
+      <point x="87.11507092198553" y="70.0" />
+      <point x="1566.2400709219855" y="70.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component" target="java.awt.MenuContainer" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="2807.9900709219855" y="50.0" />
+      <point x="2893.4900709219855" y="50.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Container.AccessibleAWTContainer" target="java.awt.Component.AccessibleAWTComponent" relationship="GENERALIZATION">
+      <point x="-53.75" y="-14.5" />
+      <point x="2076.068085106383" y="245.0" />
+      <point x="2172.068085106383" y="245.0" />
+      <point x="57.25" y="14.5" />
+    </edge>
+    <edge source="javax.swing.AbstractButton.AccessibleAbstractButton.ButtonKeyBinding" target="javax.swing.AbstractButton.AccessibleAbstractButton" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="864.2244680851063" y="545.0" />
+      <point x="907.5994680851063" y="545.0" />
+      <point x="-54.5" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JButton" target="javax.swing.SwingContainer" relationship="ANNOTATION">
+      <point x="0.0" y="-14.5" />
+      <point x="1584.2244680851063" y="440.0" />
+      <point x="1880.5" y="440.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JComponent.ReadObjectCallback" target="javax.swing.JComponent" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="874.6930851063829" y="358.0" />
+      <point x="1078.5" y="358.0" />
+      <point x="33.25" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.FlipSubRegionBufferStrategy" target="java.awt.Component.FlipBufferStrategy" relationship="GENERALIZATION">
+      <point x="60.25" y="-14.5" />
+      <point x="3283.4900709219855" y="265.0" />
+      <point x="3270.7400709219855" y="265.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JComponent.KeyboardState" target="java.io.Serializable" relationship="REALIZATION">
+      <point x="37.0" y="-14.5" />
+      <point x="1470.568085106383" y="348.0" />
+      <point x="1529.318085106383" y="348.0" />
+      <point x="1529.318085106383" y="70.0" />
+      <point x="1566.2400709219855" y="70.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.AccessibleAWTComponent.AccessibleAWTComponentHandler" target="java.awt.Component.AccessibleAWTComponent" relationship="INNER_CLASS">
+      <point x="70.5" y="-14.5" />
+      <point x="1343.25" y="235.0" />
+      <point x="2124.5" y="235.0" />
+      <point x="2124.5" y="225.0" />
+      <point x="2057.568085106383" y="225.0" />
+      <point x="-57.25" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.AccessibleAWTComponent" target="java.io.Serializable" relationship="REALIZATION">
+      <point x="-57.25" y="-14.5" />
+      <point x="2057.568085106383" y="142.0" />
+      <point x="2104.568085106383" y="142.0" />
+      <point x="2104.568085106383" y="70.0" />
+      <point x="1566.2400709219855" y="70.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.AbstractButton" target="javax.swing.SwingConstants" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="555.9999999999999" y="338.0" />
+      <point x="794.5680851063829" y="338.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.SingleBufferStrategy" target="java.awt.Component" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="2610.2400709219855" y="152.0" />
+      <point x="3105.9900709219855" y="152.0" />
+      <point x="3105.9900709219855" y="142.0" />
+      <point x="2839.9900709219855" y="142.0" />
+      <point x="32.0" y="14.5" />
+    </edge>
+    <edge source="progprak.src.UI.UI.ShipCell" target="javax.swing.JButton" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="1589.2244680851063" y="545.0" />
+      <point x="1608.9744680851063" y="545.0" />
+      <point x="24.75" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.AccessibleAWTComponent.AccessibleAWTFocusHandler" target="java.awt.Component.AccessibleAWTComponent" relationship="INNER_CLASS">
+      <point x="60.25" y="-14.5" />
+      <point x="1720.568085106383" y="235.0" />
+      <point x="2124.5" y="235.0" />
+      <point x="2124.5" y="225.0" />
+      <point x="2057.568085106383" y="225.0" />
+      <point x="-57.25" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.FlipSubRegionBufferStrategy" target="java.awt.Component" relationship="INNER_CLASS">
+      <point x="-60.25" y="-14.5" />
+      <point x="3162.9900709219855" y="265.0" />
+      <point x="3175.7400709219855" y="265.0" />
+      <point x="3175.7400709219855" y="152.0" />
+      <point x="3105.9900709219855" y="152.0" />
+      <point x="3105.9900709219855" y="142.0" />
+      <point x="2839.9900709219855" y="142.0" />
+      <point x="32.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.BltSubRegionBufferStrategy" target="java.awt.Component" relationship="INNER_CLASS">
+      <point x="-58.75" y="-14.5" />
+      <point x="3422.4900709219855" y="265.0" />
+      <point x="3435.2400709219855" y="265.0" />
+      <point x="3435.2400709219855" y="152.0" />
+      <point x="3105.9900709219855" y="152.0" />
+      <point x="3105.9900709219855" y="142.0" />
+      <point x="2839.9900709219855" y="142.0" />
+      <point x="32.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.AbstractButton.AccessibleAbstractButton" target="javax.swing.JComponent.AccessibleJComponent" relationship="GENERALIZATION">
+      <point x="54.5" y="-14.5" />
+      <point x="1016.5994680851063" y="460.0" />
+      <point x="1632.0" y="460.0" />
+      <point x="-50.5" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JComponent" target="java.beans.JavaBean" relationship="ANNOTATION">
+      <point x="-44.33333333333334" y="-14.5" />
+      <point x="1000.9166666666665" y="265.0" />
+      <point x="743.9900709219856" y="265.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JButton" target="javax.accessibility.Accessible" relationship="REALIZATION">
+      <point x="33.0" y="-14.5" />
+      <point x="1617.2244680851063" y="470.0" />
+      <point x="2320.875" y="470.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.DummyRequestFocusController" target="java.awt.Component" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="3036.2400709219855" y="152.0" />
+      <point x="3105.9900709219855" y="152.0" />
+      <point x="3105.9900709219855" y="142.0" />
+      <point x="2839.9900709219855" y="142.0" />
+      <point x="32.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JComponent.IntVector" target="javax.swing.JComponent" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="1204.693085106383" y="358.0" />
+      <point x="1078.5" y="358.0" />
+      <point x="33.25" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.BaselineResizeBehavior" target="java.io.Serializable" relationship="REALIZATION">
+      <point x="-51.25" y="-14.5" />
+      <point x="1661.818085106383" y="70.0" />
+      <point x="1566.2400709219855" y="70.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Container.DropTargetEventTargetFilter" target="java.awt.Container" relationship="INNER_CLASS">
+      <point x="59.75" y="-14.5" />
+      <point x="2930.339539007092" y="358.0" />
+      <point x="2845.7714539007093" y="358.0" />
+      <point x="2845.7714539007093" y="265.0" />
+      <point x="2557.2400709219855" y="265.0" />
+      <point x="2557.2400709219855" y="255.0" />
+      <point x="2468.7400709219855" y="255.0" />
+      <point x="28.5" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.ProxyCapabilities" target="java.awt.Component" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="2805.2400709219855" y="152.0" />
+      <point x="3105.9900709219855" y="152.0" />
+      <point x="3105.9900709219855" y="142.0" />
+      <point x="2839.9900709219855" y="142.0" />
+      <point x="32.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component" target="java.awt.image.ImageObserver" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="2807.9900709219855" y="50.0" />
+      <point x="2722.4900709219855" y="50.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Container.AccessibleAWTContainer" target="java.awt.Container" relationship="INNER_CLASS">
+      <point x="53.75" y="-14.5" />
+      <point x="2183.568085106383" y="265.0" />
+      <point x="2557.2400709219855" y="265.0" />
+      <point x="2557.2400709219855" y="255.0" />
+      <point x="2468.7400709219855" y="255.0" />
+      <point x="28.5" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component" target="java.io.Serializable" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="2807.9900709219855" y="60.0" />
+      <point x="1566.2400709219855" y="60.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.BltBufferStrategy" target="java.awt.Component" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="3527.2400709219855" y="152.0" />
+      <point x="3105.9900709219855" y="152.0" />
+      <point x="3105.9900709219855" y="142.0" />
+      <point x="2839.9900709219855" y="142.0" />
+      <point x="32.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JComponent.AccessibleJComponent.AccessibleContainerHandler" target="javax.swing.JComponent.AccessibleJComponent" relationship="INNER_CLASS">
+      <point x="0.0" y="-14.5" />
+      <point x="2233.089539007092" y="460.0" />
+      <point x="1990.589539007092" y="460.0" />
+      <point x="1990.589539007092" y="430.0" />
+      <point x="1733.0" y="430.0" />
+      <point x="50.5" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JComponent.AccessibleJComponent" target="javax.swing.JComponent" relationship="INNER_CLASS">
+      <point x="-50.5" y="-14.5" />
+      <point x="1632.0" y="358.0" />
+      <point x="1078.5" y="358.0" />
+      <point x="33.25" y="14.5" />
+    </edge>
+    <edge source="javax.swing.AbstractButton.ButtonChangeListener" target="java.io.Serializable" relationship="REALIZATION">
+      <point x="-48.75" y="-14.5" />
+      <point x="485.75" y="460.0" />
+      <point x="236.74007092198553" y="460.0" />
+      <point x="236.74007092198553" y="70.0" />
+      <point x="1566.2400709219855" y="70.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.AbstractButton.AccessibleAbstractButton" target="javax.swing.AbstractButton" relationship="INNER_CLASS">
+      <point x="-54.5" y="-14.5" />
+      <point x="907.5994680851063" y="470.0" />
+      <point x="583.2499999999999" y="470.0" />
+      <point x="583.2499999999999" y="460.0" />
+      <point x="518.75" y="460.0" />
+      <point x="-37.25" y="14.5" />
+    </edge>
+    <edge source="java.awt.Container.DropTargetEventTargetFilter" target="java.awt.Container.EventTargetFilter" relationship="REALIZATION">
+      <point x="-59.75" y="-14.5" />
+      <point x="2810.839539007092" y="348.0" />
+      <point x="2520.318085106383" y="348.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Container.MouseEventTargetFilter" target="java.awt.Container" relationship="INNER_CLASS">
+      <point x="51.5" y="-14.5" />
+      <point x="2679.589539007092" y="358.0" />
+      <point x="2820.839539007092" y="358.0" />
+      <point x="2820.839539007092" y="265.0" />
+      <point x="2557.2400709219855" y="265.0" />
+      <point x="2557.2400709219855" y="255.0" />
+      <point x="2468.7400709219855" y="255.0" />
+      <point x="28.5" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JComponent" target="javax.swing.TransferHandler.HasGetTransferHandler" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="1045.25" y="265.0" />
+      <point x="1043.2297872340423" y="265.0" />
+      <point x="1043.2297872340423" y="235.0" />
+      <point x="1292.9744680851063" y="235.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Container.MouseEventTargetFilter" target="java.awt.Container.EventTargetFilter" relationship="REALIZATION">
+      <point x="-51.5" y="-14.5" />
+      <point x="2576.589539007092" y="348.0" />
+      <point x="2520.318085106383" y="348.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JComponent" target="java.io.Serializable" relationship="REALIZATION">
+      <point x="0.0" y="-14.5" />
+      <point x="1045.25" y="265.0" />
+      <point x="1043.2297872340423" y="265.0" />
+      <point x="1043.2297872340423" y="235.0" />
+      <point x="1023.4744680851063" y="235.0" />
+      <point x="1023.4744680851063" y="70.0" />
+      <point x="1566.2400709219855" y="70.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="java.awt.Component.BaselineResizeBehavior" target="java.awt.Component" relationship="INNER_CLASS">
+      <point x="51.25" y="-14.5" />
+      <point x="1764.318085106383" y="152.0" />
+      <point x="3105.9900709219855" y="152.0" />
+      <point x="3105.9900709219855" y="142.0" />
+      <point x="2839.9900709219855" y="142.0" />
+      <point x="32.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JButton" target="java.beans.JavaBean" relationship="ANNOTATION">
+      <point x="0.0" y="-14.5" />
+      <point x="1584.2244680851063" y="440.0" />
+      <point x="707.0680851063829" y="440.0" />
+      <point x="707.0680851063829" y="265.0" />
+      <point x="743.9900709219856" y="265.0" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="javax.swing.JComponent" target="java.awt.Container" relationship="GENERALIZATION">
+      <point x="44.33333333333334" y="-14.5" />
+      <point x="1089.5833333333333" y="255.0" />
+      <point x="2411.7400709219855" y="255.0" />
+      <point x="-28.5" y="14.5" />
+    </edge>
+    <edge source="javax.swing.AbstractButton.ButtonActionPropertyChangeListener" target="javax.swing.AbstractButton" relationship="INNER_CLASS">
+      <point x="73.5" y="-14.5" />
+      <point x="343.5" y="470.0" />
+      <point x="583.2499999999999" y="470.0" />
+      <point x="583.2499999999999" y="460.0" />
+      <point x="518.75" y="460.0" />
+      <point x="-37.25" y="14.5" />
+    </edge>
+    <edge source="javax.swing.AbstractButton.Handler" target="javax.swing.AbstractButton" relationship="INNER_CLASS">
+      <point x="25.75" y="-14.5" />
+      <point x="77.25" y="470.0" />
+      <point x="583.2499999999999" y="470.0" />
+      <point x="583.2499999999999" y="460.0" />
+      <point x="518.75" y="460.0" />
+      <point x="-37.25" y="14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.3245382585751979" showDependencies="false" x="1884.9999999999998" y="299.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
