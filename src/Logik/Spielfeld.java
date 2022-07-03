@@ -124,7 +124,7 @@ public class Spielfeld
         }
 		System.out.println("Spiel gespeichert!");
 	}
-	void SpielLaden(String strFile)
+	public void SpielLaden(String strFile)
 	{
         File doc = new File("C:\\Users\\Admin\\Downloads\\TestDokument.txt");
         
