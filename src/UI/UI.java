@@ -6,6 +6,7 @@ import progprak.src.Logik.Spielfeld;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -46,22 +47,10 @@ public class UI {
     Cell[][] enemycells = new Cell[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
     // Schiffarray
     JButton[][] schiffe = new JButton[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
-    // Gamestate Schiffe setzen oder Battle
-    String gameState;
-    //which turn it is
-    boolean isPlayerTurn;
     //check if Mp or Computer
     String enemy;
 
-    public void setPlayerTurn(boolean playerTurn) {
-        isPlayerTurn = playerTurn;
-    }
-    public String getPlayerTurn() {
-        if (isPlayerTurn == true) {
-            return "Player 1";
-        }
-        return "Player 2";
-    }
+
     public Cell[][] getBoard() {
         return cells;
     }
@@ -134,7 +123,7 @@ public class UI {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     content.removeAll();
-                    content.add(new BoardCreator());
+                    content.add(new Multiplayer());
                     content.revalidate();
                     spielfeld = new Spielfeld();
                     spielfeld.ship = new Ship();
@@ -142,12 +131,25 @@ public class UI {
             });
 
             JButton mpbtn = new UiButton("Multiplayer");
+            mpbtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    content.removeAll();
+                    content.add(new BoardCreator());
+                    content.revalidate();
+                    spielfeld = new Spielfeld();
+                    spielfeld.ship = new Ship();
+                }
+            });
             JButton aibtn = new UiButton("Computer gegen Computer");
 
             add(startbtn);
             add(mpbtn);
             add(aibtn);
         }
+    }
+    class Multiplayer extends JPanel {
+
     }
     //creates the BoardCreator for setting BoardSize and ShipCount
     class BoardCreator extends JPanel {
@@ -180,7 +182,7 @@ public class UI {
         }
         // if ShipSum is exactly 30% make start enabled and launch the placement
         public void isFitting() {
-            if (getPercentage() == 30) {
+            if (getPercentage() >= 30) {
                 createStart.setEnabled(true);
                 createStart.setContentAreaFilled(false);
                 createStart.addActionListener(new ActionListener() {
@@ -193,7 +195,7 @@ public class UI {
                         spielfeld.initEnemyFeld();
                         spielfeld.displayFeld();
                         spielfeld.displayEnemyFeld();
-                        gameState = "Setzen";
+                        spielfeld.gameState = "Setzen";
                     }
                 });
             } else {
@@ -265,14 +267,14 @@ public class UI {
             loadButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (e.getSource() == loadButton) {
-                        int returnVal = fc.showOpenDialog(BoardCreator.this);
-                        if (returnVal == JFileChooser.APPROVE_OPTION) {
-                            File file = fc.getSelectedFile();
-                            log.append("Opening: " + file.getName() + "." + newline);
-                        } else {
-                            log.append("Open command cancelled by user." + newline);
-                        }
+                    JFileChooser loadFile = new JFileChooser();
+                    int returnval = loadFile.showOpenDialog(content);
+                    if (returnval == JFileChooser.APPROVE_OPTION){
+                        File file = loadFile.getSelectedFile();
+                        try {
+                            System.out.println("test");
+                            spielfeld.laden(file.getName());
+                        } catch (Exception ex) {}
                     }
                 }
             });
@@ -501,12 +503,12 @@ public class UI {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     content.removeAll();
-                    gameState = "Setzen";
-                    isPlayerTurn = true;
+                    spielfeld.gameState = "Setzen";
+                    spielfeld.setPlayerTurn(true);
 
                     spielfeld.resetKey(0);
                     new ShipPlacementPlayer2();
-                    gameState = "Battle";
+                    spielfeld.gameState = "Battle";
                     content.add(new BattleScreen());
                     content.revalidate();
                 }
@@ -524,7 +526,7 @@ public class UI {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             Spielfeld.res = new ArrayList<>();
-                            if (gameState.equals("Setzen")) {
+                            if (spielfeld.gameState.equals("Setzen")) {
                                 for (int i = 0; i < spielfeld.ship.getShipList().get(0); i++) {
                                     if (spielfeld.ship.getRichtung() == true) {
                                         Spielfeld.getSurroundings(spielfeld.ship.getShipFleet(), finalCol, finalRow + i);
@@ -553,7 +555,7 @@ public class UI {
                                     startGame.setEnabled(true);
                                     Spielfeld.setSpielfeldSize(Spielfeld.getSpielfeldSize());
                                 }
-                                if (gameState.equals("Setzen") && spielfeld.ship.getShipList().size() > 0) {
+                                if (spielfeld.ship.getShipList().size() > 0) {
                                     spielfeld.setKey(1);
                                     for (int s = 0; s < spielfeld.ship.getFleet().get(spielfeld.getKey()); s++) {
                                         if (spielfeld.ship.getRichtung() == true) {
@@ -738,7 +740,7 @@ public class UI {
                 Spielfeld.res = new ArrayList<>();
                 int finalRow = spielfeld.rn.nextInt(Spielfeld.getSpielfeldSize());
                 int finalCol = spielfeld.rn.nextInt(Spielfeld.getSpielfeldSize());
-                int randomrichtung = spielfeld.rn.nextInt(1);
+                int randomrichtung = spielfeld.rn.nextInt(2);
                 boolean isHorzon;
                 if(randomrichtung ==0)
                 {
@@ -749,43 +751,25 @@ public class UI {
                     isHorzon = true;
                 }
                 spielfeld.ship.setRichtung(isHorzon);
-                if (gameState.equals("Setzen")) {
-                    for (int i = 0; i < spielfeld.ship.getEnemyShipList().get(0); i++) {
+                if (spielfeld.gameState.equals("Setzen")) {
+                    if ((finalRow + spielfeld.ship.getEnemyShipList().get(0)) > Spielfeld.getSpielfeldSize()) {
+                        break;
+                    }
+                    if ((finalCol + spielfeld.ship.getEnemyShipList().get(0)) > Spielfeld.getSpielfeldSize()) {
+                        break;
+                    }
+                    System.out.println("test" + spielfeld.getKey());
+                    spielfeld.setKey(1);
+                    for (int s = 0; s < spielfeld.ship.getEnemyFleet().get(spielfeld.getKey()); s++) {
                         if (spielfeld.ship.getRichtung() == true) {
-                            Spielfeld.getSurroundings(spielfeld.ship.getEnemyShipFleet(), finalCol, finalRow + i);
-                            if ((finalRow + spielfeld.ship.getEnemyShipList().get(0)) > Spielfeld.getSpielfeldSize()) {
-                                break;
-                            }
-                            for (int c : spielfeld.getListDirection()) {
-                                if (c > 0) {
-                                    break;
-                                }
-                            }
+                            spielfeld.placeEnemyShips(finalRow, finalCol);
                         } else {
-                            Spielfeld.getSurroundings(spielfeld.ship.getEnemyShipFleet(), finalCol + i, finalRow);
-                            if ((finalCol + spielfeld.ship.getEnemyShipList().get(0)) > Spielfeld.getSpielfeldSize()) {
-                                break;
-                            }
-                            for (int c : spielfeld.getListDirection()) {
-                                if (c > 0) {
-                                    break;
-                                }
-                            }
+                            spielfeld.placeEnemyShips(finalRow, finalCol);
                         }
+                        if (finalRow + s < Spielfeld.getSpielfeldSize() && finalRow + 1 < 0) ;
                     }
+                    spielfeld.ship.getEnemyShipList().remove(0);
                 }
-                spielfeld.setKey(1);
-                System.out.println(spielfeld.getKey());
-                for (int s = 0; s < spielfeld.ship.getEnemyFleet().get(spielfeld.getKey()); s++) {
-                    if (spielfeld.ship.getRichtung() == true) {
-                        spielfeld.placeEnemyShips(finalRow, finalCol);
-                    } else {
-                        spielfeld.placeEnemyShips(finalRow, finalCol);
-                    }
-                    if (finalRow + s < Spielfeld.getSpielfeldSize() && finalRow + 1 < 0) ;
-                }
-                spielfeld.ship.getEnemyShipList().remove(0);
-                spielfeld.displayEnemyFeld();
             }
         }
     }
@@ -828,9 +812,8 @@ public class UI {
                     cells[col][row].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if(gameState.equals("Battle")) {
-                                if(isPlayerTurn == false) {
-                                    // hier passiert erstmal nix theoretisch war das enemyshoot
+                            if(spielfeld.gameState.equals("Battle")) {
+                                if(spielfeld.getPlayerTurn() == false) {
                                     if(spielfeld.getString().equals("miss")) {
                                         cells[finalI][finalJ].setBackground(misscolor);
                                         cells[finalI][finalJ].setEnabled(false);
@@ -847,7 +830,7 @@ public class UI {
                                             }
                                         }
                                     }
-                                    isPlayerTurn = true;
+                                    spielfeld.setPlayerTurn(true);
                                 }
                             }
                         }
@@ -856,7 +839,7 @@ public class UI {
             }
             midContainer.add(player1Panel);
 
-            JLabel whoseTurn = new UiLabel("Whose turn it is : " + getPlayerTurn());
+            JLabel whoseTurn = new UiLabel("Player1 : " + spielfeld.getPlayerTurn());
             whoseTurn.setHorizontalAlignment(SwingConstants.CENTER);
             topContainer.add(whoseTurn);
 
@@ -870,8 +853,8 @@ public class UI {
                     enemycells[col][row].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if(gameState.equals("Battle")) {
-                                if(isPlayerTurn == true) {
+                            if(spielfeld.gameState.equals("Battle")) {
+                                if(spielfeld.getPlayerTurn() == true) {
                                     key[0] = spielfeld.getZustandEnemySpielfeld(finalI, finalJ);
                                     spielfeld.shoot(finalJ, finalI);
                                     if(spielfeld.getString().equals("miss")) {
@@ -889,23 +872,27 @@ public class UI {
                                                 }
                                             }
                                         }
-                                        if(imLost())
+                                        if(gameWon())
                                         {
                                             return;
                                         }
                                     }
                                     if (spielfeld.getString().equals("shiphit") || spielfeld.getString().equals("shipsunk")) {
-                                        isPlayerTurn = true;
+                                        spielfeld.setPlayerTurn(true);
                                     } else {
-                                        isPlayerTurn = false;
+                                        spielfeld.setPlayerTurn(false);
                                     }
                                     int x = spielfeld.rn.nextInt(spielfeld.getSpielfeldSize()) ;
                                     int y = spielfeld.rn.nextInt(spielfeld.getSpielfeldSize());
                                     System.out.println("x/y" + x + "/" + y);
-                                    if (isPlayerTurn == false) {
+                                    if (spielfeld.getPlayerTurn() == false) {
                                         cells[x][y].doClick();
                                         spielfeld.aiShoot(x,y);
-                                        isPlayerTurn=true;
+                                        if (spielfeld.getString().equals("shiphit") || spielfeld.getString().equals("shipsunk")) {
+                                            spielfeld.setPlayerTurn(false);
+                                        } else {
+                                            spielfeld.setPlayerTurn(true);
+                                        }
                                     }
                                 }
                             }
@@ -923,17 +910,18 @@ public class UI {
                 public void actionPerformed(ActionEvent e) {
                     JFileChooser saveFile = new JFileChooser();
                     int returnval = saveFile.showSaveDialog(content);
+                    String suffix = ".txt";
                     if (returnval == JFileChooser.APPROVE_OPTION) {
                         File file = saveFile.getSelectedFile();
                         if (file == null) {
                             return;
                         }
-                        if (!file.getName().toLowerCase().endsWith(".txt")) {
-                            file = new File(file.getParentFile(), file.getName() + ".txt");
+                        if(!saveFile.getSelectedFile().getAbsolutePath().endsWith(suffix)) {
+                            file = new File(saveFile.getSelectedFile() + suffix);
                         }
                         try {
-                            spielfeld.speichern();
-                            Desktop.getDesktop().open(file);
+                            file.createNewFile();
+                            spielfeld.speichern(file.getName());
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -964,7 +952,7 @@ public class UI {
             player2text.setHorizontalAlignment(SwingConstants.CENTER);
             topContainer.add(player2text);
         }
-        boolean imLost()
+        boolean gameWon()
         {
             for (Integer Entry : spielfeld.ship.enemyFleet.keySet()) {
                 if( spielfeld.ship.enemyFleet.get(Entry) != 0)
@@ -972,7 +960,7 @@ public class UI {
                     return false;
                 }
             }
-            int n = JOptionPane.showConfirmDialog(null, "You lost!", "test",JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE);
+            int n = JOptionPane.showConfirmDialog(null, "You Won!", "test",JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE);
             if (n == JOptionPane.OK_OPTION) {
                 content.removeAll();
                 content.add(new MainMenu());
