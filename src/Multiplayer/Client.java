@@ -14,15 +14,21 @@ public class Client {
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(Client.getOutputStream()));
             )
         {
-            String fromServer, fromUser;
-            ComProto CP = new ComProto();
+            String fromServer, fromUser = null;
+            ComProto CPC = new ComProto();
+            CPC.MYTURN = false;
             while ((fromServer = inc.readLine()) != null)
             {
-
-                fromUser = CP.Communication(fromServer);
-                out.write(fromUser);
-                out.newLine();
-                out.flush();
+                if (CPC.MYTURN)
+                {
+                    fromUser = CPC.Communication(fromServer);
+                }
+                if (!CPC.MYTURN)
+                {
+                    out.write(fromUser);
+                    out.newLine();
+                    out.flush();
+                }
             }
         }
         catch (Exception e) {

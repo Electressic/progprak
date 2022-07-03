@@ -1,6 +1,8 @@
 package progprak.src.Multiplayer;
 
 
+import jdk.jfr.Timespan;
+import java.time.*;
 import progprak.src.Logik.Spielfeld;
 
 public class ComProto
@@ -9,7 +11,11 @@ public class ComProto
     private static final int SENTFIELD = 1;
     private static final int SENTSHIPS = 2;
 
+    public boolean MYTURN;
+
     public int[] coord = new int[2];
+    public int size;
+    public int[] ships;
 
     public Spielfeld Feld;
     private int progress = NEW;
@@ -19,29 +25,28 @@ public class ComProto
         String[] inputarray = INPUT.split(" ");
         if(inputarray[0].equalsIgnoreCase("size"))
         {
-            int x = Integer.parseInt(inputarray[1]);
+            this.setSize(Integer.parseInt(inputarray[1]));
             //create Spielfeld here
-            Spielfeld Feld = new Spielfeld(x);
             OUTPUT = "done";
             progress = SENTFIELD;
+            MYTURN = false;
         }
-        if(inputarray[0].equalsIgnoreCase("ships"))
+        if(inputarray[0].equalsIgnoreCase("ships") && progress == 1)
         {
-            for(int i=1; i < inputarray.length; i++)
-            {
                 //create ships here
-
-
+                this.setShips(inputarray);
                 progress = SENTSHIPS;
-            }
+                MYTURN = false;
         }
         if(inputarray[0].equalsIgnoreCase("done"))
         {
             //done
+            MYTURN = false;
         }
         if(inputarray[0].equalsIgnoreCase("ready") && progress == 2)
         {
             //start game
+            MYTURN = false;
         }
         if(inputarray[0].equalsIgnoreCase("answer"))
         {
@@ -98,5 +103,28 @@ public class ComProto
     public int[] getCoord()
     {
         return this.coord;
+    }
+
+    public void setSize(int s)
+    {
+        this.size = s;
+    }
+
+    public int getSize()
+    {
+        return this.size;
+    }
+
+    public void setShips(String[] sh)
+    {
+        for(int i = 0; i < sh.length - 1; i++)
+        {
+            this.ships[i] = Integer.parseInt(sh[i+1]);
+        }
+    }
+
+    public int[] setships()
+    {
+        return this.ships;
     }
 }

@@ -15,14 +15,20 @@ public class Server {
             BufferedWriter outgoing = new BufferedWriter(new OutputStreamWriter(clientsocket.getOutputStream()));
         )
         {
-            String input, output;
-            ComProto CP = new ComProto();
-            while ((input = incoming.readLine()) != null)
-            {
-                output = CP.Communication(input);
-                outgoing.write(output);
-                outgoing.newLine();
-                outgoing.flush();
+            String input, output = null;
+            ComProto CPS = new ComProto();
+            CPS.MYTURN = true;
+            while ((input = incoming.readLine()) != null) {
+                if (CPS.MYTURN) {
+                    output = CPS.Communication(input);
+                }
+                if (!CPS.MYTURN)
+                {
+                    outgoing.write(output);
+                    outgoing.newLine();
+                    outgoing.flush();
+                }
+
             }
         }
 
