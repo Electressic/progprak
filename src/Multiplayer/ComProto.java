@@ -9,6 +9,8 @@ public class ComProto
     private static final int SENTFIELD = 1;
     private static final int SENTSHIPS = 2;
 
+    public int[] coord = new int[2];
+
     public Spielfeld Feld;
     private int progress = NEW;
 
@@ -65,7 +67,7 @@ public class ComProto
         {
             int row = Integer.parseInt(inputarray[1]);
             int col = Integer.parseInt(inputarray[2]);
-            Feld.aiShoot(row,col);
+            this.setCoord(row,col);
             //shot
         }
         if(inputarray[0].equalsIgnoreCase("save"))
@@ -87,4 +89,14 @@ public class ComProto
         return OUTPUT;
     }
 
+    public void setCoord(int row, int col)
+    {
+        this.coord[0] = row;
+        this.coord[1] = col;
+    }
+
+    public int[] getCoord()
+    {
+        return this.coord;
+    }
 }
