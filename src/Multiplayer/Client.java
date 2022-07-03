@@ -19,15 +19,17 @@ public class Client {
             CPC.MYTURN = false;
             while ((fromServer = inc.readLine()) != null)
             {
-                if (CPC.MYTURN)
+                if (!CPC.MYTURN)
                 {
                     fromUser = CPC.Communication(fromServer);
+                    CPC.MYTURN = true;
                 }
-                if (!CPC.MYTURN)
+                if (CPC.MYTURN)
                 {
                     out.write(fromUser);
                     out.newLine();
                     out.flush();
+                    CPC.MYTURN = false;
                 }
             }
         }

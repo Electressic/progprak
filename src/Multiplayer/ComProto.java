@@ -17,6 +17,8 @@ public class ComProto
     public int size;
     public int[] ships;
 
+    public String shipstate;
+
     public Spielfeld Feld;
     private int progress = NEW;
 
@@ -29,24 +31,20 @@ public class ComProto
             //create Spielfeld here
             OUTPUT = "done";
             progress = SENTFIELD;
-            MYTURN = false;
         }
         if(inputarray[0].equalsIgnoreCase("ships") && progress == 1)
         {
                 //create ships here
                 this.setShips(inputarray);
                 progress = SENTSHIPS;
-                MYTURN = false;
         }
         if(inputarray[0].equalsIgnoreCase("done"))
         {
             //done
-            MYTURN = false;
         }
         if(inputarray[0].equalsIgnoreCase("ready") && progress == 2)
         {
             //start game
-            MYTURN = false;
         }
         if(inputarray[0].equalsIgnoreCase("answer"))
         {
@@ -57,10 +55,12 @@ public class ComProto
             }
             if(Integer.parseInt(inputarray[1]) == 1)
             {
+                setShipstate("shiphit");
                 //update Spielfeld
             }
             if(Integer.parseInt(inputarray[1]) == 2)
             {
+                setShipstate("shipsunk");
                 //update Spielfeld
             }
         }
@@ -77,7 +77,7 @@ public class ComProto
         }
         if(inputarray[0].equalsIgnoreCase("save"))
         {
-            int id = Integer.parseInt(inputarray[1]);
+            long id = Integer.parseInt(inputarray[1]);
             Feld.speichern();
             //save
         }
@@ -126,5 +126,15 @@ public class ComProto
     public int[] setships()
     {
         return this.ships;
+    }
+
+    public void setShipstate(String shipstate)
+    {
+        this.shipstate = shipstate;
+    }
+
+    public String getShipstate()
+    {
+        return shipstate;
     }
 }

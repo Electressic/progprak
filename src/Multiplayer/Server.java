@@ -19,14 +19,16 @@ public class Server {
             ComProto CPS = new ComProto();
             CPS.MYTURN = true;
             while ((input = incoming.readLine()) != null) {
-                if (CPS.MYTURN) {
+                if (!CPS.MYTURN) {
                     output = CPS.Communication(input);
+                    CPS.MYTURN = true;
                 }
-                if (!CPS.MYTURN)
+                if (CPS.MYTURN)
                 {
                     outgoing.write(output);
                     outgoing.newLine();
                     outgoing.flush();
+                    CPS.MYTURN = false;
                 }
 
             }
