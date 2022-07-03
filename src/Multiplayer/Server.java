@@ -5,6 +5,8 @@ import java.net.*;
 
 public class Server {
 
+    public static BufferedWriter outgoing = null;
+
     public static void main(String[] args) throws IOException
     {
         try (
@@ -25,10 +27,17 @@ public class Server {
                 }
                 if (CPS.MYTURN)
                 {
-                    outgoing.write(output);
-                    outgoing.newLine();
-                    outgoing.flush();
-                    CPS.MYTURN = false;
+//                    if (output != null)
+//                    {
+                        outgoing.write(output);
+                        outgoing.newLine();
+                        outgoing.flush();
+                        CPS.MYTURN = false;
+//                    }
+//                    if (output == null)
+//                    {
+//                        outgoing.flush();
+//                    }
                 }
 
             }

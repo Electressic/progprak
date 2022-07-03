@@ -90,6 +90,7 @@ public class ComProto
         if(inputarray[0].equalsIgnoreCase("ok"))
         {
             //ok
+//            Server.outgoing.write();
         }
         return OUTPUT;
     }
