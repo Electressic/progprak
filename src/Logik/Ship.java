@@ -9,7 +9,7 @@ public class Ship {
     private int[] ships = {2,3,4,5,6};
     private int[] anzahlderSchiffe;
     protected Image shipPieceAlive;
-    protected int[][]  shipFleet;
+    public int[][]  shipFleet;
     protected int[][]  enemyShipFleet;
     Map<Integer, Integer> fleet = new HashMap<>();
     public Map<Integer, Integer> enemyFleet = new HashMap<>();
@@ -21,8 +21,8 @@ public class Ship {
     boolean richtung;
 
     public Ship () {
-        shipFleet = new int[Spielfeld.SpielfeldSize][Spielfeld.SpielfeldSize];
-        enemyShipFleet = new int[Spielfeld.SpielfeldSize][Spielfeld.SpielfeldSize];
+        shipFleet = new int[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
+        enemyShipFleet = new int[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
     }
     public boolean getRichtung() {
         return richtung;
@@ -66,53 +66,58 @@ public class Ship {
     public int[][] getShipFleet() {
         return shipFleet;
     }
+
+    public int[][] getEnemyShipFleet() {
+        return enemyShipFleet;
+    }
+
     /*
-    bei UI brauch ich Gamestate entweder setzen oder battle
+        bei UI brauch ich Gamestate entweder setzen oder battle
 
-    bei Button Click ruft Funktion auf:
-    if gamestate == setzen =>
-    ruft placeships auf
-    set Button zum starten true
-    ruft placeships für enemy auf
+        bei Button Click ruft Funktion auf:
+        if gamestate == setzen =>
+        ruft placeships auf
+        set Button zum starten true
+        ruft placeships für enemy auf
 
-    if gamestate == battle =>
-    ruft das untere alles auf
+        if gamestate == battle =>
+        ruft das untere alles auf
 
-    if isPlayerTurn =>
-    (shoot();
-    isShipDead();
-    habeVerloren();
-    setPlayerTurn false
-    )
+        if isPlayerTurn =>
+        (shoot();
+        isShipDead();
+        habeVerloren();
+        setPlayerTurn false
+        )
 
-    else =>
-    (shoot();
-    isShipDead();
-    habeVerloren();
-    setPlayerTurn true
-    )
+        else =>
+        (shoot();
+        isShipDead();
+        habeVerloren();
+        setPlayerTurn true
+        )
 
 
-    Funktion in der Klasse hier:
-    public boolean isShipDead() {
-    // row col pack ich in die funktion rein wie bei shoot
-    if ((ship.Fleet.get(ship.getShipFleet()[row][col]) == 0) {
-        ship.Fleet.remove(ship.getShipFleet()[row][col]);
-        return true;
-    }
-        return false;
-    }
-
-    public boolean habeVerloren()
-    {
-        if(ship.Fleet.size() == 0)
-        {
+        Funktion in der Klasse hier:
+        public boolean isShipDead() {
+        // row col pack ich in die funktion rein wie bei shoot
+        if ((ship.Fleet.get(ship.getShipFleet()[row][col]) == 0) {
+            ship.Fleet.remove(ship.getShipFleet()[row][col]);
             return true;
         }
-        UI schließt irgendwie oder so
-        return false;
-    }
-    */
+            return false;
+        }
+
+        public boolean habeVerloren()
+        {
+            if(ship.Fleet.size() == 0)
+            {
+                return true;
+            }
+            UI schließt irgendwie oder so
+            return false;
+        }
+        */
     public boolean isShipDead(int x, int y) {
         if ((fleet.get(getShipFleet()[x][y]) == 0)) {
             fleet.remove(getShipFleet()[x][y]);

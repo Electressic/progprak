@@ -1,6 +1,5 @@
 package progprak.src.UI;
 
-import progprak.src.Logik.PlaceShips;
 import progprak.src.Logik.Ship;
 import progprak.src.Logik.Spielfeld;
 
@@ -10,6 +9,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.util.*;
+import java.util.stream.IntStream;
 
 public class UI {
     // Define new Colors
@@ -35,7 +36,7 @@ public class UI {
     JFrame main = new JFrame("TEST");
 
     //create Spielfeld and Ship Class for ui
-    Spielfeld spielfeld = new Spielfeld(Spielfeld.SpielfeldSize);
+    Spielfeld spielfeld = new Spielfeld();
     int[] SpinnerArr;
 
     int shipValue2,shipValue3,shipValue4,shipValue5,shipValue6;
@@ -43,7 +44,8 @@ public class UI {
     // make 2D-Array for the Board
     Cell[][] cells = new Cell[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
     Cell[][] enemycells = new Cell[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
-
+    // Schiffarray
+    JButton[][] schiffe = new JButton[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
     // Gamestate Schiffe setzen oder Battle
     String gameState;
     //which turn it is
@@ -134,7 +136,7 @@ public class UI {
                     content.removeAll();
                     content.add(new BoardCreator());
                     content.revalidate();
-                    spielfeld = new Spielfeld(Spielfeld.SpielfeldSize);
+                    spielfeld = new Spielfeld();
                     spielfeld.ship = new Ship();
                 }
             });
@@ -154,13 +156,11 @@ public class UI {
             shipSum = 0;
             SpinnerArr = new int[]{ shipValue2,shipValue3,shipValue4,shipValue5,shipValue6};
             spielfeld.ship.createShips(SpinnerArr);
-            //ship.createShips(SpinnerArr);
             for (int i = 0; i <spielfeld.ship.getShipList().size(); i++) {
                 shipSum += spielfeld.ship.getShipList().get(i);
             }
             return shipSum;
         }
-
         public int getShipSum() {
             return shipSum;
         }
@@ -169,6 +169,7 @@ public class UI {
             percentage = getShipSum() * 100 /(Spielfeld.getSpielfeldSize() * Spielfeld.getSpielfeldSize());
             return percentage;
         }
+        // gets the percentage
         public int getPercentage() {
             return percentage;
         }
@@ -177,7 +178,7 @@ public class UI {
             temp = spielfeld.ship.getAnzahlderSchiffe();
             return temp;
         }
-        // if ShipSum is exactly 30%
+        // if ShipSum is exactly 30% make start enabled and launch the placement
         public void isFitting() {
             if (getPercentage() == 30) {
                 createStart.setEnabled(true);
@@ -200,6 +201,7 @@ public class UI {
                 createStart.setBackground(Color.red);
             }
         }
+        // method for background
         public void paintComponent (Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
@@ -217,8 +219,6 @@ public class UI {
         static final int gridmax = 30;
         static final int gridinit = 15;
         JLabel boardSizeText;
-        //Variable für JSpinner
-        // JSpinner ship2,ship3,ship4,ship5,ship6;
         JLabel prozent;
         //Variable für JLabel/Spinner
         JLabel ship2Text,ship3Text,ship4Text,ship5Text,ship6Text;
@@ -471,25 +471,28 @@ public class UI {
         }
     }
     class ShipPlacementPlayer1 extends JPanel {
-        public void paintComponent (Graphics g) {
+        int sumofShips = IntStream.of(spielfeld.ship.getAnzahlderSchiffe()).sum();
+
+        public void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             int w = getWidth(), h = getHeight();
-            Color color2 = new Color(52,58,60);
-            Color color1 = new Color(24,40,72);
-            GradientPaint gp = new GradientPaint(-1000,0,color1,w,h, color2);
+            Color color2 = new Color(52, 58, 60);
+            Color color1 = new Color(24, 40, 72);
+            GradientPaint gp = new GradientPaint(-1000, 0, color1, w, h, color2);
             g2d.setPaint(gp);
-            g2d.fillRect(0,0,w,h);
+            g2d.fillRect(0, 0, w, h);
         }
+
         JButton richtung;
+
         ShipPlacementPlayer1() {
             setLayout(new BorderLayout());
-            ShipCell[][] shipcells = new ShipCell[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
             Container ships = new Container();
-            ships.setLayout(new GridLayout(10,10,1,1));
+            ships.setLayout(new GridLayout((sumofShips + 4), 6, 5, 5));
             Container cellField = new Container();
-            cellField.setLayout(new GridLayout(Spielfeld.getSpielfeldSize(),Spielfeld.getSpielfeldSize()));
+            cellField.setLayout(new GridLayout(Spielfeld.getSpielfeldSize(), Spielfeld.getSpielfeldSize()));
 
             JButton startGame = new UiButton("Start Game");
             startGame.setEnabled(false);
@@ -500,13 +503,12 @@ public class UI {
                     content.removeAll();
                     gameState = "Setzen";
                     isPlayerTurn = true;
-                    //if (enemy.equals("Player")) {
-                    //    content.add(new ShipPlacementPlayer2());
-                    //} else {
-                        content.add(new ShipPlacementPlayer2());
-                        content.revalidate();
-                    //}
+
                     spielfeld.resetKey(0);
+                    new ShipPlacementPlayer2();
+                    gameState = "Battle";
+                    content.add(new BattleScreen());
+                    content.revalidate();
                 }
             });
             ships.add(startGame);
@@ -521,29 +523,57 @@ public class UI {
                     cells[row][col].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            if (spielfeld.ship.getShipList().size() == 1) {
-                                startGame.setBackground(Color.gray);
-                                startGame.setEnabled(true);
-                                Spielfeld.setSpielfeldSize(Spielfeld.getSpielfeldSize());
-                            }
-                            if (gameState.equals("Setzen") && spielfeld.ship.getShipList().size() > 0 ) {
-                                spielfeld.setKey(1);
-                                for (int s = 0; s < spielfeld.ship.getFleet().get(spielfeld.getKey()); s++) {
+                            Spielfeld.res = new ArrayList<>();
+                            if (gameState.equals("Setzen")) {
+                                for (int i = 0; i < spielfeld.ship.getShipList().get(0); i++) {
                                     if (spielfeld.ship.getRichtung() == true) {
-                                        spielfeld.placeShips(finalRow, finalCol);
-                                        cells[finalRow + s][finalCol].setBackground(shipcolor);
+                                        Spielfeld.getSurroundings(spielfeld.ship.getShipFleet(), finalCol, finalRow + i);
+                                        if ((finalRow + spielfeld.ship.getShipList().get(0)) > Spielfeld.getSpielfeldSize()) {
+                                            return;
+                                        }
+                                        for (int c : spielfeld.getListDirection()) {
+                                            if (c > 0) {
+                                                return;
+                                            }
+                                        }
                                     } else {
-                                        cells[finalRow][finalCol + s].setBackground(shipcolor);
+                                        Spielfeld.getSurroundings(spielfeld.ship.getShipFleet(), finalCol + i, finalRow);
+                                        if ((finalCol + spielfeld.ship.getShipList().get(0)) > Spielfeld.getSpielfeldSize()) {
+                                            return;
+                                        }
+                                        for (int c : spielfeld.getListDirection()) {
+                                            if (c > 0) {
+                                                return;
+                                            }
+                                        }
                                     }
-                                        if (finalRow + s < Spielfeld.getSpielfeldSize() && finalRow + 1 < 0) ;
                                 }
-                                spielfeld.ship.getShipList().remove(0);
+                                if (spielfeld.ship.getShipList().size() == 1) {
+                                    startGame.setBackground(Color.gray);
+                                    startGame.setEnabled(true);
+                                    Spielfeld.setSpielfeldSize(Spielfeld.getSpielfeldSize());
+                                }
+                                if (gameState.equals("Setzen") && spielfeld.ship.getShipList().size() > 0) {
+                                    spielfeld.setKey(1);
+                                    for (int s = 0; s < spielfeld.ship.getFleet().get(spielfeld.getKey()); s++) {
+                                        if (spielfeld.ship.getRichtung() == true) {
+                                            spielfeld.placeShips(finalRow, finalCol);
+                                            cells[finalRow + s][finalCol].setBackground(shipcolor);
+                                        } else {
+                                            spielfeld.placeShips(finalRow, finalCol);
+                                            cells[finalRow][finalCol + s].setBackground(shipcolor);
+                                        }
+                                        if (finalRow + s < Spielfeld.getSpielfeldSize() && finalRow + 1 < 0) ;
+                                    }
+                                    spielfeld.ship.getShipList().remove(0);
+                                }
                             }
+                            return;
                         }
                     });
                 }
             }
-            add(cellField,BorderLayout.CENTER);
+            add(cellField, BorderLayout.CENTER);
             richtung = new JButton("Richtung: Horizontal");
             richtung.setContentAreaFilled(false);
             richtung.setForeground(Color.white);
@@ -563,20 +593,19 @@ public class UI {
                     }
                 }
             });
-            for (int i = 0; i < spielfeld.ship.getAnzahlderSchiffe().length; i++) {
+            JLabel shipText = new UiLabel("Place the ship from top to bottom:");
+            shipText.setHorizontalAlignment(JLabel.CENTER);
+            ships.add(shipText);
+            for (int i = 0; i < sumofShips; i++) {
                 JPanel shipBox = new JPanel();
-                shipBox.setPreferredSize(new Dimension(300,500));
-                shipBox.setBorder(BorderFactory.createLineBorder(Color.black,2));
+                shipBox.setLayout(new GridLayout());
+                shipBox.setBorder(BorderFactory.createLineBorder(Color.black, 2));
                 ships.add(shipBox);
-                for (int j = 0; j < spielfeld.ship.getAnzahlderSchiffe()[i]; j++) {
-                    if (spielfeld.ship.getAnzahlderSchiffe()[i] > 0) {
-                        for (int h = 0; h < i +2; h++) {
-                            shipcells[i][j] = new ShipCell(i,j);
-                            shipBox.add(shipcells[i][j]);
-                        }
-                    } else {
-                        break;
-                    }
+                for (int j = 0; j < spielfeld.ship.getShipList().get(i); j++) {
+                    schiffe[i][j] = new JButton("Ship " + (i + 1) + "/" + (j + 1));
+                    schiffe[i][j].setBackground(shipcolor);
+                    schiffe[i][j].setEnabled(false);
+                    shipBox.add(schiffe[i][j]);
                 }
             }
             JButton backbtn = new UiButton("Go Back");
@@ -698,123 +727,66 @@ public class UI {
             add(ships, BorderLayout.LINE_END);
         }
     }*/
-    class ShipPlacementPlayer2 extends JPanel {
-        public void paintComponent (Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            int w = getWidth(), h = getHeight();
-            Color color2 = new Color(52,58,60);
-            Color color1 = new Color(24,40,72);
-            GradientPaint gp = new GradientPaint(-1000,0,color1,w,h, color2);
-            g2d.setPaint(gp);
-            g2d.fillRect(0,0,w,h);
-        }
-        JButton richtung;
+    class ShipPlacementPlayer2 {
         ShipPlacementPlayer2() {
-            setLayout(new BorderLayout());
-            ShipCell[][] shipcells = new ShipCell[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
-            Container ships = new Container();
-            ships.setLayout(new GridLayout(10,10,1,1));
-            Container cellField = new Container();
-            cellField.setLayout(new GridLayout(Spielfeld.getSpielfeldSize(),Spielfeld.getSpielfeldSize()));
-
-            JButton startGame = new UiButton("Start Game");
-            startGame.setEnabled(false);
-            startGame.setBackground(Color.red);
-            startGame.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    content.removeAll();
-                    gameState = "Battle";
-                    isPlayerTurn = true;
-                    content.add(new BattleScreen());
-                    content.revalidate();
-                    //}
-                }
-            });
-            ships.add(startGame);
-            //initialisiert das Spielfeld
             for (int col = 0; col < Spielfeld.getSpielfeldSize(); col++) {
                 for (int row = 0; row < Spielfeld.getSpielfeldSize(); row++) {
                     enemycells[row][col] = new Cell(row, col);
-                    enemycells[row][col].setActionCommand(enemycells[row][col].getRow() + "," + enemycells[row][col].getCol());
-                    cellField.add(enemycells[row][col]);
-                    int finalRow = row;
-                    int finalCol = col;
-                    enemycells[row][col].addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            if (spielfeld.ship.getEnemyShipList().size() == 1) {
-                                startGame.setBackground(Color.gray);
-                                startGame.setEnabled(true);
-                                Spielfeld.setSpielfeldSize(Spielfeld.getSpielfeldSize());
+                }
+            }
+            while (spielfeld.ship.getEnemyShipList().size() > 0) {
+                Spielfeld.res = new ArrayList<>();
+                int finalRow = spielfeld.rn.nextInt(Spielfeld.getSpielfeldSize());
+                int finalCol = spielfeld.rn.nextInt(Spielfeld.getSpielfeldSize());
+                int randomrichtung = spielfeld.rn.nextInt(1);
+                boolean isHorzon;
+                if(randomrichtung ==0)
+                {
+                    isHorzon = false;
+                }
+                else
+                {
+                    isHorzon = true;
+                }
+                spielfeld.ship.setRichtung(isHorzon);
+                if (gameState.equals("Setzen")) {
+                    for (int i = 0; i < spielfeld.ship.getEnemyShipList().get(0); i++) {
+                        if (spielfeld.ship.getRichtung() == true) {
+                            Spielfeld.getSurroundings(spielfeld.ship.getEnemyShipFleet(), finalCol, finalRow + i);
+                            if ((finalRow + spielfeld.ship.getEnemyShipList().get(0)) > Spielfeld.getSpielfeldSize()) {
+                                break;
                             }
-                            if (gameState.equals("Setzen") && spielfeld.ship.getEnemyShipList().size() > 0 ) {
-                                spielfeld.setKey(1);
-                                for (int s = 0; s < spielfeld.ship.getEnemyFleet().get(spielfeld.getKey()); s++) {
-                                    if (spielfeld.ship.getRichtung() == true) {
-                                        spielfeld.placeEnemyShips(finalRow, finalCol);
-                                        enemycells[finalRow + s][finalCol].setBackground(shipcolor);
-                                    } else {
-                                        spielfeld.placeEnemyShips(finalRow, finalCol);
-                                        enemycells[finalRow][finalCol + s].setBackground(shipcolor);
-                                    }
-                                    if (finalRow + s < Spielfeld.getSpielfeldSize() && finalRow + 1 < 0) ;
+                            for (int c : spielfeld.getListDirection()) {
+                                if (c > 0) {
+                                    break;
                                 }
-                                spielfeld.ship.getEnemyShipList().remove(0);
+                            }
+                        } else {
+                            Spielfeld.getSurroundings(spielfeld.ship.getEnemyShipFleet(), finalCol + i, finalRow);
+                            if ((finalCol + spielfeld.ship.getEnemyShipList().get(0)) > Spielfeld.getSpielfeldSize()) {
+                                break;
+                            }
+                            for (int c : spielfeld.getListDirection()) {
+                                if (c > 0) {
+                                    break;
+                                }
                             }
                         }
-                    });
-                }
-            }
-            add(cellField,BorderLayout.CENTER);
-            richtung = new JButton("Richtung: Horizontal");
-            richtung.setContentAreaFilled(false);
-            richtung.setForeground(Color.white);
-            richtung.setOpaque(false);
-            richtung.setBorderPainted(true);
-            richtung.setFont(new Font("Serif", Font.PLAIN, 30));
-            ships.add(richtung);
-            richtung.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if (spielfeld.ship.getRichtung() == false) {
-                        spielfeld.ship.setRichtung(true);
-                        richtung.setText("Richtung: Horizontal");
-                    } else {
-                        spielfeld.ship.setRichtung(false);
-                        richtung.setText("Richtung: Vertikal");
                     }
                 }
-            });
-            for (int i = 0; i < spielfeld.ship.getAnzahlderSchiffe().length; i++) {
-                JPanel shipBox = new JPanel();
-                shipBox.setPreferredSize(new Dimension(300,500));
-                shipBox.setBorder(BorderFactory.createLineBorder(Color.black,2));
-                ships.add(shipBox);
-                for (int j = 0; j < spielfeld.ship.getAnzahlderSchiffe()[i]; j++) {
-                    if (spielfeld.ship.getAnzahlderSchiffe()[i] > 0) {
-                        for (int h = 0; h < i +2; h++) {
-                            shipcells[i][j] = new ShipCell(i,j);
-                            shipBox.add(shipcells[i][j]);
-                        }
+                spielfeld.setKey(1);
+                System.out.println(spielfeld.getKey());
+                for (int s = 0; s < spielfeld.ship.getEnemyFleet().get(spielfeld.getKey()); s++) {
+                    if (spielfeld.ship.getRichtung() == true) {
+                        spielfeld.placeEnemyShips(finalRow, finalCol);
                     } else {
-                        break;
+                        spielfeld.placeEnemyShips(finalRow, finalCol);
                     }
+                    if (finalRow + s < Spielfeld.getSpielfeldSize() && finalRow + 1 < 0) ;
                 }
+                spielfeld.ship.getEnemyShipList().remove(0);
+                spielfeld.displayEnemyFeld();
             }
-            JButton backbtn = new UiButton("Go Back");
-            backbtn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    content.removeAll();
-                    content.add(new BoardCreator());
-                    content.revalidate();
-                }
-            });
-            ships.add(backbtn);
-            add(ships, BorderLayout.EAST);
         }
     }
     class BattleScreen extends JPanel {
@@ -891,6 +863,7 @@ public class UI {
             for (int col = 0; col < Spielfeld.getSpielfeldSize(); col++) {
                 for (int row = 0; row < Spielfeld.getSpielfeldSize(); row++) {
                     player2Panel.add(enemycells[row][col]);
+                    enemycells[row][col].setBackground(watercolor);
                     int finalI = col;
                     final int[] key = new int[1];
                     int finalJ = row;
@@ -921,7 +894,11 @@ public class UI {
                                             return;
                                         }
                                     }
-                                    isPlayerTurn = false;
+                                    if (spielfeld.getString().equals("shiphit") || spielfeld.getString().equals("shipsunk")) {
+                                        isPlayerTurn = true;
+                                    } else {
+                                        isPlayerTurn = false;
+                                    }
                                     int x = spielfeld.rn.nextInt(spielfeld.getSpielfeldSize()) ;
                                     int y = spielfeld.rn.nextInt(spielfeld.getSpielfeldSize());
                                     System.out.println("x/y" + x + "/" + y);
@@ -944,10 +921,22 @@ public class UI {
             save.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    try {
-                        //speichern duh
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
+                    JFileChooser saveFile = new JFileChooser();
+                    int returnval = saveFile.showSaveDialog(content);
+                    if (returnval == JFileChooser.APPROVE_OPTION) {
+                        File file = saveFile.getSelectedFile();
+                        if (file == null) {
+                            return;
+                        }
+                        if (!file.getName().toLowerCase().endsWith(".txt")) {
+                            file = new File(file.getParentFile(), file.getName() + ".txt");
+                        }
+                        try {
+                            spielfeld.speichern();
+                            Desktop.getDesktop().open(file);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
                     }
                 }
             });
@@ -1001,8 +990,7 @@ public class UI {
             this.row = row;
             this.col = col;
             setOpaque(true);
-            setBackground(getTestcolor());
-            setText("~");
+            setBackground(watercolor);
         }
 
         public Color getTestcolor() {
@@ -1019,16 +1007,6 @@ public class UI {
 
         public int getCol() {
             return col;
-        }
-    }
-    class ShipCell extends JButton {
-    private final int x;
-    private final int y;
-        ShipCell(final int x, final int y) {
-            this.x = x;
-            this.y = y;
-            setBackground(shipcolor);
-            setText("lol");
         }
     }
 }

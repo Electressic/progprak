@@ -1,13 +1,13 @@
 package progprak.src.Logik;
-import progprak.src.UI.UI;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -15,21 +15,18 @@ public class Spielfeld
 {
 	protected int key;
 	public Ship ship = new Ship();
-	enum Zustand {Wasser, Schiff, Schiffhit, Miss};
-	protected Zustand[][] zustandSpielfeld;
-	protected Zustand[][] zustandEnemySpielfeld;
 
 	public static int SpielfeldSize = 31;
 	protected String strAbfrageString = "";
 	String [][] aiShots = new String[getSpielfeldSize()][getSpielfeldSize()];
 	String [][] playerShots = new String[getSpielfeldSize()][getSpielfeldSize()];
 	public Random rn = new Random();
+	private static int[][] directions = new int[][]{{-1,-1}, {-1,0}, {-1,1},  {0,1}, {1,1},  {1,0},  {1,-1},  {0, -1}};
+	public static List<Integer> res;
 	Color statusColor;
 
 	//--------------- Initialisierung vom Spielfeld---------------------------------------------------
-	public Spielfeld (int Size) {
-		zustandSpielfeld = new Zustand[Size][Size];
-		zustandEnemySpielfeld = new Zustand[Size][Size];
+	public Spielfeld () {
 		for(int i = 0; i < aiShots[0].length; i++)
 		{
 			for(int j = 0; j < aiShots[1].length; j++)
@@ -90,39 +87,14 @@ public class Spielfeld
 		System.out.println("speichern....");
 		
         PrintWriter pWriter = null;
-        String s = "/Users/Admin/Downloads/Neues Textdokument.txt";
-        File file1 = new File(s);
-        if(!file1.isFile() && !file1.isDirectory())
-        {
-            try 
-            {
-            	file1.createNewFile();
-            }
-        	catch(Exception e)
-            {
-            	throw new Exception(e.getMessage());
-            }
-        }
         try 
         {
-            pWriter = new PrintWriter(new FileWriter(s));
+            pWriter = new PrintWriter(new FileWriter("s"));
             pWriter.println();
             for(int i = 0; i < this.SpielfeldSize; i++)
             {
             	for(int y = 0; y < this.SpielfeldSize; y++)
             	{
-            		if(zustandSpielfeld[i][y] == Zustand.Wasser)
-            		{
-            			pWriter.print("W");
-            		}
-            		else if(zustandSpielfeld[i][y] == Zustand.Schiff)
-            		{
-            			pWriter.print("SN");
-            		}
-            		else if (zustandSpielfeld[i][y] == Zustand.Schiffhit)
-            		{
-            			pWriter.print("SG");
-            		}
             		pWriter.print(" ");
             	}
             	pWriter.print("\n");
@@ -167,18 +139,6 @@ public class Spielfeld
         		ArrInhalt = inhalt.split(" ");
         		for(int y = 0; y < SizeSpielfeld; y++)
         		{
-        			if(ArrInhalt[y].compareTo("W") == 0)
-        			{
-        				zustandSpielfeld[i][y] = Zustand.Wasser;
-        			}
-        			else if (ArrInhalt[y].compareTo("SN") == 0)
-        			{
-        				zustandSpielfeld[i][y] = Zustand.Schiff;
-        			}
-        			else if (ArrInhalt[y].compareTo("SG") == 0)
-        			{
-        				zustandSpielfeld[i][y] = Zustand.Schiffhit;
-        			}
         		}
 
         		
@@ -209,8 +169,9 @@ public class Spielfeld
         	System.out.println(e.getMessage());
         } 
 	}
-	//----------Funktionen final für Feld initialisieren + Feld darstellen + Schiffe setzen + Schiffe schießen----------------------------
+	//----------Funktionen final fÃ¼r Feld initialisieren + Feld darstellen + Schiffe setzen + Schiffe schieÃŸen----------------------------
 	public void initFeld () {
+		ship.shipFleet = new int[getSpielfeldSize()][getSpielfeldSize()];
 		for (int col = 0; col < getSpielfeldSize(); col++) {
 			for (int row = 0; row < getSpielfeldSize(); row++) {
 				setZustandSpielfeld(row, col, -1);
@@ -272,6 +233,21 @@ public class Spielfeld
 			System.out.println();
 		}
 	}
+
+	public static void getSurroundings(int[][] matrix, int x, int y){ //java.util.List<Integer> getSurroundings(int[][] matrix, int x, int y){
+
+		for (int[] direction : directions) {
+			int cx = x + direction[0];
+			int cy = y + direction[1];
+			if(cy >=0 && cy < matrix.length)
+				if(cx >= 0 && cx < matrix[cy].length)
+					res.add(matrix[cy][cx]);
+		}
+		//return res;
+	}
+	public List<Integer> getListDirection () {
+		return res;
+	}
 	public void placeShips (int row, int col) {
 		int size;
 		for (int i = 0; i < 1; i++)
@@ -298,7 +274,7 @@ public class Spielfeld
 						setZustandSpielfeld(row, col + j,key);
 					}
 			}
-		}displayFeld();
+		}
 	}
 	public void placeEnemyShips (int row, int col) {
 		int size;
@@ -366,8 +342,8 @@ public class Spielfeld
 	public void aiShoot(int x, int y) {
 		while(aiShots[x][y].equals("0") == false)
 		{
-			x = rn.nextInt() % getSpielfeldSize();
-			y = rn.nextInt() % getSpielfeldSize();
+			x = rn.nextInt(getSpielfeldSize());
+			y = rn.nextInt(getSpielfeldSize());
 		}
 		int temp;
 		if (getZustandSpielfeld(x, y) > 0) {
@@ -391,43 +367,4 @@ public class Spielfeld
 	{
 		return this.strAbfrageString;
 	}
-	/*
-	// Methode um die Nachbarfelder zu pr�fen
-	public void checkArea (final Object neighbours) {
-		for (int i = 0; i < neighbourStorage.length; i++) {
-			neighbourStorage[i] = null;
-		}
-
-		int index = 0;
-		for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
-			for (int colOffset = -1; colOffset <= 1; colOffset++) {
-				// Make sure that we don't count ourselves
-				if (rowOffset == 0 && colOffset == 0) {
-					continue;
-				}
-				int rowValue = row + rowOffset;
-				int colValue = col + colOffset;
-
-				if (rowValue < 0 || rowValue >= Spielfeld.getSpielfeldSize()
-						|| colValue < 0 || colValue >= Spielfeld.getSpielfeldSize()) {
-					continue;
-				}
-
-				//neighbours[index++] = getZustandSpielfeld(rowValue, colValue);
-			}
-		}
-	}
-	//Nicht sicher ob bisher funktioniert so wie gedacht! soll die Area dann am ende aufdecken
-	public void updateArea () {
-		for (Object neighbour : neighbourStorage) {
-			if (neighbour == null) {
-				break;
-			}
-			if (neighbour.equals("-2")) {
-				value++;
-			}
-		}
-	}
-
-	 */
 }
