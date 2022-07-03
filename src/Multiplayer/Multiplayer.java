@@ -2,7 +2,7 @@ package progprak.src.Multiplayer;
 
 import progprak.src.UI.UI;
 
-public class Multplayer {
+public class Multiplayer {
 
     public static void main(String[] args) {
         new ComProto();

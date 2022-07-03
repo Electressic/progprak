@@ -2,11 +2,11 @@ package progprak.src.UI;
 
 import progprak.src.Logik.Ship;
 import progprak.src.Logik.Spielfeld;
+import progprak.src.Multiplayer.MultiUi.MultiplayerUi;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -20,14 +20,6 @@ public class UI {
     Color sunkcolor = new Color (139,0,0);
     Color hitcolor = Color.black;
     Color misscolor = new Color(19, 23, 128);
-    // Kram für Filechooser
-
-    static private final String newline = "\n";
-    JTextArea log;
-    final JFileChooser fc = new JFileChooser();
-
-    // Panel for adding Content
-    JPanel content;
 
     // int to save shipSum, percentage relative to Board and StartButton for Actionevent
     int shipSum;
@@ -35,10 +27,13 @@ public class UI {
     JButton createStart;
     //create new MainFrame
     JFrame main = new JFrame("TEST");
+    // Panel for adding Content
+    JPanel content;
 
     //create Spielfeld and Ship Class for ui
     Spielfeld spielfeld = new Spielfeld();
     int[] SpinnerArr;
+    MultiplayerUi mpUi;
 
     int shipValue2,shipValue3,shipValue4,shipValue5,shipValue6;
 
@@ -47,13 +42,6 @@ public class UI {
     Cell[][] enemycells = new Cell[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
     // Schiffarray
     JButton[][] schiffe = new JButton[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
-    //check if Mp or Computer
-    String enemy;
-
-
-    public Cell[][] getBoard() {
-        return cells;
-    }
     //Constructor that creates the UI
     public UI() {
         createGUI();
@@ -62,13 +50,6 @@ public class UI {
     private void createGUI() {
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         main.setPreferredSize(new Dimension(800,700));
-        JButton test = new JButton();
-        test.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
         content = new JPanel(new BorderLayout());
         content.add(new MainMenu());
         main.add(content);
@@ -123,7 +104,7 @@ public class UI {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     content.removeAll();
-                    content.add(new Multiplayer());
+                    content.add(new BoardCreator());
                     content.revalidate();
                     spielfeld = new Spielfeld();
                     spielfeld.ship = new Ship();
@@ -135,10 +116,11 @@ public class UI {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     content.removeAll();
-                    content.add(new BoardCreator());
+                    mpUi = new MultiplayerUi();
                     content.revalidate();
                     spielfeld = new Spielfeld();
                     spielfeld.ship = new Ship();
+                    main.dispose();
                 }
             });
             JButton aibtn = new UiButton("Computer gegen Computer");
@@ -147,9 +129,6 @@ public class UI {
             add(mpbtn);
             add(aibtn);
         }
-    }
-    class Multiplayer extends JPanel {
-
     }
     //creates the BoardCreator for setting BoardSize and ShipCount
     class BoardCreator extends JPanel {
@@ -182,7 +161,7 @@ public class UI {
         }
         // if ShipSum is exactly 30% make start enabled and launch the placement
         public void isFitting() {
-            if (getPercentage() >= 30) {
+            if (getPercentage() == 30) {
                 createStart.setEnabled(true);
                 createStart.setContentAreaFilled(false);
                 createStart.addActionListener(new ActionListener() {
@@ -888,11 +867,11 @@ public class UI {
                                     if (spielfeld.getPlayerTurn() == false) {
                                         cells[x][y].doClick();
                                         spielfeld.aiShoot(x,y);
-                                        if (spielfeld.getString().equals("shiphit") || spielfeld.getString().equals("shipsunk")) {
-                                            spielfeld.setPlayerTurn(false);
-                                        } else {
-                                            spielfeld.setPlayerTurn(true);
-                                        }
+                                        //if (spielfeld.getString().equals("shiphit") || spielfeld.getString().equals("shipsunk")) {
+                                        //    spielfeld.setPlayerTurn(false);
+                                        //} else {
+                                        //    spielfeld.setPlayerTurn(true);
+                                        //}
                                     }
                                 }
                             }
@@ -979,6 +958,7 @@ public class UI {
             this.col = col;
             setOpaque(true);
             setBackground(watercolor);
+            setText("~");
         }
 
         public Color getTestcolor() {
