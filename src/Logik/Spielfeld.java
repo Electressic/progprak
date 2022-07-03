@@ -1,6 +1,6 @@
 package progprak.src.Logik;
 import progprak.src.UI.UI;
-
+import java.util.Random;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -13,23 +13,31 @@ import java.util.Scanner;
 
 public class Spielfeld
 {
-	protected int key, key2, row, col, value;
-	private Object[] neighbourStorage = new Object[18];
+	protected int key;
 	public Ship ship = new Ship();
 	enum Zustand {Wasser, Schiff, Schiffhit, Miss};
 	protected Zustand[][] zustandSpielfeld;
 	protected Zustand[][] zustandEnemySpielfeld;
-	protected BattleShip[][] Ships = new BattleShip[0][0];
-	protected BattleShip[] vorhandeneSchiffe;// = new BattleShip[0];
+
 	public static int SpielfeldSize = 31;
 	protected String strAbfrageString = "";
+	String [][] aiShots = new String[getSpielfeldSize()][getSpielfeldSize()];
+	String [][] playerShots = new String[getSpielfeldSize()][getSpielfeldSize()];
+	public Random rn = new Random();
 	Color statusColor;
 
 	//--------------- Initialisierung vom Spielfeld---------------------------------------------------
 	public Spielfeld (int Size) {
 		zustandSpielfeld = new Zustand[Size][Size];
 		zustandEnemySpielfeld = new Zustand[Size][Size];
-		Ships = new BattleShip[Size][Size];
+		for(int i = 0; i < aiShots[0].length; i++)
+		{
+			for(int j = 0; j < aiShots[1].length; j++)
+			{
+				aiShots[i][j] = "0";
+				playerShots[i][j] = "0";
+			}
+		}
 	}
 
 	//Setter und Getter for BoardSize
@@ -76,7 +84,6 @@ public class Spielfeld
 		this.statusColor = color;
 		return color;
 	}
-
 	// Speichern und Laden was noch geupdated werden muss
 	public void speichern() throws Exception
 	{
@@ -120,11 +127,11 @@ public class Spielfeld
             	}
             	pWriter.print("\n");
             }
-            for(int i = 0; i < vorhandeneSchiffe.length; i++)
-            {
-            	pWriter.print(vorhandeneSchiffe[i].getShipDataAsString());
+            //for(int i = 0; i < vorhandeneSchiffe.length; i++)
+            //{
+            	//pWriter.print(vorhandeneSchiffe[i].getShipDataAsString());
             	pWriter.print("\n");
-            }
+            //}
             pWriter.flush();
             pWriter.close();
         } 
@@ -191,8 +198,8 @@ public class Spielfeld
         			//setzeSchiff(StartPosX, StartPosY, rRichtung, vorhandeneSchiffe[vorhandeneSchiffe.length - 1]);
 
         			
-        			vorhandeneSchiffe[vorhandeneSchiffe.length - 1].setAnzahlTreffer(AnzahlTreffer);
-        			vorhandeneSchiffe[vorhandeneSchiffe.length - 1].setRichtung(rRichtung);
+        			//vorhandeneSchiffe[vorhandeneSchiffe.length - 1].setAnzahlTreffer(AnzahlTreffer);
+        			//vorhandeneSchiffe[vorhandeneSchiffe.length - 1].setRichtung(rRichtung);
         		}
         	}                
         	obj.close();
@@ -323,6 +330,24 @@ public class Spielfeld
 	}
 	public void shoot (int y, int x) {
 		int temp;
+		if (getZustandEnemySpielfeld(x, y) > 0) {
+			temp = ship.enemyFleet.get(getZustandEnemySpielfeld(x,y));
+			ship.enemyFleet.replace(getZustandEnemySpielfeld(x,y), --temp);
+			if (temp <= 0) {
+				setString("shipsunk");
+				playerShots[x][y] = "shipsunk";
+				return;
+			}
+			setString("shiphit");
+			playerShots[x][y] = "shiphit";
+			return;
+		}
+		setString("miss");
+		playerShots[x][y] = "miss";
+	}
+	public void enemyShoot (int y, int x) {
+		int temp;
+
 		if (getZustandSpielfeld(x, y) > 0) {
 			temp = ship.fleet.get(getZustandSpielfeld(x,y));
 			System.out.println("test2: " + temp);
@@ -338,6 +363,26 @@ public class Spielfeld
 		}
 		setString("miss");
 	}
+	public void aiShoot(int x, int y) {
+		while(aiShots[x][y].equals("0") == false)
+		{
+			x = rn.nextInt() % getSpielfeldSize();
+			y = rn.nextInt() % getSpielfeldSize();
+		}
+		int temp;
+		if (getZustandSpielfeld(x, y) > 0) {
+			temp = ship.fleet.get(getZustandSpielfeld(x,y));
+			ship.fleet.replace(getZustandSpielfeld(x,y), --temp);
+			if (temp <= 0) {
+				setString("shipsunk");
+				return;
+			}
+			setString("shiphit");
+			aiShots[x][y] = "shiphit";
+			return;
+		}
+		setString("miss");
+	}
 	private void setString(String strText)
 	{
 		this.strAbfrageString = strText;
@@ -346,22 +391,7 @@ public class Spielfeld
 	{
 		return this.strAbfrageString;
 	}
-	public String shootTest (int y, int x) {
-		int temp;
-		if (getZustandSpielfeld(x, y) > 0) {
-			temp = ship.fleet.get(getZustandSpielfeld(x,y));
-			System.out.println("test2: " + temp);
-
-			if (temp == 0) {
-				return "Schiff versunken";
-			}
-			ship.fleet.replace(getZustandSpielfeld(x,y), --temp);
-
-			return "Schiff getroffen";
-		}
-		displayFeld();
-		return "miss";
-	}
+	/*
 	// Methode um die Nachbarfelder zu prüfen
 	public void checkArea (final Object neighbours) {
 		for (int i = 0; i < neighbourStorage.length; i++) {
@@ -398,4 +428,6 @@ public class Spielfeld
 			}
 		}
 	}
+
+	 */
 }

@@ -11,9 +11,8 @@ public class Ship {
     protected Image shipPieceAlive;
     protected int[][]  shipFleet;
     protected int[][]  enemyShipFleet;
-
     Map<Integer, Integer> fleet = new HashMap<>();
-    Map<Integer, Integer> enemyFleet = new HashMap<>();
+    public Map<Integer, Integer> enemyFleet = new HashMap<>();
 
     ArrayList<Integer> shipList = new ArrayList<>();
     ArrayList<Integer> enemyShipList = new ArrayList<>();

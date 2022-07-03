@@ -757,6 +757,7 @@ public class UI {
                                         spielfeld.placeEnemyShips(finalRow, finalCol);
                                         enemycells[finalRow + s][finalCol].setBackground(shipcolor);
                                     } else {
+                                        spielfeld.placeEnemyShips(finalRow, finalCol);
                                         enemycells[finalRow][finalCol + s].setBackground(shipcolor);
                                     }
                                     if (finalRow + s < Spielfeld.getSpielfeldSize() && finalRow + 1 < 0) ;
@@ -855,10 +856,9 @@ public class UI {
                     cells[col][row].addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            System.out.println(finalJ +"/" + finalI);
                             if(gameState.equals("Battle")) {
-                                if(isPlayerTurn == true) {
-                                    spielfeld.shoot(finalJ, finalI);
+                                if(isPlayerTurn == false) {
+                                    // hier passiert erstmal nix theoretisch war das enemyshoot
                                     if(spielfeld.getString().equals("miss")) {
                                         cells[finalI][finalJ].setBackground(misscolor);
                                         cells[finalI][finalJ].setEnabled(false);
@@ -875,20 +875,7 @@ public class UI {
                                             }
                                         }
                                     }
-                                    /*
-                                    wenn schiff versunken, dann durch spielfeld durchgehen und nach zustand spielfeld fragen
-                                    wenn value = 0 ist dann schiff versunken
-
-                                    if (spielfeld.shoot(finalI, finalJ).equals("Schiff getroffen")) {
-                                        System.out.println("funktioniert");
-                                        cells[finalJ][finalI].setTestcolor(hitcolor);
-                                        cells[finalJ][finalI].getTestcolor();
-                                    }
-                                    else if (spielfeld.getZustandSpielfeld(finalI,finalJ) == -1) {
-                                        cells[finalI][finalJ].setBackground(misscolor);
-                                        cells[finalI][finalJ].setEnabled(false);
-                                    }
-                                     */
+                                    isPlayerTurn = true;
                                 }
                             }
                         }
@@ -901,8 +888,52 @@ public class UI {
             whoseTurn.setHorizontalAlignment(SwingConstants.CENTER);
             topContainer.add(whoseTurn);
 
-            for(int i = 0; i < Spielfeld.getSpielfeldSize(); i++){
-                for(int j = 0; j < Spielfeld.getSpielfeldSize(); j++){
+            for (int col = 0; col < Spielfeld.getSpielfeldSize(); col++) {
+                for (int row = 0; row < Spielfeld.getSpielfeldSize(); row++) {
+                    player2Panel.add(enemycells[row][col]);
+                    int finalI = col;
+                    final int[] key = new int[1];
+                    int finalJ = row;
+                    enemycells[col][row].addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if(gameState.equals("Battle")) {
+                                if(isPlayerTurn == true) {
+                                    key[0] = spielfeld.getZustandEnemySpielfeld(finalI, finalJ);
+                                    spielfeld.shoot(finalJ, finalI);
+                                    if(spielfeld.getString().equals("miss")) {
+                                        enemycells[finalI][finalJ].setBackground(misscolor);
+                                        enemycells[finalI][finalJ].setEnabled(false);
+                                    } else if(spielfeld.getString().equals("shiphit")) {
+                                        enemycells[finalI][finalJ].setBackground(hitcolor);
+                                        enemycells[finalI][finalJ].setEnabled(false);
+                                    } else if (spielfeld.getString().equals("shipsunk")) {
+                                        for (int col = 0; col < Spielfeld.getSpielfeldSize(); col++) {
+                                            for (int row = 0; row < Spielfeld.getSpielfeldSize(); row++) {
+                                                if (spielfeld.getZustandEnemySpielfeld(row, col) == key[0]) {
+                                                    enemycells[row][col].setBackground(sunkcolor);
+                                                    enemycells[row][col].setEnabled(false);
+                                                }
+                                            }
+                                        }
+                                        if(imLost())
+                                        {
+                                            return;
+                                        }
+                                    }
+                                    isPlayerTurn = false;
+                                    int x = spielfeld.rn.nextInt(spielfeld.getSpielfeldSize()) ;
+                                    int y = spielfeld.rn.nextInt(spielfeld.getSpielfeldSize());
+                                    System.out.println("x/y" + x + "/" + y);
+                                    if (isPlayerTurn == false) {
+                                        cells[x][y].doClick();
+                                        spielfeld.aiShoot(x,y);
+                                        isPlayerTurn=true;
+                                    }
+                                }
+                            }
+                        }
+                    });
                 }
             }
             midContainer.add(player2Panel);
@@ -914,7 +945,7 @@ public class UI {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        spielfeld.speichern();
+                        //speichern duh
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     }
@@ -932,7 +963,6 @@ public class UI {
                     content.revalidate();
                 }
             });
-
             JLabel player1text = new UiLabel("PLAYER 1");
             player1text.setHorizontalAlignment(SwingConstants.CENTER);
             topContainer.add(player1text);
@@ -941,10 +971,26 @@ public class UI {
             fight.setHorizontalAlignment(SwingConstants.CENTER);
             topContainer.add(fight);
 
-
             JLabel player2text = new UiLabel("PLAYER 2");
             player2text.setHorizontalAlignment(SwingConstants.CENTER);
             topContainer.add(player2text);
+        }
+        boolean imLost()
+        {
+            for (Integer Entry : spielfeld.ship.enemyFleet.keySet()) {
+                if( spielfeld.ship.enemyFleet.get(Entry) != 0)
+                {
+                    return false;
+                }
+            }
+            int n = JOptionPane.showConfirmDialog(null, "You lost!", "test",JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE);
+            if (n == JOptionPane.OK_OPTION) {
+                content.removeAll();
+                content.add(new MainMenu());
+                content.revalidate();
+            }
+            System.out.println("ende");
+            return true;
         }
     }
     class Cell extends JButton {
