@@ -26,7 +26,7 @@ public class Server {
             }
         }
 
-        catch (IOException e) {
+        catch (Exception e) {
             System.out.println("Exception in Server main");
         }
     }

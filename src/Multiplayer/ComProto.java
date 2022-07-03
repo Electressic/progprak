@@ -65,7 +65,7 @@ public class ComProto
         {
             int row = Integer.parseInt(inputarray[1]);
             int col = Integer.parseInt(inputarray[2]);
-            Feld.shoot(row,col);
+            Feld.aiShoot(row,col);
             //shot
         }
         if(inputarray[0].equalsIgnoreCase("save"))
