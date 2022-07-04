@@ -1,6 +1,6 @@
-package progprak.src.Multiplayer;
+package Multiplayer;
 
-import progprak.src.UI.UI;
+import UI.UI;
 
 public class Multiplayer {
 

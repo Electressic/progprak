@@ -1,15 +1,13 @@
-package progprak.src.Logik;
+package Logik;
 
 import java.io.*;
 import java.util.*;
-import java.awt.*;
 import java.util.List;
 
 
 public class Spielfeld
 {
 	protected int key;
-	public Ship ship = new Ship();
 	public static int SpielfeldSize = 31;
 	protected String strAbfrageString = "";
 	String [][] aiShots = new String[getSpielfeldSize()][getSpielfeldSize()];
@@ -23,7 +21,7 @@ public class Spielfeld
 	boolean isPlayerTurn;
 
 	//--------------- Initialisierung vom Spielfeld---------------------------------------------------
-	public Spielfeld () {
+	public Spielfeld() {
 		for(int i = 0; i < aiShots[0].length; i++)
 		{
 			for(int j = 0; j < aiShots[1].length; j++)
@@ -50,21 +48,6 @@ public class Spielfeld
 		}
 		return false;
 	}
-	//Setter und Getter for Player1 Zustand
-	public void setZustandSpielfeld(int x, int y, int z) {
-		ship.shipFleet[x][y] = z;
-	}
-	public int getZustandSpielfeld(int x, int y)
-	{
-		return ship.shipFleet[x][y];
-	}
-	//Setter und Getter for Player2 Zustand
-	public void setZustandEnemySpielfeld(int x, int y, int z) {
-		ship.enemyShipFleet[x][y] = z;
-	}
-	public int getZustandEnemySpielfeld(int x, int y) {
-		return ship.enemyShipFleet[x][y];
-	}
 	// getted, setted und resetted den Key um ihn mit der Map zu vergleichen
 	public int getKey() {
 		return key;
@@ -78,7 +61,7 @@ public class Spielfeld
 		return key;
 	}
 	// Speichern und Laden was noch geupdated werden muss
-	public void speichern(String filename) throws Exception
+	public void speichern(String filename, Ship ship) throws Exception
 	{
 		try{
 			File savefile = new File(filename);
@@ -122,22 +105,22 @@ public class Spielfeld
 		}
 	}
 	// initialisiert beide Spielfelder
-	public void initFeld () {
-		ship.shipFleet = new int[getSpielfeldSize()][getSpielfeldSize()];
+	public void initFeld (Ship ship) {
+		//ship.setShipFleet(Spielfeld.getSpielfeldSize(),Spielfeld.getSpielfeldSize());
 		for (int col = 0; col < getSpielfeldSize(); col++) {
 			for (int row = 0; row < getSpielfeldSize(); row++) {
-				setZustandSpielfeld(row, col, -1);
+				ship.getShipFleet()[col][row] = -1;
 			}
 		}
 	}
-	public void initEnemyFeld () {
+	public void initEnemyFeld(Ship ship) {
 		for (int col = 0; col < getSpielfeldSize(); col++) {
 			for (int row = 0; row < getSpielfeldSize(); row++) {
-				setZustandEnemySpielfeld(row, col, -1);
+				ship.getEnemyShipFleet()[col][row] = -1;
 			}
 		}
 	}
-	public void displayFeld() {
+	public void displayFeld(Ship ship) {
 		System.out.print(" PL1");
 		for (int row = 0; row < getSpielfeldSize(); row++) {
 			if(row < 10)
@@ -156,12 +139,12 @@ public class Spielfeld
 			else
 				System.out.print(" " + col + " |");
 			for (int row = 0; row < getSpielfeldSize(); row++) {
-				System.out.print(getZustandSpielfeld(row,col ) + " ");
+				System.out.print(ship.getShipFleet()[row][col] + " ");
 			}
 			System.out.println();
 		}
 	}
-	public void displayEnemyFeld() {
+	public void displayEnemyFeld(Ship ship) {
 		System.out.print(" PL2");
 		for (int row = 0; row < getSpielfeldSize(); row++) {
 			if(row < 10)
@@ -180,7 +163,7 @@ public class Spielfeld
 			else
 				System.out.print(" " + col + " |");
 			for (int row = 0; row < getSpielfeldSize(); row++) {
-				System.out.print(getZustandEnemySpielfeld(row,col) + " ");
+				System.out.print(ship.getShipFleet()[row][col] + " ");
 			}
 			System.out.println();
 		}
@@ -203,7 +186,7 @@ public class Spielfeld
 		return res;
 	}
 	//wird aufgerufen um die Schiffe zu platzieren
-	public void placeShips (int row, int col) {
+	public void placeShips(int row, int col, Ship ship) {
 		int size;
 		for (int i = 0; i < 1; i++)
 		{
@@ -212,7 +195,7 @@ public class Spielfeld
 			for (int j = 0; j < size; j++)
 			{
 					if(ship.getRichtung() == true) {
-						setZustandSpielfeld(row +j , col,key);
+						ship.getShipFleet()[row +j][col] = key;
 						/*
 						setZustandSpielfeld(row +j , col,key);
 						setZustandSpielfeld(row -1 , col,-3);
@@ -226,13 +209,13 @@ public class Spielfeld
 						setStatusColor(row + j, col, Color.black);
 						 */
 					} else {
-						setZustandSpielfeld(row, col + j,key);
+						ship.getShipFleet()[row][col + j] = key;
 					}
 			}
 		}
 	}
 	//wird aufgerufen um die Gegnerschiffe zu platzieren
-	public void placeEnemyShips (int row, int col) {
+	public void placeEnemyShips(int row, int col, Ship ship) {
 		int size;
 		for (int i = 0; i < 1; i++)
 		{
@@ -241,19 +224,19 @@ public class Spielfeld
 			for (int j = 0; j < size; j++)
 			{
 				if(ship.getRichtung() == true) {
-					setZustandEnemySpielfeld(row +j , col,key);
+					ship.getShipFleet()[row + j][col] = key;
 				} else {
-					setZustandEnemySpielfeld(row, col + j,key);
+					ship.getShipFleet()[row][col + j] = key;
 				}
 			}
-		}displayEnemyFeld();
+		}displayEnemyFeld(ship);
 	}
 	//wird aufgerufen um auf das Gegnerspielfeld yu schiessen
-	public void shoot (int y, int x) {
+	public void shoot(int y, int x, Ship ship) {
 		int temp;
-		if (getZustandEnemySpielfeld(x, y) > 0) {
-			temp = ship.enemyFleet.get(getZustandEnemySpielfeld(x,y));
-			ship.enemyFleet.replace(getZustandEnemySpielfeld(x,y), --temp);
+		if (ship.getShipFleet()[x][y] > 0) {
+			temp = ship.getEnemyFleet().get(ship.getShipFleet()[x][y]);
+			ship.getEnemyFleet().replace(ship.getShipFleet()[x][y], --temp);
 			if (temp <= 0) {
 				setString("shipsunk");
 				playerShots[x][y] = "shipsunk";
@@ -267,35 +250,35 @@ public class Spielfeld
 		playerShots[x][y] = "miss";
 	}
 	// moch kein Funktion theoretisch multiplayer?
-	public void enemyShoot (int y, int x) {
+	public void enemyShoot (int y, int x, Ship ship) {
 		int temp;
 
-		if (getZustandSpielfeld(x, y) > 0) {
-			temp = ship.fleet.get(getZustandSpielfeld(x,y));
+		if (ship.getShipFleet()[x][y] > 0) {
+			temp = ship.getFleet().get(ship.getShipFleet()[x][y]);
 			System.out.println("test2: " + temp);
-			ship.fleet.replace(getZustandSpielfeld(x,y), --temp);
+			ship.getFleet().replace(ship.getShipFleet()[x][y], --temp);
 			if (temp <= 0) {
 				setString("shipsunk");
-				setZustandSpielfeld(x,y,0);
+				ship.getShipFleet()[x][y] = 0;
 				return;
 			}
 			setString("shiphit");
-			setZustandSpielfeld(x,y,0);
+			ship.getShipFleet()[x][y] = 0;
 			return;
 		}
 		setString("miss");
 	}
 	//wird aufgerufen von ki um auf ein random feld zu schiessen
-	public void aiShoot(int x, int y) {
+	public void aiShoot(int x, int y, Ship ship) {
 		while(aiShots[x][y].equals("0") == false)
 		{
 			x = rn.nextInt(getSpielfeldSize());
 			y = rn.nextInt(getSpielfeldSize());
 		}
 		int temp;
-		if (getZustandSpielfeld(x, y) > 0) {
-			temp = ship.fleet.get(getZustandSpielfeld(x,y));
-			ship.fleet.replace(getZustandSpielfeld(x,y), --temp);
+		if (ship.getShipFleet()[x][y]> 0) {
+			temp = ship.getFleet().get(ship.getShipFleet()[x][y]);
+			ship.getFleet().replace(ship.getShipFleet()[x][y], --temp);
 			if (temp <= 0) {
 				setString("shipsunk");
 				return;

@@ -1,4 +1,4 @@
-package progprak.src.Multiplayer.MultiUi;
+package Multiplayer.MultiUi;
 
 import javax.swing.*;
 import java.awt.*;

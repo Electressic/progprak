@@ -1,28 +1,26 @@
-package progprak.src.Logik;
+package Logik;
 
-import progprak.src.UI.UI;
-
-import java.awt.*;
 import java.util.*;
 
 public class Ship {
     private int[] ships = {2,3,4,5,6};
     private int[] anzahlderSchiffe;
-    public int[][]  shipFleet;
-    protected int[][]  enemyShipFleet;
-
-    Map<Integer, Integer> fleet = new HashMap<>();
-    public Map<Integer, Integer> enemyFleet = new HashMap<>();
-
-    ArrayList<Integer> shipList = new ArrayList<>();
-    ArrayList<Integer> enemyShipList = new ArrayList<>();
-
+    private int[][] shipFleet;
+    private int[][]  enemyShipFleet;
+    private Map<Integer, Integer> fleet;
+    private Map<Integer, Integer> enemyFleet;
+    private ArrayList<Integer> shipList;
+    private ArrayList<Integer> enemyShipList;
     int [] storage = new int[290];
     boolean richtung;
 
     public Ship () {
-        shipFleet = new int[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
-        enemyShipFleet = new int[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
+        this.shipFleet = new int[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
+        this.enemyShipFleet = new int[Spielfeld.getSpielfeldSize()][Spielfeld.getSpielfeldSize()];
+        this.fleet = new HashMap<>();
+        this.enemyFleet = new HashMap<>();
+        this.shipList = new ArrayList<>();
+        this.enemyShipList = new ArrayList<>();
     }
     public boolean getRichtung() {
         return richtung;
@@ -67,6 +65,10 @@ public class Ship {
         return shipFleet;
     }
 
+    public int setShipFleet(int x, int y) {
+        return shipFleet[x][y];
+    }
+
     public int[][] getEnemyShipFleet() {
         return enemyShipFleet;
     }
@@ -91,5 +93,4 @@ public class Ship {
             }
         }
     }
-
 }
